@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import SidebarMain from '../components/Sidebar';
+import Sidebar from '../components/Sidebar';
 
 function HowtoIndex() {
   return (
@@ -12,24 +12,39 @@ function HowtoIndex() {
 }
 
 export default function HowtoIndexPage() {
-  const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    // Load the list of posts
-    const context = require.context('../content/howto', false, /\.mdx?$/);
-    const postsData = context.keys().map((path) => {
-      const slug = path.split('/').pop().replace(/\.mdx?$/, '');
-      return { 
-        slug, 
-        title: slug.replace(/-/g, ' '), 
-        href: `/howto/${slug}` 
-      };
+  const modules = require.context('../content/howto', true, /\.mdx$/);
+  const posts = [];
+  
+  modules.keys().forEach((path) => {
+    const parts = path.replace('./', '').split('/'); // Remove './' and split by folder
+    const slug = parts.pop().replace('.mdx', ''); // Extract file name
+    const module = modules(path);
+    const title = module.frontmatter?.title || slug;
+  
+    let currentLevel = posts;
+    let currentPath = "/howto";
+  
+    parts.forEach((part) => {
+      const folderSlug = part.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with '_'
+      currentPath += `/${folderSlug}`;
+  
+      let existing = currentLevel.find((item) => item.slug === folderSlug);
+      if (!existing) {
+        existing = { title: part, slug: folderSlug, children: [] };
+        currentLevel.push(existing);
+      }
+      currentLevel = existing.children;
     });
-    setPosts(postsData);
-  }, []);
+  
+    const href = `${currentPath}/${slug}`;
+    currentLevel.push({ title, slug, href });
+  });
+  
+  console.log(posts);
 
   return (
-    <Layout sidebar={<SidebarMain links={posts} />}>
+    <Layout sidebar={<Sidebar links={posts} />}>
       <HowtoIndex />
     </Layout>
   );

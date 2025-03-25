@@ -1,49 +1,81 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Layout from "../components/Layout";
 import Sidebar from "../components/Sidebar";
 import { MDXProvider } from "@mdx-js/react";
 import { mdxComponents } from "../mdxComponents";
 
 function HowtoPost() {
-  const { slug } = useParams();
-  const [PostContent, setPostContent] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { slug } = useParams(); // Capture slug directly
+  const location = useLocation(); // Get full path
+  const slugPath = location.pathname.replace(/^\/howto\//, ''); // Remove /howto prefix
+  
+  console.log("Extracted slugPath:", slugPath); // Debugging
 
-  useEffect(() => {
-    // Load sidebar posts
-    const sidebarContext = require.context("../content/howto", false, /\.mdx$/);
-    const sidebarPosts = sidebarContext.keys().map(path => ({
-      slug: path.match(/\.\/(.*)\.mdx/)[1],
-      title: path.match(/\.\/(.*)\.mdx/)[1].replace(/-/g, ' '),
-      href: `/howto/${path.match(/\.\/(.*)\.mdx/)[1]}`
-    }));
-    setPosts(sidebarPosts);
+  const modules = require.context("../content/howto", true, /\.mdx$/);
+  const posts = [];
 
-    // Load main post content
-    const postContext = require.context("../content/howto", false, /\.mdx$/);
-    try {
-      const postPath = postContext.keys().find(key => key === `./${slug}.mdx`);
-      if (!postPath) throw new Error("Post not found");
-      const content = postContext(postPath).default;
-      setPostContent(() => content);
-    } catch (error) {
-      console.error("Error loading post:", error);
-      setPostContent(null);
-    } finally {
-      setLoading(false);
+  modules.keys().forEach((path) => {
+    const parts = path.replace("./", "").split("/"); // Remove './' and split by folder
+    const fileSlug = parts.pop().replace(".mdx", ""); // Extract file name
+    const module = modules(path);
+    const title = module.frontmatter?.title || fileSlug;
+
+    let currentLevel = posts;
+    let currentPath = "/howto";
+
+    parts.forEach((part) => {
+      const folderSlug = part.toLowerCase().replace(/\s+/g, "_"); // Normalize folder slug
+      currentPath += `/${folderSlug}`;
+
+      let existing = currentLevel.find((item) => item.slug === folderSlug);
+      if (!existing) {
+        existing = { title: part, slug: folderSlug, children: [] };
+        currentLevel.push(existing);
+      }
+      currentLevel = existing.children;
+    });
+
+    // Store the final post entry
+    const href = `${currentPath}/${fileSlug}`;
+    currentLevel.push({ title, slug: fileSlug, href });
+  });
+
+  console.log("Posts:", posts); // Debug structure
+  console.log("All available MDX files:", modules.keys());
+
+  const normalizePath = (path) => {
+    const parts = path.replace("./", "").replace(".mdx", "").split("/");
+
+    // Normalize all parts except the last one (filename)
+    for (let i = 0; i < parts.length - 1; i++) {
+      parts[i] = parts[i].toLowerCase().replace(/\s+/g, "_");
     }
-  }, [slug]);
 
-  if (loading) return <div>Loading...</div>;
-  if (!PostContent) return <div>Post not found</div>;
+    return parts.join("/");
+  };
+
+  const postKey = modules.keys().find((path) => {
+    const normalizedPath = normalizePath(path);
+    console.log(`Checking: ${normalizedPath} === ${slugPath}`);
+    return normalizedPath === slugPath;
+  });
+
+  if (!postKey) {
+    return (
+      <Layout sidebar={<Sidebar links={posts} />}>
+        <div>Post not found</div>
+      </Layout>
+    );
+  }
+
+  const PostComponent = modules(postKey).default;
 
   return (
     <Layout sidebar={<Sidebar links={posts} />}>
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <MDXProvider components={mdxComponents}>
-          <PostContent />
+          <PostComponent />
         </MDXProvider>
       </div>
     </Layout>

@@ -7,10 +7,13 @@ import FacilitiesIndex from './pages/FacilitiesIndex';
 import FacilitiesPost from './pages/FacilitiesPost';
 import PoliciesIndex from './pages/PoliciesIndex';
 import PoliciesPost from './pages/PoliciesPost';
+import NavbarMain from './components/Navbar';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <BrowserRouter> {/* Wrap everything inside BrowserRouter */}
+      <NavbarMain />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/howto">
@@ -19,13 +22,14 @@ function App() {
         </Route>
         <Route path="/facilities">
           <Route index element={<FacilitiesIndex />} />
-          <Route path=":slug" element={<FacilitiesPost />} />
+          <Route path="*" element={<FacilitiesPost />} />
         </Route>
         <Route path="/policies">
           <Route index element={<PoliciesIndex />} />
           <Route path=":slug" element={<PoliciesPost />} />
         </Route>
       </Routes>
+      <Footer />
     </BrowserRouter> 
   );
 }

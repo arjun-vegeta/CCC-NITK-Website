@@ -6,23 +6,57 @@ import { MDXProvider } from '@mdx-js/react';
 import { mdxComponents } from '../mdxComponents';
 
 function FacilitiesPost() {
-  const { slug } = useParams();
+  const { '*': slugPath } = useParams(); // Capture full nested path
+  const modules = require.context('../content/facilities', true, /\.mdx$/);
+  const posts = [];
 
-  // Use webpack's require.context to load .mdx files dynamically
-  const modules = require.context('../content/facilities', false, /\.mdx$/);
-
-  // Prepare a list of posts
-  const posts = modules.keys().map((path) => {
-    const fileSlug = path.split('/').pop().replace('.mdx', '');
+  modules.keys().forEach((path) => {
+    const parts = path.replace('./', '').split('/'); // Remove './' and split by folder
+    const fileSlug = parts.pop().replace('.mdx', ''); // Extract file name
     const module = modules(path);
     const title = module.frontmatter?.title || fileSlug;
-    return { slug: fileSlug, title, href: `/facilities/${fileSlug}` };
+
+    let currentLevel = posts;
+    let currentPath = "/facilities";
+
+    parts.forEach((part) => {
+      const folderSlug = part.toLowerCase().replace(/\s+/g, '_'); // Normalize folder slug
+      currentPath += `/${folderSlug}`;
+
+      let existing = currentLevel.find((item) => item.slug === folderSlug);
+      if (!existing) {
+        existing = { title: part, slug: folderSlug, children: [] };
+        currentLevel.push(existing);
+      }
+      currentLevel = existing.children;
+    });
+
+    // Store the final post entry
+    const href = `${currentPath}/${fileSlug}`;
+    currentLevel.push({ title, slug: fileSlug, href });
   });
 
-  // Find the specific post based on the slug
-  const postKey = modules.keys().find((path) =>
-    path.endsWith(`${slug}.mdx`)
-  );
+  console.log(posts); // Debug to verify structure
+
+  console.log("All available MDX files:", modules.keys());
+  console.log("Requested slugPath:", slugPath);
+
+  const normalizePath = (path) => {
+    const parts = path.replace('./', '').replace('.mdx', '').split('/');
+  
+    // Normalize all parts except the last one (filename)
+    for (let i = 0; i < parts.length - 1; i++) {
+      parts[i] = parts[i].toLowerCase().replace(/\s+/g, '_');
+    }
+  
+    return parts.join('/');
+  };
+  
+  const postKey = modules.keys().find((path) => {
+    const normalizedPath = normalizePath(path);
+    console.log(`Checking: ${normalizedPath} === ${slugPath}`);
+    return normalizedPath === slugPath;
+  });
 
   if (!postKey) {
     return (
