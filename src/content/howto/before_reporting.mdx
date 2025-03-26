@@ -1,0 +1,101 @@
+export const frontmatter = { title: "Guide for troubleshooting" }
+
+
+---
+
+# Step-by-step guide for troubleshooting network issues before registering a complaint at NITK.
+---
+
+# **Network Troubleshooting Guide**
+
+Before registering a network issue, please follow these steps to diagnose the problem. This will help in faster resolution and minimize downtime.
+
+---
+
+## **Step 1: Check Physical Connectivity**
+- Verify that the **LED indicators** on the network port of your computer are **glowing**.
+- If LEDs are **not glowing**, try the following:
+  - Ensure the **network cable is securely plugged in** at both ends (your computer and the wall jack).
+  - Remove and replug the cable.
+  - If the issue persists, contact a **vendor** to check and replace the cable.
+
+If the **LEDs are glowing**, proceed to Step 2.
+
+---
+
+## **Step 2: Verify IP Configuration**
+To check if your **IP address, subnet mask, gateway, and DNS entries** are correct:
+
+### **For Windows Users:**
+1. Open **Command Prompt** (Win + R → type `cmd` → press Enter).
+2. Type: `ipconfig /all`
+3. Note down your **IP address, subnet mask, default gateway, and DNS servers**.
+
+### **For Linux Users:**
+1. Open **Terminal**.
+2. Type: `/sbin/ifconfig` or `ip a`
+3. Check the assigned **IP details**.
+
+### **For macOS Users:**
+1. Open **Terminal**.
+2. Type: `ifconfig | grep inet`
+3. Look for your **IP address** under `en0` or `en1` (depending on whether you are using Ethernet or Wi-Fi).
+
+If the IP settings are incorrect, reconfigure them as per the guidelines provided in the **NITK Network Setup Guide**.
+
+---
+
+## **Step 3: Ping Test**
+Try to **ping nearby devices** and network nodes to check connectivity:
+
+1. Open **Command Prompt / Terminal**.
+2. Type: `ping x.x.x.x` (replace `x.x.x.x` with a known working IP address in your building).
+3. If the ping **succeeds**, proceed to Step 4.
+4. If the ping **fails**, check your IP configuration again or contact **network support**.
+
+---
+
+## **Step 4: Check Connection to the Gateway**
+Try **pinging the building’s switch**:
+- The **switch details** are available in the **NITK Network Configuration Guide**.
+- If you can **ping the switch**, proceed to **gateway testing**.
+
+To **telnet the gateway**, type:
+```
+telnet x.x.x.x
+```
+(replace `x.x.x.x` with your **gateway’s IP address** as per NITK guidelines).
+
+If you **cannot reach the gateway**, register a network issue online.
+
+---
+
+## **Step 5: Register a Network Complaint**
+If all the above steps fail, submit a complaint with the test results:
+- Mention whether you **checked the cable, verified IP settings, ran ping tests, and attempted telnet**.
+- This helps in resolving your issue faster.
+
+Register your complaint at: **[NITK Network Complaints Page](http://network.nitk.ac.in/complaints)** *(Update the actual URL when available)*.
+
+---
+
+## **Important Notices**
+
+1. **Check if your IP is blocked**
+   - Regularly verify if your machine is generating **suspicious traffic** at:
+     [http://network.nitk.ac.in/blockip](http://network.nitk.ac.in/blockip) *(Update the actual URL when available)*.
+   - If your IP is blocked, scan your device for malware and apply the latest security patches.
+
+2. **CCC’s Responsibility**
+   - CCC is responsible for network issues **up to the building switch**.
+   - Issues beyond the switch (e.g., within your computer or room cabling) are **your responsibility**.
+   - Contact external vendors for assistance if needed.
+
+3. **New Network Cabling**
+   - Any modifications or new cabling setups **must be approved** by CCC before implementation.
+
+4. **Security Recommendations**
+   - Keep your system updated with the **latest patches** and **antivirus software**.
+   - Avoid using unauthorized software that may cause network disruptions.
+
+For further assistance, contact the **NITK Network Helpdesk** at **+91-824-2473085**.

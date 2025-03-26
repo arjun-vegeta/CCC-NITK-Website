@@ -1,14 +1,12 @@
 import React from "react";
-import Navbar from "./Navbar";
 
 const Layout = ({ children, sidebar }) => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <div className="flex flex-1 container mx-auto p-4">        
-        {sidebar && <aside className="w-64 mr-4">{sidebar}</aside>}
-        <main className="flex-1 max-w-3xl">
-          <article className="prose 
+      <div className="flex space-between p-4">        
+        {sidebar && <aside className="w-[25%] mr-4">{sidebar}</aside>}
+        <main className="flex w-[75%]">
+          <article className="w-full prose 
             prose-lg 
             dark:prose-invert 
             prose-headings:font-semibold
@@ -28,9 +26,6 @@ const Layout = ({ children, sidebar }) => {
           </article>
         </main>
       </div>
-      <footer className="bg-gray-800 text-white text-center py-4">
-        &copy; {new Date().getFullYear()} Computer Center. All rights reserved.
-      </footer>
     </div>
   );
 };
