@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Layout from '../components/Layout';
 import Sidebar from '../components/Sidebar';
@@ -6,13 +6,13 @@ import { MDXProvider } from '@mdx-js/react';
 import { mdxComponents } from '../mdxComponents';
 
 function FacilitiesPost() {
-  const { '*': slugPath } = useParams(); // Capture full nested path
+  const { '*': slugPath } = useParams();
   const modules = require.context('../content/facilities', true, /\.mdx$/);
   const posts = [];
 
   modules.keys().forEach((path) => {
-    const parts = path.replace('./', '').split('/'); // Remove './' and split by folder
-    const fileSlug = parts.pop().replace('.mdx', ''); // Extract file name
+    const parts = path.replace('./', '').split('/');
+    const fileSlug = parts.pop().replace('.mdx', '');
     const module = modules(path);
     const title = module.frontmatter?.title || fileSlug;
 
@@ -20,7 +20,7 @@ function FacilitiesPost() {
     let currentPath = "/facilities";
 
     parts.forEach((part) => {
-      const folderSlug = part.toLowerCase().replace(/\s+/g, '_'); // Normalize folder slug
+      const folderSlug = part.toLowerCase().replace(/\s+/g, '_');
       currentPath += `/${folderSlug}`;
 
       let existing = currentLevel.find((item) => item.slug === folderSlug);
@@ -31,36 +31,51 @@ function FacilitiesPost() {
       currentLevel = existing.children;
     });
 
-    // Store the final post entry
     const href = `${currentPath}/${fileSlug}`;
     currentLevel.push({ title, slug: fileSlug, href });
   });
 
-  console.log(posts); // Debug to verify structure
-
-  console.log("All available MDX files:", modules.keys());
-  console.log("Requested slugPath:", slugPath);
+  // console.log(posts);
+  // console.log("All available MDX files:", modules.keys());
+  // console.log("Requested slugPath:", slugPath);
 
   const normalizePath = (path) => {
     const parts = path.replace('./', '').replace('.mdx', '').split('/');
-  
-    // Normalize all parts except the last one (filename)
+
     for (let i = 0; i < parts.length - 1; i++) {
       parts[i] = parts[i].toLowerCase().replace(/\s+/g, '_');
     }
-  
+
     return parts.join('/');
   };
-  
+
   const postKey = modules.keys().find((path) => {
     const normalizedPath = normalizePath(path);
-    console.log(`Checking: ${normalizedPath} === ${slugPath}`);
+    // console.log(`Checking: ${normalizedPath} === ${slugPath}`);
     return normalizedPath === slugPath;
   });
 
+  // Extract headings dynamically
+  const contentRef = useRef(null);
+  const [headings, setHeadings] = useState([]);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const headingElements = contentRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      const extractedHeadings = Array.from(headingElements).map((heading) => {
+        const text = heading.innerText;
+        const id = text.toLowerCase().replace(/\s+/g, "-"); // Generate ID
+        heading.id = id; // Assign ID to heading
+        return text;
+      });
+      setHeadings(extractedHeadings);
+      console.log("Extracted headings:", extractedHeadings);
+    }
+  }, [postKey]);
+
   if (!postKey) {
     return (
-      <Layout sidebar={<Sidebar links={posts} />}>
+      <Layout sidebar={<Sidebar links={posts} />} headings={[]}>
         <div>Post not found</div>
       </Layout>
     );
@@ -69,8 +84,8 @@ function FacilitiesPost() {
   const PostComponent = modules(postKey).default;
 
   return (
-    <Layout sidebar={<Sidebar links={posts} />}>
-      <div className="prose">
+    <Layout sidebar={<Sidebar links={posts} />} headings={headings}>
+      <div className="prose" ref={contentRef}>
         <MDXProvider components={mdxComponents}>
           <PostComponent />
         </MDXProvider>

@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
 const Sidebar = ({ links }) => {
   const location = useLocation();
-
-  // Load expanded state from localStorage
-  const [expanded, setExpanded] = useState(() => {
-    const savedState = localStorage.getItem("sidebarState");
-    return savedState ? JSON.parse(savedState) : {};
-  });
-
-  useEffect(() => {
-    localStorage.setItem("sidebarState", JSON.stringify(expanded));
-  }, [expanded]);
+  const [expanded, setExpanded] = useState({});
 
   const toggleExpand = (slug) => {
-    setExpanded((prev) => ({ ...prev, [slug]: !prev[slug] }));
+    setExpanded((prev) => ({
+      ...prev,
+      [slug]: !prev[slug],
+    }));
   };
 
   const renderLinks = (items, depth = 0) => {

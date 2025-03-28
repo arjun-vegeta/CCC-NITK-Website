@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { HoveredLink, Menu, MenuItem } from "../components/ui/navbar-menu.jsx";
+import React from "react";
 import { cn } from "../utils/cn.js";
 import { Link } from "react-router-dom";
 
@@ -15,7 +14,6 @@ export default function NavbarMain() {
 }
 
 function Navbar({ className }) {
-  const [active, setActive] = useState(null);
 
   return (
     <div className={cn("sticky top-0 w-full z-50 bg-white shadow-md", className)}>
