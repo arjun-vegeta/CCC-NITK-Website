@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Layout = ({ children, sidebar, headings }) => {
+const Layout = ({ children, sidebar, headings = [] }) => {
   const [activeHeading, setActiveHeading] = useState("");
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Layout = ({ children, sidebar, headings }) => {
           </article>
 
           {/* Sticky Headings List */}
-          {headings.length > 0 && (
+          {headings && headings.length > 0 && (
             <div className="w-1/4 ml-4 relative">
               <div className="sticky top-4 p-4 border-l">
                 <h3 className="text-lg font-semibold">Jump to Section</h3>
