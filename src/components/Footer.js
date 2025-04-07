@@ -68,7 +68,7 @@ const Footer = () => {
         <div className="order-2 md:order-none text-center md:text-left">
           <div className="flex flex-col items-center md:flex-row md:items-center">
             <img
-              src="/NITK_emblem.png"
+              src="/logo.png"
               alt="NITK Logo"
               className="w-12 h-auto md:w-16 md:h-auto mr-0 md:mr-4"
             />
@@ -90,7 +90,7 @@ const Footer = () => {
         <div className="order-3 md:order-none text-center md:text-left">
           <div className="flex flex-col items-center md:flex-row md:items-center">
             <img
-              src="/NITK_emblem.png"
+              src="/logo.png"
               alt="CCC Logo"
               className="w-12 h-auto md:w-16 md:h-auto mr-0 md:mr-4"
             />

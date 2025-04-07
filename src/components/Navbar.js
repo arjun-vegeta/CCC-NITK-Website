@@ -23,7 +23,7 @@ function Navbar({ className }) {
         {/* Left Section: Logo & Title */}
         <div className="flex items-center h-24 p-1 cursor-pointer">
           <Link to="/" className="flex items-center">
-            <img src="NITK_Emblem.png" alt="NITK Logo" className="object-scale-down w-20 h-20 lg:w-30 lg:h-30" />
+            <img src="logo.png" alt="NITK Logo" className="object-scale-down w-20 h-20 lg:w-30 lg:h-30" />
             <div className="flex flex-col mt-2 ml-2 text-sm lg:text-base">
               <h6 className="font-bold text-gray-800">National Institute of Technology Karnataka</h6>
               <h1 className="font-black text-2xl lg:text-4xl text-gray-900">CCC</h1>
