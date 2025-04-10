@@ -1,8 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { Home } from "lucide-react";
 
 const Layout = ({ children, sidebar, headings = [] }) => {
   const [activeHeading, setActiveHeading] = useState("");
+  const location = useLocation();
 
+  // Breadcrumb generation
+  const generateBreadcrumbs = () => {
+    const pathnames = location.pathname.split("/").filter((x) => x);
+    return [
+      { label: "Home", href: "/" },
+      ...pathnames.map((segment, index) => ({
+        label: segment
+          .replace(/-/g, " ")
+          .replace(/\b\w/g, (char) => char.toUpperCase()),
+        href: "/" + pathnames.slice(0, index + 1).join("/"),
+      })),
+    ];
+  };
+
+  const breadcrumbs = generateBreadcrumbs();
+
+  // Heading scroll logic
   useEffect(() => {
     const handleScroll = () => {
       const headingElements = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
@@ -81,12 +101,44 @@ const Layout = ({ children, sidebar, headings = [] }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Breadcrumbs */}
+      <nav
+        className="py-4 flex justify-center bg-white shadow-sm"
+        aria-label="Breadcrumb"
+      >
+        <ol className="flex items-center gap-2 text-base font-semibold text-gray-800">
+          {breadcrumbs.map((crumb, index) => (
+            <li key={index} className="flex items-center">
+              {index > 0 && <span className="mx-1 text-gray-400">/</span>}
+              {index === 0 ? (
+                <Link
+                  to={crumb.href}
+                  className="hover:text-blue-600"
+                  aria-label="Home"
+                >
+                  <Home
+                    size={20}
+                    className="text-gray-700 hover:text-blue-600"
+                  />
+                </Link>
+              ) : index < breadcrumbs.length - 1 ? (
+                <Link to={crumb.href} className="hover:text-blue-600">
+                  {crumb.label}
+                </Link>
+              ) : (
+                <span className="text-blue-600">{crumb.label}</span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       <div className="flex p-4 relative">
         {sidebar && <aside className="w-1/4 mr-4">{sidebar}</aside>}
 
         <main className="flex w-3/4 relative">
-          {/* Article Content */}
-          <article className="w-3/4 max-w-none prose
+          <article
+            className="w-3/4 max-w-none prose
             prose-lg 
             dark:prose-invert 
             prose-headings:font-semibold
@@ -101,11 +153,11 @@ const Layout = ({ children, sidebar, headings = [] }) => {
             prose-table:border-collapse
             prose-td:border
             prose-th:border
-            lg:prose-xl">
+            lg:prose-xl"
+          >
             {children}
           </article>
 
-          {/* Sticky Headings List */}
           {structuredHeadings.length > 0 && (
             <div className="w-1/4 ml-4 relative">
               <div className="sticky top-4 p-4 border-l">
