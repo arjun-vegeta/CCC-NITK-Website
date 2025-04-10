@@ -2,16 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import Sidebar from '../components/Sidebar';
 
-function HowtoIndex() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">How To Guides</h1>
-      <p>Please select a guide from the sidebar.</p>
-    </div>
-  );
-}
-
-export default function HowtoIndexPage() {
+function HowtoIndexPage() {
 
   const modules = require.context('../content/howto', true, /\.mdx$/);
   const posts = [];
@@ -45,7 +36,10 @@ export default function HowtoIndexPage() {
 
   return (
     <Layout sidebar={<Sidebar links={posts} />}>
-      <HowtoIndex />
+      <h1 className="text-3xl font-bold mb-4">How To Guides</h1>
+      <p>Please select a guide from the sidebar.</p>
     </Layout>
   );
 }
+
+export default HowtoIndexPage;
