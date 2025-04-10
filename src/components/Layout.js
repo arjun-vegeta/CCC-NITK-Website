@@ -25,10 +25,59 @@ const Layout = ({ children, sidebar, headings = [] }) => {
   const handleClick = (id) => {
     const targetElement = document.getElementById(id);
     if (targetElement) {
-      window.history.pushState(null, "", `#${id}`); // Update URL
+      window.history.pushState(null, "", `#${id}`);
       targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
+  const parseHeadings = (flatHeadings) => {
+    return flatHeadings.map((title) => {
+      const level = (title.toLowerCase().match(/sub/g) || []).length + 1;
+      const id = title.toLowerCase().replace(/\s+/g, "-");
+      return { title, id, level, children: [] };
+    });
+  };
+
+  const buildTree = (headings) => {
+    const root = [];
+    const stack = [];
+
+    headings.forEach((heading) => {
+      while (stack.length && stack[stack.length - 1].level >= heading.level) {
+        stack.pop();
+      }
+
+      if (stack.length === 0) {
+        root.push(heading);
+      } else {
+        stack[stack.length - 1].children.push(heading);
+      }
+
+      stack.push(heading);
+    });
+
+    return root;
+  };
+
+  const structuredHeadings = buildTree(parseHeadings(headings));
+
+  const renderHeadings = (items, depth = 0) => (
+    <ul className={`space-y-1 ${depth > 0 ? "ml-4 pl-3 border-l border-gray-300" : ""}`}>
+      {items.map(({ title, id, children }) => (
+        <li key={id}>
+          <div
+            className={`cursor-pointer pl-2 ${
+              activeHeading === id ? "text-blue-600 font-semibold" : ""
+            }`}
+            onClick={() => handleClick(id)}
+          >
+            {title}
+          </div>
+          {children.length > 0 && renderHeadings(children, depth + 1)}
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -57,26 +106,11 @@ const Layout = ({ children, sidebar, headings = [] }) => {
           </article>
 
           {/* Sticky Headings List */}
-          {headings && headings.length > 0 && (
+          {structuredHeadings.length > 0 && (
             <div className="w-1/4 ml-4 relative">
               <div className="sticky top-4 p-4 border-l">
-                <h3 className="text-lg font-semibold">Jump to Section</h3>
-                <ul className="space-y-2 text-sm">
-                  {headings.map((heading) => {
-                    const headingId = heading.toLowerCase().replace(/\s+/g, "-");
-                    return (
-                      <li
-                        key={headingId}
-                        className={`cursor-pointer ${
-                          activeHeading === headingId ? "text-blue-600 font-bold" : ""
-                        }`}
-                        onClick={() => handleClick(headingId)}
-                      >
-                        {heading}
-                      </li>
-                    );
-                  })}
-                </ul>
+                <h3 className="text-lg font-semibold mb-2">Jump to Section</h3>
+                {renderHeadings(structuredHeadings)}
               </div>
             </div>
           )}
