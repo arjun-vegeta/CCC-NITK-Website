@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import Sidebar from '../components/Sidebar';
 import { MDXProvider } from '@mdx-js/react';
 import { mdxComponents } from '../mdxComponents';
+import { extractHeadingsFromElement } from "../components/ExtractHeadings";
+
 
 function FacilitiesPost() {
   const { '*': slugPath } = useParams();
@@ -60,17 +62,7 @@ function FacilitiesPost() {
   const [headings, setHeadings] = useState([]);
 
   useEffect(() => {
-    if (contentRef.current) {
-      const headingElements = contentRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      const extractedHeadings = Array.from(headingElements).map((heading) => {
-        const text = heading.innerText;
-        const id = text.toLowerCase().replace(/\s+/g, "-"); // Generate ID
-        heading.id = id; // Assign ID to heading
-        return text;
-      });
-      setHeadings(extractedHeadings);
-      console.log("Extracted headings:", extractedHeadings);
-    }
+    setHeadings(extractHeadingsFromElement(contentRef.current));
   }, [postKey]);
 
   if (!postKey) {
