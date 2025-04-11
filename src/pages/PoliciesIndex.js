@@ -24,7 +24,7 @@ function PoliciesIndex() {
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-red-600 to-rose-600 text-transparent bg-clip-text">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-black text-transparent bg-clip-text">
             Usage Policies
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
@@ -33,24 +33,24 @@ function PoliciesIndex() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {flatPosts.map((post) => (
-            <Link 
-              key={post.slug}
-              to={post.href}
-              className="group relative overflow-hidden rounded-lg border p-5 hover:border-red-600 transition-colors bg-white hover:shadow-lg"
-            >
-              <div className="flex flex-col h-full">
-                <h3 className="text-lg font-semibold mb-2 text-gray-900 group-hover:text-red-600 transition-colors">
-                  {post.title}
-                </h3>
-                <div className="mt-auto flex items-center justify-between pt-4">
-                  <span className="text-sm text-gray-500">View policy</span>
-                  <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-red-600 transition-transform group-hover:translate-x-1" />
+                  {flatPosts.map((post) => (
+                    <Link 
+                      key={post.slug}
+                      to={post.href}
+                      className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black transition-colors bg-white hover:shadow-lg no-underline"
+                    >
+                      <div className="flex flex-col h-full">
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-black transition-colors no-underline">
+                          {post.title}
+                        </h3>
+                        <div className="mt-auto flex items-center justify-between pb-7">
+                          <span className="text-sm text-gray-500 no-underline">View Policy</span>
+                          <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-black transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
       </div>
     </FullWidthLayout>
   );

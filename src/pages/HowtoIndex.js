@@ -41,7 +41,7 @@ function HowtoIndexPage() {
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-violet-600 text-transparent bg-clip-text">How To Guides</h1>
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-violet-600 text-transparent bg-clip-text">How To Guides</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
             A collection of guides to help you make the most of our computing facilities and services.
           </p>
@@ -52,15 +52,15 @@ function HowtoIndexPage() {
             <Link 
               key={post.slug}
               to={post.href}
-              className="group relative overflow-hidden rounded-lg border p-5 hover:border-blue-600 transition-colors bg-white hover:shadow-lg"
+              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black transition-colors bg-white hover:shadow-lg no-underline"
             >
               <div className="flex flex-col h-full">
-                <h3 className="text-lg font-semibold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-black transition-colors no-underline">
                   {post.title}
                 </h3>
-                <div className="mt-auto flex items-center justify-between pt-4">
-                  <span className="text-sm text-gray-500">Read guide</span>
-                  <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-blue-600 transition-transform group-hover:translate-x-1" />
+                <div className="mt-auto flex items-center justify-between pb-7">
+                  <span className="text-sm text-gray-500 no-underline">Read guide</span>
+                  <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-black transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>
