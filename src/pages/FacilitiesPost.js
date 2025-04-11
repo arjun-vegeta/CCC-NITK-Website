@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Layout from '../components/Layout';
+import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 import { MDXProvider } from '@mdx-js/react';
 import { mdxComponents } from '../mdxComponents';
@@ -67,22 +67,22 @@ function FacilitiesPost() {
 
   if (!postKey) {
     return (
-      <Layout sidebar={<Sidebar links={posts} />} headings={[]}>
+      <FullWidthLayout sidebar={<Sidebar links={posts} />} headings={[]}>
         <div>Post not found</div>
-      </Layout>
+      </FullWidthLayout>
     );
   }
 
   const PostComponent = modules(postKey).default;
 
   return (
-    <Layout sidebar={<Sidebar links={posts} />} headings={headings}>
-      <div className="prose" ref={contentRef}>
+    <FullWidthLayout sidebar={<Sidebar links={posts} />} headings={headings}>
+      <div className="w-full" ref={contentRef}>
         <MDXProvider components={mdxComponents}>
           <PostComponent />
         </MDXProvider>
       </div>
-    </Layout>
+    </FullWidthLayout>
   );
 }
 

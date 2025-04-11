@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Layout from '../components/Layout';
+import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 import { MDXProvider } from '@mdx-js/react';
 import { mdxComponents } from '../mdxComponents';
+import { extractHeadingsFromElement } from "../components/ExtractHeadings";
 
 function PoliciesPost() {
   const { slug } = useParams();
@@ -22,18 +23,32 @@ function PoliciesPost() {
     path.endsWith(`${slug}.mdx`)
   );
 
-  if (!postKey) return <div>Post not found</div>;
+  // Extract headings dynamically
+  const contentRef = useRef(null);
+  const [headings, setHeadings] = useState([]);
+
+  useEffect(() => {
+    setHeadings(extractHeadingsFromElement(contentRef.current));
+  }, [postKey]);
+
+  if (!postKey) {
+    return (
+      <FullWidthLayout sidebar={<Sidebar links={posts} />} headings={[]}>
+        <div>Post not found</div>
+      </FullWidthLayout>
+    );
+  }
 
   const PostComponent = modules(postKey).default;
 
   return (
-    <Layout sidebar={<Sidebar links={posts} />}>
-      <div className="prose">
+    <FullWidthLayout sidebar={<Sidebar links={posts} />} headings={headings}>
+      <div className="w-full" ref={contentRef}>
         <MDXProvider components={mdxComponents}>
           <PostComponent />
         </MDXProvider>
       </div>
-    </Layout>
+    </FullWidthLayout>
   );
 }
 

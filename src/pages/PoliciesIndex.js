@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 
 function PoliciesIndex() {
@@ -14,10 +14,10 @@ function PoliciesIndex() {
   });
 
   return (
-    <Layout sidebar={<Sidebar links={posts} />}>
+    <FullWidthLayout sidebar={<Sidebar links={posts} />}>
       <h1 className="text-3xl font-bold mb-4">Policies</h1>
       <p>Please select a policy page from the sidebar.</p>
-    </Layout>
+    </FullWidthLayout>
   );
 }
 

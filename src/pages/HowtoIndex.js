@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/Layout';
+import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 
 function HowtoIndexPage() {
@@ -35,10 +35,10 @@ function HowtoIndexPage() {
   console.log(posts);
 
   return (
-    <Layout sidebar={<Sidebar links={posts} />}>
+    <FullWidthLayout sidebar={<Sidebar links={posts} />}>
       <h1 className="text-3xl font-bold mb-4">How To Guides</h1>
       <p>Please select a guide from the sidebar.</p>
-    </Layout>
+    </FullWidthLayout>
   );
 }
 

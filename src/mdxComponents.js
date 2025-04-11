@@ -1,21 +1,42 @@
 import React from 'react';
 
 export const mdxComponents = {
-  h1: ({ children }) => (
-    <h1 className="text-3xl font-bold mb-6 mt-8 border-b pb-2 dark:border-gray-700">
-      {children}
-    </h1>
-  ),
-  h2: ({ children }) => (
-    <h2 className="text-2xl font-semibold mb-4 mt-6 border-b pb-2 dark:border-gray-700">
-      {children}
-    </h2>
-  ),
-  h3: ({ children }) => (
-    <h3 className="text-xl font-medium mb-3 mt-4">{children}</h3>
-  ),
+  h1: ({ children, id }) => {
+    const headingId = id || (typeof children === 'string' ? children.toLowerCase().replace(/\s+/g, '-') : '');
+    return (
+      <h1 id={headingId} className="text-3xl font-extrabold mb-8 mt-10 pb-4 border-b border-gray-200 dark:border-gray-700 w-full relative">
+        <div className="absolute -left-4 top-0 bottom-0 w-1 bg-blue-500 rounded hidden md:block"></div>
+        {children}
+      </h1>
+    );
+  },
+  h2: ({ children, id }) => {
+    const headingId = id || (typeof children === 'string' ? children.toLowerCase().replace(/\s+/g, '-') : '');
+    return (
+      <h2 id={headingId} className="text-2xl font-bold mb-6 mt-8 pb-2 border-b border-gray-100 dark:border-gray-700 w-full relative">
+        <div className="absolute -left-3 top-0 bottom-0 w-0.5 bg-gray-300 rounded hidden md:block"></div>
+        {children}
+      </h2>
+    );
+  },
+  h3: ({ children, id }) => {
+    const headingId = id || (typeof children === 'string' ? children.toLowerCase().replace(/\s+/g, '-') : '');
+    return (
+      <h3 id={headingId} className="text-xl font-semibold mb-4 mt-6 text-gray-800 dark:text-gray-200 w-full">
+        {children}
+      </h3>
+    );
+  },
+  h4: ({ children, id }) => {
+    const headingId = id || (typeof children === 'string' ? children.toLowerCase().replace(/\s+/g, '-') : '');
+    return (
+      <h4 id={headingId} className="text-lg font-medium mb-3 mt-4 text-gray-700 dark:text-gray-300 w-full">
+        {children}
+      </h4>
+    );
+  },
   p: ({ children }) => (
-    <p className="mb-4 leading-relaxed text-gray-800 dark:text-gray-200">
+    <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300 w-full">
       {children}
     </p>
   ),
@@ -30,14 +51,22 @@ export const mdxComponents = {
     </a>
   ),
   ul: ({ children }) => (
-    <ul className="mb-4 pl-6 list-disc space-y-1">{children}</ul>
+    <ul className="mb-4 pl-6 list-disc space-y-2 w-full">
+      {children}
+    </ul>
   ),
   ol: ({ children }) => (
-    <ol className="mb-4 pl-6 list-decimal space-y-1">{children}</ol>
+    <ol className="mb-4 pl-6 list-decimal space-y-2 w-full">
+      {children}
+    </ol>
   ),
-  li: ({ children }) => <li className="mb-1">{children}</li>,
+  li: ({ children }) => (
+    <li className="text-gray-700 dark:text-gray-300">
+      {children}
+    </li>
+  ),
   blockquote: ({ children }) => (
-    <blockquote className="mb-4 border-l-4 border-gray-300 pl-4 italic text-gray-600 dark:text-gray-400 dark:border-gray-600">
+    <blockquote className="mb-4 pl-4 border-l-4 border-blue-500/40 bg-blue-50/50 dark:bg-blue-900/20 dark:border-blue-500/30 py-2 text-gray-700 dark:text-gray-300 italic w-full">
       {children}
     </blockquote>
   ),
@@ -48,34 +77,36 @@ export const mdxComponents = {
         {children}
       </code>
     ) : (
-      <div className="mb-4 rounded-lg overflow-hidden">
-        <pre className="p-4 bg-gray-50 dark:bg-gray-800 overflow-x-auto">
+      <div className="mb-4 rounded-lg overflow-hidden w-full">
+        <pre className="p-4 bg-gray-50 dark:bg-gray-800 overflow-x-auto w-full">
           <code className={`text-sm font-mono ${className}`}>{children}</code>
         </pre>
       </div>
     );
   },
   table: ({ children }) => (
-    <div className="mb-4 rounded-lg border overflow-hidden">
+    <div className="mb-4 rounded-lg border overflow-hidden w-full">
       <table className="w-full">{children}</table>
     </div>
   ),
   th: ({ children }) => (
-    <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 font-semibold text-left border-b">
+    <th className="px-4 py-2 bg-gray-50 dark:bg-gray-800 font-semibold text-left border-b">
       {children}
     </th>
   ),
   td: ({ children }) => (
-    <td className="px-4 py-2 border-b dark:border-gray-700">{children}</td>
+    <td className="px-4 py-2 border-b dark:border-gray-700">
+      {children}
+    </td>
   ),
   img: ({ src, alt }) => (
-    <div className="my-6">
+    <div className="my-6 w-full">
       <img
         src={src}
         alt={alt}
         className="rounded-lg border shadow-sm dark:border-gray-700 mx-auto"
       />
-      {alt && <div className="text-center mt-2 text-sm text-gray-600 dark:text-gray-400">{alt}</div>}
+      {alt && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{alt}</div>}
     </div>
   ),
 };
