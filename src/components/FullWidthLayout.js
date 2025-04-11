@@ -36,7 +36,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
       window.history.pushState(null, "", `#${id}`);
       
       // Calculate offset to account for sticky header
-      const headerOffset = 7;
+      const headerOffset = 70;
       const elementPosition = targetElement.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
       
