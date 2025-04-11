@@ -4,7 +4,7 @@ export const mdxComponents = {
   h1: ({ children, id }) => {
     const headingId = id || (typeof children === 'string' ? children.toLowerCase().replace(/\s+/g, '-') : '');
     return (
-      <h1 id={headingId} className="text-3xl font-extrabold mb-8 mt-10 pb-4 border-b border-gray-200 dark:border-gray-700 w-full relative">
+      <h1 id={headingId} className="text-10xl font-extrabold mb-8 mt-10 pb-4 border-b border-gray-200 dark:border-gray-700 w-full relative">
         <div className="absolute -left-4 top-0 bottom-0 w-1 bg-blue-500 rounded hidden md:block"></div>
         {children}
       </h1>
@@ -36,7 +36,7 @@ export const mdxComponents = {
     );
   },
   p: ({ children }) => (
-    <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300 w-full">
+    <p className="mb-4 leading-relaxed text-blue-700 dark:text-gray-300 w-full tracking-wide">
       {children}
     </p>
   ),
@@ -61,7 +61,7 @@ export const mdxComponents = {
     </ol>
   ),
   li: ({ children }) => (
-    <li className="text-gray-700 dark:text-gray-300">
+    <li className="text-gray-700 dark:text-gray-300 tracking-wide">
       {children}
     </li>
   ),
@@ -99,14 +99,26 @@ export const mdxComponents = {
       {children}
     </td>
   ),
-  img: ({ src, alt }) => (
-    <div className="my-6 w-full">
-      <img
-        src={src}
-        alt={alt}
-        className="rounded-lg border shadow-sm dark:border-gray-700 mx-auto"
-      />
-      {alt && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{alt}</div>}
-    </div>
-  ),
+  img: (props) => {
+    const { src, alt, width, height } = props;
+    const imagePath = src.startsWith('/') ? src : `/${src}`;
+    return (
+      <div className="my-6">
+        <img
+          {...props}
+          src={imagePath}
+          alt={alt}
+          width={width}
+          height={height}
+          style={{ 
+            maxWidth: width || '100%',
+            height: height || 'auto',
+            width: width || 'auto'
+          }}
+          className="rounded-lg border shadow-sm dark:border-gray-700 mx-auto"
+        />
+        {alt && <div className="text-center mt-2 text-sm text-gray-500 dark:text-gray-400">{alt}</div>}
+      </div>
+    );
+  },
 };

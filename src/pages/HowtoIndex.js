@@ -58,7 +58,7 @@ function HowtoIndexPage() {
                 <h3 className="text-lg font-semibold text-gray-900 group-hover:text-black transition-colors no-underline">
                   {post.title}
                 </h3>
-                <div className="mt-auto flex items-center justify-between pb-7">
+                <div className="mt-auto flex items-center justify-between pb-8">
                   <span className="text-sm text-gray-500 no-underline">Read guide</span>
                   <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-black transition-transform group-hover:translate-x-1" />
                 </div>

@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
 const Sidebar = ({ links }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState({});
   const [hoveredItem, setHoveredItem] = useState(null);
   const [linePosition, setLinePosition] = useState({ top: 0, height: 0 });
@@ -44,33 +45,40 @@ const Sidebar = ({ links }) => {
 
   const renderLinks = (items, depth = 0) => {
     return (
-      <ul className={`space-y-2 ${depth > 0 ? "ml-4 pl-2 border-l border-gray-200" : ""}`}>
+      <ul className={`space-y-1.5 ${depth > 0 ? "ml-4 pl-2 border-l border-gray-200" : ""}`}>
         {items.map((item) => (
           <li key={item.slug} className="relative">
             <div
               ref={el => itemsRef.current[item.slug] = el}
               data-href={item.href}
-              className={`flex justify-between items-center cursor-pointer py-1 group transition-all duration-200 ${
+              className={`flex justify-between items-center cursor-pointer py-2 px-2 group transition-all duration-200 rounded-lg ${
+                location.pathname === item.href ? "bg-gray-100" : ""
+              } ${
                 hoveredItem === item.slug ? "translate-x-2" : ""
               }`}
-              onClick={() => item.children && toggleExpand(item.slug)}
+              onClick={() => {
+                if (item.children) {
+                  toggleExpand(item.slug);
+                } else if (item.href) {
+                  navigate(item.href);
+                }
+              }}
               onMouseEnter={() => handleItemHover(item.slug)}
               onMouseLeave={() => setHoveredItem(null)}
             >
-              <Link
-                to={item.href || "#"}
-                className={`block text-sm transition-all duration-150 ${
+              <span
+                className={`block text-[15px] transition-all duration-150 ${
                   location.pathname === item.href 
                     ? hoveredItem === item.slug 
-                      ? "text-gray-800 font-bold" 
-                      : "text-black font-bold"
+                      ? "text-gray-800 font-medium" 
+                      : "text-black font-medium"
                     : hoveredItem === item.slug
-                      ? "text-gray-800 font-normal"
+                      ? "text-gray-900 font-normal"
                       : "text-gray-600 font-normal"
                 }`}
               >
                 {item.title}
-              </Link>
+              </span>
               {item.children && (
                 <ChevronDown
                   className={`transition-all duration-200 ${
@@ -89,17 +97,26 @@ const Sidebar = ({ links }) => {
   };
 
   return (
-    <div className="h-[full] p-6 bg-white relative sidebar-container">
-      {/* Animated line indicator */}
+    <div className="h-[full] p-6 pr-4 bg-white relative sidebar-container">
+      {/* Animated trapezium indicator */}
       <div
-        className="absolute left-4 w-0.5 bg-primary transition-all duration-200"
+        className="absolute transition-all duration-200"
         style={{
+          left: '24px',
           top: `${linePosition.top}px`,
           height: `${linePosition.height}px`,
-          opacity: hoveredItem ? 1 : 0
+          width: '3.5px',
+          background: '#000000',
+          clipPath: 'polygon(0 4px, 100% 6px, 100% calc(100% - 8px), 0 calc(100% - 6px))',
+          borderRadius: '3px',
+          opacity: hoveredItem ? 1 : 0,
+          transform: 'translateX(0)',
+          zIndex: 10
         }}
       />
-      {renderLinks(links)}
+      <div className="pl-0">
+        {renderLinks(links)}
+      </div>
     </div>
   );
 };
