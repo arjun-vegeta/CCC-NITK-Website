@@ -1,8 +1,7 @@
-// src/components/CodeBlock.jsx
 'use client'
 
 import { useState } from 'react'
-import { Copy } from 'lucide-react'
+import { Copy, Check } from 'lucide-react'
 
 export default function CodeBlock({ children }) {
   const [copied, setCopied] = useState(false)
@@ -21,9 +20,13 @@ export default function CodeBlock({ children }) {
       <button
         onClick={handleCopy}
         className="absolute top-2 right-2 p-1 rounded hover:bg-gray-700 transition"
-        title="Copy"
+        title={copied ? 'Copied' : 'Copy'}
       >
-        <Copy className="w-4 h-4 text-white" />
+        {copied ? (
+          <Check className="w-4 h-4 text-white transition-opacity duration-300" />
+        ) : (
+          <Copy className="w-4 h-4 text-white transition-opacity duration-300" />
+        )}
       </button>
     </div>
   )
