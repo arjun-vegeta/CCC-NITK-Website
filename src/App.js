@@ -1,36 +1,43 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
-import HowtoIndex from './pages/HowtoIndex';
-import HowtoPost from './pages/HowtoPost';
+import AboutUs from './pages/AboutUs';
 import FacilitiesIndex from './pages/FacilitiesIndex';
 import FacilitiesPost from './pages/FacilitiesPost';
-import PoliciesIndex from './pages/PoliciesIndex';
-import PoliciesPost from './pages/PoliciesPost';
+import HowToIndex from './pages/HowtoIndex';  
+import HowToPost from './pages/HowtoPost';    
+import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 function App() {
   return (
-    <BrowserRouter> {/* Wrap everything inside BrowserRouter */}
+    <BrowserRouter>
       <Navbar />
       <Routes>
+        {/* Home Page */}
         <Route path="/" element={<Home />} />
-        <Route path="/howto">
-          <Route index element={<HowtoIndex />} />
-          <Route path=":slug" element={<HowtoPost />} />
-        </Route>
+
+        {/* About Us */}
+        <Route path="/about" element={<AboutUs />} />
+
+        {/* Facilities */}
         <Route path="/facilities">
           <Route index element={<FacilitiesIndex />} />
           <Route path="*" element={<FacilitiesPost />} />
         </Route>
-        <Route path="/policies">
-          <Route index element={<PoliciesIndex />} />
-          <Route path=":slug" element={<PoliciesPost />} />
+
+        {/* Network Guides */}
+        <Route path="/howto">
+          <Route index element={<HowToIndex />} />
+          <Route path=":slug" element={<HowToPost />} />
         </Route>
+
+        {/* Contact */}
+        <Route path="/contact" element={<Contact />} />
       </Routes>
       <Footer />
-    </BrowserRouter> 
+    </BrowserRouter>
   );
 }
 
