@@ -1,6 +1,6 @@
 export const frontmatter = { title: "Guide for troubleshooting" }
 
-
+import CodeBlock from "../../components/CodeBlock"
 
 # Step-by-step guide for troubleshooting network issues before registering a complaint at NITK.
 
@@ -24,17 +24,22 @@ To check if your **IP address, subnet mask, gateway, and DNS entries** are corre
 
 ### **For Windows Users:**
 1. Open **Command Prompt** (Win + R → type `cmd` → press Enter).
-2. Type: `ipconfig /all`
+2. Type:
+<CodeBlock>ipconfig /all</CodeBlock>
 3. Note down your **IP address, subnet mask, default gateway, and DNS servers**.
 
 ### **For Linux Users:**
 1. Open **Terminal**.
-2. Type: `/sbin/ifconfig` or `ip a`
+2. Type:
+<CodeBlock>/sbin/ifconfig</CodeBlock>
+or
+<CodeBlock>ip a</CodeBlock>
 3. Check the assigned **IP details**.
 
 ### **For macOS Users:**
 1. Open **Terminal**.
-2. Type: `ifconfig | grep inet`
+2. Type:
+<CodeBlock>ifconfig | grep inet</CodeBlock>
 3. Look for your **IP address** under `en0` or `en1` (depending on whether you are using Ethernet or Wi-Fi).
 
 If the IP settings are incorrect, reconfigure them as per the guidelines provided in the **NITK Network Setup Guide**.
@@ -45,7 +50,9 @@ If the IP settings are incorrect, reconfigure them as per the guidelines provide
 Try to **ping nearby devices** and network nodes to check connectivity:
 
 1. Open **Command Prompt / Terminal**.
-2. Type: `ping x.x.x.x` (replace `x.x.x.x` with a known working IP address in your building).
+2. Type:
+<CodeBlock>ping x.x.x.x</CodeBlock>
+(replace `x.x.x.x` with a known working IP address in your building).
 3. If the ping **succeeds**, proceed to Step 4.
 4. If the ping **fails**, check your IP configuration again or contact **network support**.
 
@@ -57,9 +64,7 @@ Try **pinging the building’s switch**:
 - If you can **ping the switch**, proceed to **gateway testing**.
 
 To **telnet the gateway**, type:
-```
-telnet x.x.x.x
-```
+<CodeBlock>telnet x.x.x.x</CodeBlock>
 (replace `x.x.x.x` with your **gateway’s IP address** as per NITK guidelines).
 
 If you **cannot reach the gateway**, register a network issue online.
