@@ -7,13 +7,13 @@ import FacilitiesIndex from './pages/FacilitiesIndex';
 import FacilitiesPost from './pages/FacilitiesPost';
 import PoliciesIndex from './pages/PoliciesIndex';
 import PoliciesPost from './pages/PoliciesPost';
-import NavbarMain from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 function App() {
   return (
     <BrowserRouter> {/* Wrap everything inside BrowserRouter */}
-      <NavbarMain />
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/howto">

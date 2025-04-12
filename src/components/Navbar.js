@@ -2,64 +2,79 @@
 import React from "react";
 import { cn } from "../utils/cn.js";
 import { Link } from "react-router-dom";
-
-
-export default function NavbarMain() {
-  return (
-    <div className="relative w-full flex items-center justify-center">
-      <Navbar className="top-0" />
-      <p className="text-black dark:text-white mt-4"></p>
-    </div>
-  );
-}
+import { FiSearch } from "react-icons/fi";  // Importing search icon
 
 function Navbar({ className }) {
-
   return (
-    <div className={cn("sticky top-0 w-full z-50 bg-white shadow-md", className)}>
-      <div className="flex items-center justify-between px-6 py-3">
-        {/* Left Section: Logo & Title */}
-        <div className="flex items-center h-24 p-1 cursor-pointer">
+    <div className={cn("w-full sticky top-0 z-50 bg-white shadow-md", className)}>
+
+      {/* 🔝 Top Row: Controls */}
+      <div className="flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
+        <div>
+          <button className="text-xl cursor-pointer">🌙</button>
+        </div>
+        <div>
+          <button className="border px-2 py-1 rounded">EN / हि</button>
+        </div>
+      </div>
+
+      {/* 🔻 Bottom Row: Logo + Search + Nav */}
+      <div className="flex items-center justify-between px-6 py-4 bg-white">
+
+        {/* Left: Enlarged Logo */}
+        <div className="flex items-center h-24 cursor-pointer">
           <Link to="/" className="flex items-center">
-            <img src="logo.png" alt="NITK Logo" className="object-scale-down w-20 h-20 lg:w-30 lg:h-30" />
-            <div className="flex flex-col mt-2 ml-2 text-sm lg:text-base">
-              <h6 className="font-bold text-gray-800">National Institute of Technology Karnataka</h6>
-              <h1 className="font-black text-2xl lg:text-4xl text-gray-900">CCC</h1>
+            <img src="/logo.png" alt="NITK Logo" className="w-20 h-20 object-scale-down" />
+            <div className="ml-3 text-sm">
+              <h6 className="font-bold text-gray-800 text-sm lg:text-base">National Institute of Technology Karnataka</h6>
+              <h1 className="font-black text-3xl text-gray-900">CCC</h1>
             </div>
-            </Link>
+          </Link>
         </div>
 
-        {/* Right Section: Navigation Links */}
+        {/* Center: Smaller Rounded Search Bar with Search Icon */}
+        <div className="flex justify-center w-[400px]">
+          <div className="flex items-center border border-gray-300 rounded-full w-full">
+            <FiSearch className="text-gray-500 ml-4" />
+            <input
+              type="text"
+              placeholder="Search"
+              className="px-4 py-2 w-full rounded-full text-sm focus:outline-none"
+            />
+          </div>
+        </div>
+
+        {/* Right: Navigation Links */}
         <div className="flex items-center space-x-6">
-  <Link
-    to="/howto"
-    className="relative text-gray-600 transition duration-300 ease-in-out hover:text-blue-600 hover:scale-105 
-               after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-1 after:bg-blue-500 
-               after:transition-all after:duration-300 hover:after:w-full"
-  >
-    How To
-  </Link>
-
-  <Link
-    to="/facilities"
-    className="relative text-gray-600 transition duration-300 ease-in-out hover:text-green-600 hover:scale-105 
-               after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-1 after:bg-green-500 
-               after:transition-all after:duration-300 hover:after:w-full"
-  >
-    Facilities
-  </Link>
-
-  <Link
-    to="/policies"
-    className="relative text-gray-600 transition duration-300 ease-in-out hover:text-red-600 hover:scale-105 
-               after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-1 after:bg-red-500 
-               after:transition-all after:duration-300 hover:after:w-full"
-  >
-    Policies
-  </Link>
-</div>
+          <Link
+            to="/about"
+            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+          >
+            About Us
+          </Link>
+          <Link
+            to="/facilities"
+            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+          >
+            Facilities
+          </Link>
+          <Link
+            to="/guides"
+            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+          >
+            Network Guides
+          </Link>
+          <Link
+            to="/contact"
+            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+          >
+            Contact
+          </Link>
+        </div>
 
       </div>
     </div>
   );
 }
+
+export default Navbar;
