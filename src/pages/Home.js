@@ -12,10 +12,10 @@ function Home() {
       </p>
       <div className="flex space-x-4">
         <Link
-          to="/howto"
+          to="/guides"
           className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition"
         >
-          How To
+          Guides
         </Link>
         <Link
           to="/facilities"

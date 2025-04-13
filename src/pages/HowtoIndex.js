@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
 function HowtoIndexPage() {
-  const modules = require.context('../content/howto', true, /\.mdx$/);
+  const modules = require.context('../content/guides', true, /\.mdx$/);
   const posts = [];
   const flatPosts = [];
   
@@ -17,7 +17,7 @@ function HowtoIndexPage() {
     const content = module.default?.toString().slice(0, 150) + '...';
   
     let currentLevel = posts;
-    let currentPath = "/howto";
+    let currentPath = "/guides";
   
     parts.forEach((part) => {
       const folderSlug = part.toLowerCase().replace(/\s+/g, '_');
@@ -41,7 +41,7 @@ function HowtoIndexPage() {
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>
       <div className="space-y-8">
         <div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-violet-600 text-transparent bg-clip-text">How To Guides</h1>
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-violet-600 text-transparent bg-clip-text">Guides</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
             A collection of guides to help you make the most of our computing facilities and services.
           </p>

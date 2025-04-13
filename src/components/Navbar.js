@@ -6,17 +6,17 @@ import { FiSearch } from "react-icons/fi";  // Importing search icon
 
 function Navbar({ className }) {
   return (
-    <div className={cn("w-full sticky top-0 z-50 bg-white shadow-md", className)}>
+    <div className={cn("w-full  top-0 z-50 bg-white border-b border-gray-300 ", className)}>
 
       {/* 🔝 Top Row: Controls */}
-      <div className="flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
+      {/* <div className="flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
         <div>
           <button className="text-xl cursor-pointer">🌙</button>
         </div>
         <div>
           <button className="border px-2 py-1 rounded">EN / हि</button>
         </div>
-      </div>
+      </div> */}
 
       {/* 🔻 Bottom Row: Logo + Search + Nav */}
       <div className="flex items-center justify-between px-6 py-4 bg-white">
@@ -47,10 +47,10 @@ function Navbar({ className }) {
         {/* Right: Navigation Links */}
         <div className="flex items-center space-x-6">
           <Link
-            to="/about"
+            to="/guides"
             className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
           >
-            About Us
+            Guides
           </Link>
           <Link
             to="/facilities"
@@ -59,10 +59,10 @@ function Navbar({ className }) {
             Facilities
           </Link>
           <Link
-            to="/guides"
+            to="/about"
             className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
           >
-            Network Guides
+            About Us
           </Link>
           <Link
             to="/contact"

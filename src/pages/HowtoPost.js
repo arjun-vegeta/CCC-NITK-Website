@@ -9,9 +9,9 @@ import { extractHeadingsFromElement } from "../components/ExtractHeadings";
 function HowtoPost() {
   const { slug } = useParams();
   const location = useLocation();
-  const slugPath = location.pathname.replace(/^\/howto\//, "");
+  const slugPath = location.pathname.replace(/^\/guides\//, "");
 
-  const modules = require.context("../content/howto", true, /\.mdx$/);
+  const modules = require.context("../content/guides", true, /\.mdx$/);
   const posts = [];
 
   modules.keys().forEach((path) => {
@@ -21,7 +21,7 @@ function HowtoPost() {
     const title = module.frontmatter?.title || fileSlug;
 
     let currentLevel = posts;
-    let currentPath = "/howto";
+    let currentPath = "/guides";
 
     parts.forEach((part) => {
       const folderSlug = part.toLowerCase().replace(/\s+/g, "_");

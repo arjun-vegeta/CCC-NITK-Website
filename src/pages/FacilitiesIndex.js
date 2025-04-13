@@ -44,7 +44,7 @@ function FacilitiesIndex() {
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-black text-transparent bg-clip-text">
             Our Facilities
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl text-nowrap">
             Explore our comprehensive range of computing facilities and infrastructure available at NITK.
           </p>
         </div>

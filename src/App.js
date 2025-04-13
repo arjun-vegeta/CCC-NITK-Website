@@ -28,7 +28,7 @@ function App() {
         </Route>
 
         {/* Network Guides */}
-        <Route path="/howto">
+        <Route path="/guides">
           <Route index element={<HowToIndex />} />
           <Route path=":slug" element={<HowToPost />} />
         </Route>
