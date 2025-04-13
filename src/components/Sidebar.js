@@ -67,7 +67,7 @@ const Sidebar = ({ links }) => {
               onMouseLeave={() => setHoveredItem(null)}
             >
               <span
-                className={`block text-[15px] transition-all duration-150 ${
+                className={`block text-[15.5px] transition-all duration-150 ${
                   location.pathname === item.href 
                     ? hoveredItem === item.slug 
                       ? "text-gray-800 font-medium" 

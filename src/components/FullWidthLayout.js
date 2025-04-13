@@ -13,7 +13,20 @@ import {
 const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const location = useLocation();
 
-  // Breadcrumb generation
+  // New state: Keep track of a manual override while a TOC item is clicked.
+  const [manualOverride, setManualOverride] = useState(false);
+  // State to keep track of the active (currently visible or clicked) heading.
+  const [activeHeading, setActiveHeading] = useState(null);
+  // State for the animated indicator
+  const [hoveredHeading, setHoveredHeading] = useState(null);
+  const [headingLinePosition, setHeadingLinePosition] = useState({ top: 0, height: 0 });
+  
+  // Refs to TOC heading DOM nodes and the article content
+  const headingsRefs = useRef({});
+  const contentRef = useRef(null);
+
+  const hoverTimeoutRef = useRef(null);
+  // --- Breadcrumb generation ---
   const generateBreadcrumbs = () => {
     const pathnames = location.pathname.split("/").filter((x) => x);
     return [
@@ -29,18 +42,25 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
 
   const breadcrumbs = generateBreadcrumbs();
 
+  // --- Smooth scroll to a section ---
   const handleClick = (id) => {
+    // Immediately mark the clicked heading as active.
+    setActiveHeading(id);
+    // Activate manual override to prevent the intersection observer from updating activeHeading.
+    setManualOverride(true);
+    updateHeadingLinePosition(id);
+
     const targetElement = document.getElementById(id);
     if (targetElement) {
-      // Update URL with the hash
+      // Update URL with the hash.
       window.history.pushState(null, "", `#${id}`);
       
-      // Calculate offset to account for sticky header
+      // Calculate offset accounting for a sticky header.
       const headerOffset = 70;
       const elementPosition = targetElement.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
       
-      // Scroll to the element with offset
+      // Smooth scroll.
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth"
@@ -48,8 +68,12 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
     } else {
       console.warn(`Element with id "${id}" not found`);
     }
+
+    // Clear manual override after scrolling settles (adjust timeout if needed).
+    setTimeout(() => setManualOverride(false), 5000 );
   };
 
+  // --- Parsing and building a tree for headings ---
   const parseHeadings = (flatHeadings) => {
     return flatHeadings.map((heading) => {
       let title = "";
@@ -63,7 +87,6 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           title = heading;
         }
       } else if (heading && heading.title) {
-        // In case heading is already an object
         title = heading.title;
         level = heading.level || 1;
       }
@@ -75,10 +98,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const buildTree = (headings) => {
     const root = [];
     const stack = [];
-
-    // Filter out level 1 headings
+    // Optionally filter out level 1 headings if needed.
     const filteredHeadings = headings.filter((heading) => heading.level > 1);
-
     filteredHeadings.forEach((heading) => {
       while (stack.length && stack[stack.length - 1].level >= heading.level) {
         stack.pop();
@@ -90,21 +111,15 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
       }
       stack.push(heading);
     });
-
     return root;
   };
 
   const structuredHeadings = buildTree(parseHeadings(headings));
 
-  // --- Animated Trapezium Indicator logic for headings ---
-  const [hoveredHeading, setHoveredHeading] = useState(null);
-  const [headingLinePosition, setHeadingLinePosition] = useState({ top: 0, height: 0 });
-  const headingsRefs = useRef({});
-
+  // --- Update the position of the animated indicator based on a heading element ---
   const updateHeadingLinePosition = (id) => {
     const element = headingsRefs.current[id];
     if (element) {
-      // Get the bounding rectangle relative to the TOC container
       const container = element.closest(".toc-container");
       if (container) {
         const containerRect = container.getBoundingClientRect();
@@ -117,20 +132,62 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
     }
   };
 
+  // --- Hover handling ---
   const handleHeadingHover = (id) => {
     setHoveredHeading(id);
     updateHeadingLinePosition(id);
   };
 
   useEffect(() => {
-    // If URL contains a hash, update the indicator to the active heading.
+    // If URL contains a hash initially, update the indicator.
     const activeId = location.hash.replace("#", "");
     if (activeId && headingsRefs.current[activeId]) {
       updateHeadingLinePosition(activeId);
     }
   }, [location]);
 
-  // --- Render headings with animated indicator ---
+  // --- Intersection Observer for active heading ---
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const headingElements = contentRef.current.querySelectorAll("h2, h3, h4, h5, h6");
+
+    const observer = new IntersectionObserver((entries) => {
+      // Skip updating if a manual override is active.
+      if (manualOverride) return;
+
+      const visibleEntries = entries.filter(entry => entry.isIntersecting);
+      if (visibleEntries.length === 0) return;
+
+      // Choose the entry closest to the top of the viewport.
+      const sorted = visibleEntries.sort(
+        (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
+      );
+      const newActiveId = sorted[0].target.id;
+      setActiveHeading(newActiveId);
+    }, {
+      root: null,
+      // Adjust rootMargin to control when a heading becomes "active."
+      rootMargin: "0px 0px -70% 0px",
+      threshold: 0.1,
+    });
+
+    headingElements.forEach((elem) => {
+      observer.observe(elem);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [children, manualOverride]);
+
+  // --- Update the animated indicator from active heading if not hovering ---
+  useEffect(() => {
+    if (!hoveredHeading && activeHeading && headingsRefs.current[activeHeading]) {
+      updateHeadingLinePosition(activeHeading);
+    }
+  }, [activeHeading, hoveredHeading]);
+
+  // --- Render the table of contents headings recursively ---
   const renderHeadings = (items, depth = 0) => (
     <ul className={`space-y-3.5 ${depth > 0 ? "pl-6" : ""}`}>
       {items.map(({ title, id, children }) => (
@@ -138,21 +195,28 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           <div
             ref={(el) => (headingsRefs.current[id] = el)}
             data-id={id}
-            className={`group flex items-center cursor-pointer hover:text-black transition-colors duration-200 ${
-              depth === 0
-                ? "font-normal text-gray-600"
-                : depth === 1
-                ? "font-normal text-gray-600"
-                : depth === 2
-                ? "text-gray-700"
-                : "text-gray-600"
-            }`}
+            // Conditionally applied classes remain the same.
+            className={`group flex items-center cursor-pointer transition-colors duration-200 ${
+              activeHeading === id ? "font-medium text-black" : "font-normal text-gray-600"
+            } $`}
             onClick={() => handleClick(id)}
-            onMouseEnter={() => handleHeadingHover(id)}
-            onMouseLeave={() => setHoveredHeading(null)}
+            onMouseEnter={() => {
+              // Clear any pending timeout to avoid conflict
+              if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+              }
+              handleHeadingHover(id);
+            }}
+            onMouseLeave={() => {
+              // Delay clearing hovered heading for smoother transition
+              hoverTimeoutRef.current = setTimeout(() => {
+                setHoveredHeading(null);
+              }, 150); // Adjust delay time as desired
+            }}
           >
             <span className="text-sm">{title}</span>
           </div>
+
           {children.length > 0 && (
             <div className="mt-3.5">
               {renderHeadings(children, depth + 1)}
@@ -162,7 +226,6 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
       ))}
     </ul>
   );
-
 
   return (
     <div className="flex min-h-screen">
@@ -209,7 +272,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
             
             {/* Article content */}
             <div className="flex-1 border-l border-gray-200 px-12 pb-6">
-              <div style={{ width: "100%" }} className="prose max-w-none">
+              <div style={{ width: "100%" }} className="prose max-w-none" ref={contentRef}>
                 {children}
               </div>
             </div>
@@ -231,7 +294,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                     clipPath:
                       "polygon(0 4px, 100% 6px, 100% calc(100% - 4px), 0 calc(100% - 2px))",
                     borderRadius: "3px",
-                    opacity: hoveredHeading ? 1 : 0,
+                    opacity: hoveredHeading || activeHeading ? 1 : 0,
                     transform: "translateX(0)",
                     zIndex: 10,
                   }}
