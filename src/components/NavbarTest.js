@@ -6,13 +6,15 @@ import { useDarkMode } from '../utils/DarkModeContext';
 function NavbarTest() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [language, setLanguage] = useState('EN');
+  const [isLogoVisible, setIsLogoVisible] = useState(true); // Track logo visibility
+  const [isSearchBarVisible, setIsSearchBarVisible] = useState(true); // Track search bar visibility
   
   // State to track the underline's position, width, and opacity
   const [underlinePosition, setUnderlinePosition] = useState({ left: 0, width: 0, opacity: 0 });
   
   // Refs for each nav link to measure their position and size
   const navLinkRefs = useRef([]);
-
+  
   const navLinks = [
     { to: "/about-us", label: "About Us" },
     { to: "/facilities", label: "Facilities" },
@@ -66,6 +68,14 @@ function NavbarTest() {
         </div>
       </div>
 
+    // Clean up the event listener when component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className="sticky top-0 z-50 w-full">
       {/* Main Navbar */}
       <div className="relative flex items-center p-4 bg-white dark:bg-gray-900 border-t border-gray-300 dark:border-gray-700 shadow-md">
         {/* Logo & Titles - Wrapped in Link to navigate to homepage */}
