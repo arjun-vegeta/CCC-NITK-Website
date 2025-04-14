@@ -25,7 +25,7 @@ function Navbar() {
   }, []);
 
   return (
-    <div className="w-full pt-2 top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-300 dark:border-gray-700 dark-transition">
+    <div className="w-full pt-2 top-0 z-50 bg-white dark:bg-black border-b border-gray-300 dark:border-gray-700 dark-transition">
       {/* Single line navbar */}
       <div className="flex items-center justify-between px-6 py-2">
         {/* Left side - Logo area remains the same */}

@@ -86,7 +86,7 @@ const AboutCCC = () => {
           </ul>
         </div> */}
 
-        <div className="mt-10">
+        <div className="mt-10 mb-16">
           <h2 className="font-extrabold underline text-2xl md:text-3xl">People</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {staff.map((person, index) => (
