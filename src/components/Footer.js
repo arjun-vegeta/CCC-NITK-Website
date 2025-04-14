@@ -1,8 +1,11 @@
 import React from "react";
+import { useDarkMode } from "../utils/DarkModeContext";
 
 const Footer = () => {
+  const { darkMode } = useDarkMode();
+  
   return (
-    <footer className="bg-[#08152a] text-white py-8">
+    <footer className={`${darkMode ? 'bg-gray-900' : 'bg-[#08152a]'} text-white py-8 transition-colors duration-200`}>
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-20">
         {/* Quick Links Section - Appears First on Phones */}
         <div className="order-1 md:order-none text-center md:text-left">
@@ -16,7 +19,7 @@ const Footer = () => {
                 href="https://www.nitk.ac.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className=" hover:underline hover:text-blue-500"
+                className="hover:underline hover:text-blue-500"
               >
                 NITK Website
               </a>
@@ -26,7 +29,7 @@ const Footer = () => {
                 href="https://iris.nitk.ac.in"
                 target="_blank"
                 rel="noopener noreferrer"
-                className=" hover:underline hover:text-blue-500"
+                className="hover:underline hover:text-blue-500"
               >
                 IRIS Portal
               </a>
@@ -36,7 +39,7 @@ const Footer = () => {
                 href="https://telephone.nitk.ac.in/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className=" hover:underline hover:text-blue-500"
+                className="hover:underline hover:text-blue-500"
               >
                 Telephone Directory
               </a>
@@ -46,7 +49,7 @@ const Footer = () => {
                 href="https://alumni.nitk.ac.in/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className=" hover:underline hover:text-blue-500"
+                className="hover:underline hover:text-blue-500"
               >
                 Alumni Website
               </a>
@@ -56,7 +59,7 @@ const Footer = () => {
                 href="https://cdc.nitk.ac.in/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className=" hover:underline hover:text-blue-500"
+                className="hover:underline hover:text-blue-500"
               >
                 Career Development Center (CDC)
               </a>
@@ -68,7 +71,7 @@ const Footer = () => {
         <div className="order-2 md:order-none text-center md:text-left">
           <div className="flex flex-col items-center md:flex-row md:items-center">
             <img
-              src="/logo.png"
+              src={darkMode ? "/logo-light.png" : "/logo-dark.png"}
               alt="NITK Logo"
               className="w-12 h-auto md:w-16 md:h-auto mr-0 md:mr-4"
             />
@@ -90,7 +93,7 @@ const Footer = () => {
         <div className="order-3 md:order-none text-center md:text-left">
           <div className="flex flex-col items-center md:flex-row md:items-center">
             <img
-              src="/logo.png"
+              src={darkMode ? "/logo-white.png" : "/logo-dark.png"}
               alt="CCC Logo"
               className="w-12 h-auto md:w-16 md:h-auto mr-0 md:mr-4"
             />

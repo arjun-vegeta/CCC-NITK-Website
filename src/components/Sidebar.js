@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
+import { useDarkMode } from "../utils/DarkModeContext";
 
 const Sidebar = ({ links }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
   const [expanded, setExpanded] = useState({});
   const [hoveredItem, setHoveredItem] = useState(null);
   const [linePosition, setLinePosition] = useState({ top: 0, height: 0 });
@@ -45,14 +47,16 @@ const Sidebar = ({ links }) => {
 
   const renderLinks = (items, depth = 0) => {
     return (
-      <ul className={`space-y-1.5 ${depth > 0 ? "ml-4 pl-2 border-l border-gray-200" : ""}`}>
+      <ul className={`space-y-1.5 ${depth > 0 ? "ml-4 pl-2 border-l border-gray-200 dark:border-gray-700" : ""}`}>
         {items.map((item) => (
           <li key={item.slug} className="relative">
             <div
               ref={el => itemsRef.current[item.slug] = el}
               data-href={item.href}
               className={`flex justify-between items-center cursor-pointer py-2 px-2 group transition-all duration-200 rounded-lg ${
-                location.pathname === item.href ? "bg-gray-100" : ""
+                location.pathname === item.href 
+                  ? "bg-gray-100 dark:bg-gray-800" 
+                  : ""
               } ${
                 hoveredItem === item.slug ? "translate-x-2" : ""
               }`}
@@ -70,11 +74,11 @@ const Sidebar = ({ links }) => {
                 className={`block text-[15.5px] transition-all duration-150 ${
                   location.pathname === item.href 
                     ? hoveredItem === item.slug 
-                      ? "text-gray-800 font-medium" 
-                      : "text-black font-medium"
+                      ? "text-gray-800 dark:text-gray-100 font-medium" 
+                      : "text-black dark:text-white font-medium"
                     : hoveredItem === item.slug
-                      ? "text-gray-900 font-normal"
-                      : "text-gray-600 font-normal"
+                      ? "text-gray-900 dark:text-gray-100 font-normal"
+                      : "text-gray-600 dark:text-gray-300 font-normal"
                 }`}
               >
                 {item.title}
@@ -83,7 +87,7 @@ const Sidebar = ({ links }) => {
                 <ChevronDown
                   className={`transition-all duration-200 ${
                     expanded[item.slug] ? "rotate-180" : ""
-                  } text-gray-400 group-hover:text-gray-600`}
+                  } text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300`}
                 />
               )}
             </div>
@@ -97,8 +101,8 @@ const Sidebar = ({ links }) => {
   };
 
   return (
-    <div className="h-[full] p-6 pr-4 bg-white relative sidebar-container">
-      {/* Animated trapezium indicator */}
+    <div className="h-[full] p-6 pr-4 bg-white dark:bg-gray-900 relative sidebar-container dark-transition">
+      {/* Animated indicator */}
       <div
         className="absolute transition-all duration-200"
         style={{
@@ -106,7 +110,7 @@ const Sidebar = ({ links }) => {
           top: `${linePosition.top}px`,
           height: `${linePosition.height}px`,
           width: '3.5px',
-          background: '#000000',
+          background: darkMode ? '#f3f4f6' : '#000000',
           clipPath: 'polygon(0 4px, 100% 6px, 100% calc(100% - 8px), 0 calc(100% - 6px))',
           borderRadius: '3px',
           opacity: hoveredItem ? 1 : 0,

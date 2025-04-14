@@ -1,4 +1,5 @@
 import React from "react";
+import { useDarkMode } from "../utils/DarkModeContext";
 
 const staff = [
   {
@@ -48,19 +49,21 @@ const staff = [
 ];
 
 const AboutCCC = () => {
+  const { darkMode } = useDarkMode();
+  
   return (
     <>
-      <header className="bg-[#eaeaea] w-full h-40 text-[#192F59] text-3xl font-Montserrat font-extrabold flex items-center justify-center text-center md:text-left md:px-10">
+      <header className={`${darkMode ? 'bg-gray-800' : 'bg-[#eaeaea]'} w-full h-40 ${darkMode ? 'text-white' : 'text-[#192F59]'} text-3xl font-Montserrat font-extrabold flex items-center justify-center text-center md:text-left md:px-10 dark-transition`}>
         <h1>ABOUT CCC</h1>
       </header>
 
-      <div className="px-4 md:px-8 lg:px-16 font-Montserrat text-[#192F59]">
+      <div className={`px-4 md:px-8 lg:px-16 font-Montserrat ${darkMode ? 'text-gray-100' : 'text-[#192F59]'} dark-transition`}>
         <div className="mt-10">
           <h2 className="font-extrabold underline text-2xl md:text-3xl">Central Computer Center</h2>
-          <p className="mt-4 text-sm md:text-base">
+          <p className="mt-4 text-sm md:text-base dark:text-gray-300">
             CCC is currently headed by <strong>Dr. Mohit P Tahiliani</strong> from the Department of CSE. CCC has the following permanent staff:
           </p>
-          <ul className="list-disc pl-6 mt-2 text-sm md:text-base space-y-1">
+          <ul className="list-disc pl-6 mt-2 text-sm md:text-base space-y-1 dark:text-gray-300">
             <li>One Systems Manager</li>
             <li>One Senior Scientific Officer</li>
             <li>Two Technical Officers</li>
@@ -78,9 +81,9 @@ const AboutCCC = () => {
           <h2 className="font-extrabold underline text-2xl md:text-3xl">People</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {staff.map((person, index) => (
-              <div key={index} className="border border-gray-300 p-4 rounded-xl shadow-md">
-                <h3 className="text-lg font-semibold">{person.name}</h3>
-                <p className="text-sm md:text-base text-gray-700">{person.position}</p>
+              <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-xl shadow-md bg-white dark:bg-gray-800 dark-transition">
+                <h3 className="text-lg font-semibold dark:text-gray-100">{person.name}</h3>
+                <p className="text-sm md:text-base text-gray-700 dark:text-gray-300">{person.position}</p>
               </div>
             ))}
           </div>

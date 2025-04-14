@@ -8,41 +8,43 @@ import NetworkGuidesIndex from './pages/NetworkGuidesIndex';
 import NetworkGuidesPost from './pages/NetworkGuidesPost';
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
-import NavbarTest from './components/NavbarTest';
 import Footer from './components/Footer';
+import { DarkModeProvider } from './utils/DarkModeContext';
 
 function App() {
   return (
-    <BrowserRouter> {/* Wrap everything inside BrowserRouter */}
-      {/* Add min-h-screen to the body or a parent wrapper to ensure scrolling */}
-      <div className="min-h-screen">
-        {/* <Navbar /> */}
-        <NavbarTest />
-        <Routes>
-          {/* Home Page */}
-          <Route path="/" element={<Home />} />
+    <DarkModeProvider>
+      <BrowserRouter>
+        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 dark-transition">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              {/* Home Page */}
+              <Route path="/" element={<Home />} />
 
-          {/* About Us */}
-          <Route path="/about-us" element={<AboutUs />} />
+              {/* About Us */}
+              <Route path="/about" element={<AboutUs />} />
 
-          {/* Facilities */}
-          <Route path="/facilities">
-            <Route index element={<FacilitiesIndex />} />
-            <Route path="*" element={<FacilitiesPost />} />
-          </Route>
+              {/* Facilities */}
+              <Route path="/facilities">
+                <Route index element={<FacilitiesIndex />} />
+                <Route path="*" element={<FacilitiesPost />} />
+              </Route>
 
-          {/* Network Guides */}
-          <Route path="/network-guides">
-            <Route index element={<NetworkGuidesIndex />} />
-            <Route path=":slug" element={<NetworkGuidesPost />} />
-          </Route>
+              {/* Network Guides */}
+              <Route path="/network-guides">
+                <Route index element={<NetworkGuidesIndex />} />
+                <Route path=":slug" element={<NetworkGuidesPost />} />
+              </Route>
 
-          {/* Contact */}
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-        <Footer />
-      </div>
-    </BrowserRouter>
+              {/* Contact */}
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </DarkModeProvider>
   );
 }
 

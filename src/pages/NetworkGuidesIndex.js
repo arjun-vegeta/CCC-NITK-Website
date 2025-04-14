@@ -3,8 +3,10 @@ import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useDarkMode } from '../utils/DarkModeContext';
 
 function NetworkGuidesIndex() {
+  const { darkMode } = useDarkMode();
   const modules = require.context('../content/network_guides', true, /\.mdx$/);
   const posts = [];
   const flatPosts = [];
@@ -41,7 +43,13 @@ function NetworkGuidesIndex() {
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>
       <div className="px-2 pb-6">
         <div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-black text-transparent bg-clip-text">Network Guides</h1>
+          <h1 className={`text-4xl font-bold mb-4 ${
+            darkMode 
+              ? "text-white" 
+              : "bg-gradient-to-r from-black to-black text-transparent bg-clip-text"
+          }`}>
+            Guides
+          </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
             A collection of guides to help you make the most of our computing facilities and services.
           </p>
@@ -52,15 +60,15 @@ function NetworkGuidesIndex() {
             <Link 
               key={post.slug}
               to={post.href}
-              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black transition-colors bg-white hover:shadow-lg no-underline"
+              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-gray-800 hover:shadow-lg dark:hover:shadow-gray-700 no-underline dark-transition"
             >
               <div className="flex flex-col h-full">
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-black transition-colors no-underline">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-black dark:group-hover:text-white transition-colors no-underline">
                   {post.title}
                 </h3>
                 <div className="mt-auto flex items-center justify-between pb-8">
-                  <span className="text-sm text-gray-500 no-underline">Read guide</span>
-                  <ArrowRight className="h-5 w-5 text-gray-400 group-hover:text-black transition-transform group-hover:translate-x-1" />
+                  <span className="text-sm text-gray-500 dark:text-gray-400 no-underline">Read guide</span>
+                  <ArrowRight className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-black dark:group-hover:text-white transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>
