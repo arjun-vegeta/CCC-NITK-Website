@@ -252,7 +252,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
     <div className="flex min-h-screen">
       {/* Left sidebar - only shown if window width > 768 */}
       {windowWidth > 768 && sidebar && (
-        <div className="w-[300px] flex-shrink-0 sticky top-0 h-screen overflow-auto">
+        <div className="w-[300px] flex-shrink-0 sticky top-[104px] h-screen overflow-auto">
           {sidebar}
         </div>
       )}
@@ -264,7 +264,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           {/* Article content with breadcrumb */}
           <div className="flex-1 flex flex-col">
             {/* Breadcrumb */}
-            <div className="sticky top-0 z-10 pt-1 bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
+            <div className="sticky top-[104px] z-10 pt-1 shadow-sm bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
               <Breadcrumb className="px-12 py-4">
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, index) => (
@@ -302,7 +302,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           {/* Table of Contents sidebar */}
           {windowWidth > 768 && sidebar && structuredHeadings.length > 0 && (
             <div className="w-80 flex-shrink-0">
-              <div className="sticky border-l border-gray-200 dark:border-gray-700 top-24 p-4 toc-container relative dark-transition">
+              <div className="sticky border-l border-gray-200 dark:border-gray-700 top-28 p-4 toc-container  dark-transition">
                 {/* Animated indicator */}
                 <div
                   className="absolute transition-all duration-200"

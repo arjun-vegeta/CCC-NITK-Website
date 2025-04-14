@@ -6,7 +6,7 @@ import GuideSection from "../components/GuideSection";
 
 function Home() {
   return (
-    <div className="p-4">
+    <div className="p-4 bg-[#fcfcfc]">
       <HeroSection />
       <SecondHeroSection />
       <GuideSection />

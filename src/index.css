@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap');
+
 @layer base {
   :root {
     /* Light mode colors */
@@ -98,6 +100,14 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Geist", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+  /* Navbar and Footer specific font styles */
+  .home-navbar, .site-footer {
+    font-family: "Montserrat", sans-serif;
   }
 }
 

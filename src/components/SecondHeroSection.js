@@ -84,7 +84,7 @@ const SecondHeroSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="max-w-[1280px] mx-auto pt-24 pb-10 px-4 relative"
+      className="max-w-[1280px] mx-auto pt-24 pb-10 px-4 relative font-Montserrat"
     >
       {/* Heading and subheading */}
       <div className="text-center mb-14">
@@ -92,7 +92,7 @@ const SecondHeroSection = () => {
           Providing Internet Access to Thousands Across Campus
         </h2>
         <p className="text-gray-600">
-          Some Long Description Line Goes Right Here, Keep It Long Itself For Design Sake
+        CCC maintains the campus network backbone connectivity and internet connections on 24x7 basis
         </p>
       </div>
 

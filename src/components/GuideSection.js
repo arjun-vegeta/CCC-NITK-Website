@@ -23,14 +23,14 @@ const GuideSection = () => {
     },
     {
       heading: "NITK VPN",
-      description: "Read Guide",
+      description: "Guide to request and connect to NITK VPN",
       width: "w-full",
       image: "/HomeGuide/image4.jpg" // Replace with actual image filename
     }
   ];
 
   return (
-    <section className="max-w-[1280px] mx-auto py-16 px-4">
+    <section className="max-w-[1280px] mx-auto py-16 px-4 font-Montserrat">
       {/* Heading and subheading */}
       <div className="text-center mb-14">
         <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
