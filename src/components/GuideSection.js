@@ -32,8 +32,8 @@ const GuideSection = () => {
   return (
     <section className="max-w-[1280px] mx-auto py-16 px-4">
       {/* Heading and subheading */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-2">
+      <div className="text-center mb-14">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
           Learn More About Guides
         </h2>
         <p className="text-gray-600">
@@ -42,7 +42,7 @@ const GuideSection = () => {
       </div>
 
       {/* Grid of info boxes */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 mb-10">
         {infoBoxes.map((box, index) => (
           <div 
             key={index} 
@@ -50,7 +50,7 @@ const GuideSection = () => {
           >
             {/* Box with image background and content at bottom left */}
             <div 
-              className="rounded-3xl aspect-square mb-3 p-4 flex flex-col justify-end relative overflow-hidden"
+              className="rounded-2xl aspect-square mb-3 p-4 flex flex-col justify-end relative overflow-hidden"
               style={{
                 backgroundImage: `linear-gradient(to bottom, rgba(30, 44, 80, 0.3), rgba(30, 44, 80, 0.9)), url(${box.image})`,
                 backgroundSize: 'cover',
