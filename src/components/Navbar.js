@@ -1,78 +1,187 @@
 "use client";
-import React from "react";
-import { cn } from "../utils/cn.js";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";  // Importing search icon
+import { IoSearch } from "react-icons/io5"; // Using IoSearch icon
 
-function Navbar({ className }) {
+function Navbar() {
+  const [isSticky, setIsSticky] = useState(false);
+  const [showSearch, setShowSearch] = useState(true); // Always true for now (modal always visible)
+  const [textOpacity, setTextOpacity] = useState(1);
+  const logoRef = useRef(null);
+  const textRef = useRef(null);
+  const searchBarRef = useRef(null);
+  const navLinksRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const topRowHeight = document.querySelector(".top-controls")?.clientHeight || 0;
+      const earlyFadeOffset = 30;
+      const fadeDistance = 50;
+      const fadeStart = topRowHeight - earlyFadeOffset;
+      const fadeEnd = fadeStart + fadeDistance;
+      const scrollY = window.scrollY;
+
+      const opacity = Math.max(0, 1 - (scrollY - fadeStart) / fadeDistance);
+      setTextOpacity(opacity);
+
+      setIsSticky(scrollY > topRowHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleSearch = () => setShowSearch(!showSearch);
+
+  useEffect(() => {
+    const transitionStyle = "opacity 0.3s ease-in-out";
+    const transformStyle = "opacity 0.3s ease-in-out, transform 0.3s ease-in-out";
+
+    if (logoRef.current) {
+      logoRef.current.style.transition = transitionStyle;
+      logoRef.current.style.opacity = isSticky ? "0" : "1";
+    }
+    if (textRef.current) {
+      textRef.current.style.transition = transitionStyle;
+      textRef.current.style.opacity = isSticky ? "0" : "1";
+    }
+    if (searchBarRef.current) {
+      searchBarRef.current.style.transition = transformStyle;
+      searchBarRef.current.style.opacity = isSticky ? "0" : "1";
+      searchBarRef.current.style.transform = isSticky ? "translateX(-50%)" : "translateX(0)";
+    }
+    if (navLinksRef.current) {
+      navLinksRef.current.style.justifyContent = isSticky ? "center" : "flex-end";
+    }
+  }, [isSticky]);
+
   return (
-    <div className={cn("w-full sticky top-0 z-50 bg-white shadow-md", className)}>
-
+    <div className="w-full">
       {/* 🔝 Top Row: Controls */}
-      <div className="flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
-        <div>
-          <button className="text-xl cursor-pointer">🌙</button>
-        </div>
-        <div>
-          <button className="border px-2 py-1 rounded">EN / हि</button>
-        </div>
+      <div className="top-controls flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
+        <div><button className="text-xl cursor-pointer">🌙</button></div>
+        <div><button className="border px-2 py-1 rounded">EN / हि</button></div>
       </div>
 
       {/* 🔻 Bottom Row: Logo + Search + Nav */}
-      <div className="flex items-center justify-between px-6 py-4 bg-white">
+      <div
+        className={`w-full bg-white transition-all duration-300 ${
+          isSticky ? "fixed top-0 left-0 right-0 z-[999] shadow-lg" : "shadow-md"
+        }`}
+      >
+        <div
+          className={`flex items-center px-6 transition-all duration-300 ${
+            isSticky ? "py-2 justify-center" : "py-4 justify-between"
+          }`}
+        >
+          {/* Logo area */}
+          <div
+            className={`flex items-center cursor-pointer ${isSticky ? "absolute left-6" : ""}`}
+            ref={logoRef}
+          >
+            <Link to="/" className="flex items-center">
+              <img
+                src="/logo.png"
+                alt="NITK Logo"
+                className={`object-scale-down transition-all duration-300 ${isSticky ? "w-20" : "w-24"}`}
+              />
+              <div
+                className="ml-2 leading-tight transition-opacity duration-300"
+                style={{ opacity: textOpacity }}
+                ref={textRef}
+              >
+                <h1 className="font-bold text-gray-800 text-xl">National Institute of Technology Karnataka</h1>
+                <h1 className="font-black text-gray-900 text-3xl">CCC</h1>
+              </div>
+            </Link>
+          </div>
 
-        {/* Left: Enlarged Logo */}
-        <div className="flex items-center h-24 cursor-pointer">
-          <Link to="/" className="flex items-center">
-            <img src="/logo.png" alt="NITK Logo" className="w-20 h-20 object-scale-down" />
-            <div className="ml-3 text-sm">
-              <h6 className="font-bold text-gray-800 text-sm lg:text-base">National Institute of Technology Karnataka</h6>
-              <h1 className="font-black text-3xl text-gray-900">CCC</h1>
+          {/* Search bar center (only non-sticky mode) */}
+          {!isSticky && (
+            <div className="flex justify-center w-[300px]" ref={searchBarRef}>
+              <div className="flex items-center border border-gray-300 rounded-full w-full">
+                <IoSearch className="text-gray-500 ml-4" />
+                <input
+                  type="text"
+                  placeholder="Search"
+                  className="px-4 py-2 w-full rounded-full text-sm focus:outline-none"
+                />
+              </div>
             </div>
-          </Link>
-        </div>
+          )}
 
-        {/* Center: Smaller Rounded Search Bar with Search Icon */}
-        <div className="flex justify-center w-[400px]">
-          <div className="flex items-center border border-gray-300 rounded-full w-full">
-            <FiSearch className="text-gray-500 ml-4" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="px-4 py-2 w-full rounded-full text-sm focus:outline-none"
-            />
+          {/* Navigation links */}
+          <div
+            className={`flex items-center space-x-6 transition-all duration-300 ${
+              isSticky ? "justify-center" : "justify-end"
+            }`}
+            ref={navLinksRef}
+          >
+            {/* Sticky search button & modal */}
+            {isSticky && (
+              <>
+                <button
+                  onClick={toggleSearch}
+                  className="p-2 text-[#192F59] hover:text-[#0FA444] transition-all"
+                >
+                  <IoSearch className="text-xl" />
+                </button>
+
+                {/* Always visible modal */}
+                <div
+                  className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50"
+                  onClick={() => setShowSearch(true)} // keep it enabled for now
+                >
+                  <div
+                    className="bg-white w-full max-w-lg mx-4 rounded-xl p-6 shadow-xl relative"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      onClick={() => setShowSearch(true)} // no close behavior now
+                      className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+                    >
+                      &times;
+                    </button>
+                    <div className="flex items-center border border-gray-300 rounded-full px-4 py-2">
+                      <IoSearch className="text-gray-500 mr-2" />
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        className="w-full focus:outline-none text-base"
+                        autoFocus
+                      />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Nav Links */}
+            <Link to="/about" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
+              About Us
+            </Link>
+            <Link to="/facilities" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
+              Facilities
+            </Link>
+            <Link to="/guides" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
+              Network Guides
+            </Link>
+            <Link to="/contact" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
+              Contact
+            </Link>
           </div>
         </div>
-
-        {/* Right: Navigation Links */}
-        <div className="flex items-center space-x-6">
-          <Link
-            to="/about"
-            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
-          >
-            About Us
-          </Link>
-          <Link
-            to="/facilities"
-            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
-          >
-            Facilities
-          </Link>
-          <Link
-            to="/guides"
-            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
-          >
-            Network Guides
-          </Link>
-          <Link
-            to="/contact"
-            className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
-          >
-            Contact
-          </Link>
-        </div>
-
       </div>
+
+      {/* Spacer to prevent layout shift */}
+      {isSticky && (
+        <div
+          style={{
+            height:
+              document.querySelector(".top-controls + div")?.clientHeight || "0px",
+          }}
+        ></div>
+      )}
     </div>
   );
 }
