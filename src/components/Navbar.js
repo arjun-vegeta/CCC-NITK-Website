@@ -5,7 +5,7 @@ import { IoSearch } from "react-icons/io5"; // Using IoSearch icon
 
 function Navbar() {
   const [isSticky, setIsSticky] = useState(false);
-  const [showSearch, setShowSearch] = useState(true); // Always true for now (modal always visible)
+  const [showSearch, setShowSearch] = useState(false); // Toggle search modal visibility
   const [textOpacity, setTextOpacity] = useState(1);
   const logoRef = useRef(null);
   const textRef = useRef(null);
@@ -31,7 +31,7 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleSearch = () => setShowSearch(!showSearch);
+  const toggleSearch = () => setShowSearch(!showSearch); // Toggle search bar visibility
 
   useEffect(() => {
     const transitionStyle = "opacity 0.3s ease-in-out";
@@ -56,29 +56,26 @@ function Navbar() {
   }, [isSticky]);
 
   return (
-    <div className="w-full">
-      {/* 🔝 Top Row: Controls */}
-      <div className="top-controls flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
-        <div><button className="text-xl cursor-pointer">🌙</button></div>
-        <div><button className="border px-2 py-1 rounded">EN / हि</button></div>
+    <div className="w-full top-0 z-50 bg-white border-b border-gray-300">
+
+      {/* 🔝 Top Row: Controls (Uncommented for dark mode, language toggle) */}
+      <div className="flex items-center justify-between px-6 py-2 text-sm bg-gray-100">
+        <div>
+          <button className="text-xl cursor-pointer">🌙</button>
+        </div>
+        <div>
+          <button className="border px-2 py-1 rounded">EN / हि</button>
+        </div>
       </div>
 
       {/* 🔻 Bottom Row: Logo + Search + Nav */}
       <div
-        className={`w-full bg-white transition-all duration-300 ${
-          isSticky ? "fixed top-0 left-0 right-0 z-[999] shadow-lg" : "shadow-md"
-        }`}
+        className={`w-full bg-white transition-all duration-300 ${isSticky ? "fixed top-0 left-0 right-0 z-[999] shadow-lg" : "shadow-md"}`}
       >
-        <div
-          className={`flex items-center px-6 transition-all duration-300 ${
-            isSticky ? "py-2 justify-center" : "py-4 justify-between"
-          }`}
-        >
+        <div className={`flex items-center px-6 transition-all duration-300 ${isSticky ? "py-2 justify-center" : "py-4 justify-between"}`}>
+          
           {/* Logo area */}
-          <div
-            className={`flex items-center cursor-pointer ${isSticky ? "absolute left-6" : ""}`}
-            ref={logoRef}
-          >
+          <div className={`flex items-center cursor-pointer ${isSticky ? "absolute left-6" : ""}`} ref={logoRef}>
             <Link to="/" className="flex items-center">
               <img
                 src="/logo.png"
@@ -110,78 +107,57 @@ function Navbar() {
             </div>
           )}
 
-          {/* Navigation links */}
-          <div
-            className={`flex items-center space-x-6 transition-all duration-300 ${
-              isSticky ? "justify-center" : "justify-end"
-            }`}
-            ref={navLinksRef}
-          >
-            {/* Sticky search button & modal */}
-            {isSticky && (
-              <>
-                <button
-                  onClick={toggleSearch}
-                  className="p-2 text-[#192F59] hover:text-[#0FA444] transition-all"
-                >
-                  <IoSearch className="text-xl" />
-                </button>
+          {/* Center: Smaller Rounded Search Bar with Search Icon (Modal triggered by toggle) */}
+          <div className="flex justify-center w-[30%]">
+            <div className="flex items-center border border-gray-300 rounded-full w-full">
+              <IoSearch className="text-gray-500 ml-4" />
+              <input
+                type="text"
+                placeholder="Search"
+                className="px-4 py-2 w-full rounded-full text-sm focus:outline-none"
+                onClick={toggleSearch} // Modal toggle
+              />
+            </div>
+          </div>
 
-                {/* Always visible modal */}
-                <div
-                  className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50"
-                  onClick={() => setShowSearch(true)} // keep it enabled for now
-                >
-                  <div
-                    className="bg-white w-full max-w-lg mx-4 rounded-xl p-6 shadow-xl relative"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      onClick={() => setShowSearch(true)} // no close behavior now
-                      className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
-                    >
-                      &times;
-                    </button>
-                    <div className="flex items-center border border-gray-300 rounded-full px-4 py-2">
-                      <IoSearch className="text-gray-500 mr-2" />
-                      <input
-                        type="text"
-                        placeholder="Search"
-                        className="w-full focus:outline-none text-base"
-                        autoFocus
-                      />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Nav Links */}
-            <Link to="/about" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
-              About Us
-            </Link>
-            <Link to="/facilities" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
-              Facilities
-            </Link>
-            <Link to="/guides" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
+          {/* Right: Navigation Links */}
+          <div className="flex items-center space-x-6" ref={navLinksRef}>
+            <Link
+              to="/network-guides"
+              className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+            >
               Network Guides
             </Link>
-            <Link to="/contact" className={`font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all duration-300 ${isSticky ? "text-base" : "text-lg"}`}>
+            <Link
+              to="/facilities"
+              className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+            >
+              Facilities
+            </Link>
+            <Link
+              to="/about"
+              className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+            >
+              About Us
+            </Link>
+            <Link
+              to="/contact"
+              className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
+            >
               Contact
             </Link>
           </div>
         </div>
-      </div>
 
-      {/* Spacer to prevent layout shift */}
-      {isSticky && (
-        <div
-          style={{
-            height:
-              document.querySelector(".top-controls + div")?.clientHeight || "0px",
-          }}
-        ></div>
-      )}
+        {/* Spacer to prevent layout shift */}
+        {isSticky && (
+          <div
+            style={{
+              height: document.querySelector(".top-controls + div")?.clientHeight || "0px",
+            }}
+          ></div>
+        )}
+      </div>
     </div>
   );
 }

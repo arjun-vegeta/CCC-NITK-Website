@@ -1,12 +1,12 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
-import HowtoIndex from './pages/HowtoIndex';
-import HowtoPost from './pages/HowtoPost';
+import AboutUs from './pages/AboutUs';
 import FacilitiesIndex from './pages/FacilitiesIndex';
 import FacilitiesPost from './pages/FacilitiesPost';
-import PoliciesIndex from './pages/PoliciesIndex';
-import PoliciesPost from './pages/PoliciesPost';
+import NetworkGuidesIndex from './pages/NetworkGuidesIndex';
+import NetworkGuidesPost from './pages/NetworkGuidesPost';
+import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import NavbarTest from './components/NavbarTest';
 import Footer from './components/Footer';
@@ -19,23 +19,30 @@ function App() {
         {/* <Navbar /> */}
         <NavbarTest />
         <Routes>
+          {/* Home Page */}
           <Route path="/" element={<Home />} />
-          <Route path="/howto">
-            <Route index element={<HowtoIndex />} />
-            <Route path=":slug" element={<HowtoPost />} />
-          </Route>
+
+          {/* About Us */}
+          <Route path="/about-us" element={<AboutUs />} />
+
+          {/* Facilities */}
           <Route path="/facilities">
             <Route index element={<FacilitiesIndex />} />
-            <Route path="*" element={<FacilitiesPost />} /> {/* Catch-all for sub-routes */}
+            <Route path="*" element={<FacilitiesPost />} />
           </Route>
-          <Route path="/policies">
-            <Route index element={<PoliciesIndex />} />
-            <Route path=":slug" element={<PoliciesPost />} />
+
+          {/* Network Guides */}
+          <Route path="/network-guides">
+            <Route index element={<NetworkGuidesIndex />} />
+            <Route path=":slug" element={<NetworkGuidesPost />} />
           </Route>
+
+          {/* Contact */}
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         <Footer />
       </div>
-    </BrowserRouter> 
+    </BrowserRouter>
   );
 }
 
