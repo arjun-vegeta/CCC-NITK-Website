@@ -20,10 +20,10 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="flex items-center justify-center p-2 bg-white max-w-[1280px] mx-auto">
-      {/* Left Text Block (30%) */}
-      <div className="w-[30%] flex flex-col gap-6">
-        <h1 className="text-6xl font-extrabold leading-tight text-[#0D1C44]">
+    <section className="flex flex-col md:flex-row items-center justify-center p-2 bg-white max-w-[1280px] mx-auto">
+      {/* Left Text Block (30% on desktop, full on mobile) */}
+      <div className="w-full md:w-[30%] flex flex-col gap-6 mb-8 md:mb-0">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-[#0D1C44]">
           CENTRAL <br />
           COMPUTER <br />
           CENTRE
@@ -32,13 +32,13 @@ const HeroSection = () => {
         <div className="flex flex-wrap gap-4">
           <Link
             to="/network-guides"
-            className="px-8 py-2 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition"
+            className="px-8 py-2 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
           >
             VIEW GUIDES
           </Link>
           <Link
             to="/facilities"
-            className="px-8 py-2 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition"
+            className="px-8 py-2 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
           >
             FACILITIES
           </Link>
@@ -46,15 +46,15 @@ const HeroSection = () => {
 
         <Link
           to="/report-problem"
-          className="inline-flex items-center gap-2 w-fit px-8 py-2 bg-[#0D1C44] text-white text-md font-semibold rounded-full hover:bg-[#1c2e6d] transition"
+          className="inline-flex items-center gap-2 w-fit px-8 py-2 bg-[#0D1C44] text-white text-md font-semibold rounded-full hover:bg-[#1c2e6d] transition-colors duration-300"
         >
           REPORT PROBLEM
           <span className="text-base">→</span>
         </Link>
       </div>
 
-      {/* Right Side Cards (70%) */}
-      <div className="w-[70%] flex gap-4">
+      {/* Right Side Cards (70% on desktop, full on mobile) */}
+      <div className="w-full md:w-[70%] flex gap-4">
         {images.map((image, index) => {
           const isActive = activeImage === index;
           return (
@@ -71,20 +71,28 @@ const HeroSection = () => {
                 className="h-96 w-full object-cover rounded-lg"
               />
               
-              <div className="absolute inset-0 transition-opacity duration-700 ease-in-out">
-                {isActive ? (
-                  <p className="absolute text-lg bottom-4 left-4 text-white font-medium transition-all duration-700 ease-in-out opacity-100">
-                    {image.label}
-                  </p>
-                ) : null}
+              {/* Label container with smooth transition */}
+              <div 
+                className={`absolute inset-0 flex items-end transition-all duration-700 ease-in-out ${
+                  isActive ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <p className="absolute bottom-4 left-4 text-lg text-white font-medium transition-all duration-700 ease-in-out">
+                  {image.label}
+                </p>
               </div>
               
-              <div className="absolute inset-0 flex items-end justify-center transition-opacity duration-700 ease-in-out">
-                {!isActive ? (
-                  <p className="text-lg text-white font-medium -rotate-90 mb-24 transition-all duration-700 ease-in-out opacity-100">
-                    {image.label}
-                  </p>
-                ) : null}
+              {/* Vertical text for inactive images */}
+              <div 
+                className={`absolute inset-0 flex items-end justify-center transition-all duration-700 ease-in-out ${
+                  !isActive ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <p 
+                  className="text-lg text-white font-medium transform -rotate-90 mb-24 transition-all duration-700 ease-in-out"
+                >
+                  {image.label}
+                </p>
               </div>
             </div>
           );
