@@ -4,8 +4,8 @@ import Home from './pages/Home';
 import AboutUs from './pages/AboutUs';
 import FacilitiesIndex from './pages/FacilitiesIndex';
 import FacilitiesPost from './pages/FacilitiesPost';
-import HowToIndex from './pages/HowtoIndex';  
-import HowToPost from './pages/HowtoPost';    
+import NetworkGuidesIndex from './pages/NetworkGuidesIndex';  
+import NetworkGuidesPost from './pages/NetworkGuidesPost';    
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -28,9 +28,9 @@ function App() {
         </Route>
 
         {/* Network Guides */}
-        <Route path="/guides">
-          <Route index element={<HowToIndex />} />
-          <Route path=":slug" element={<HowToPost />} />
+        <Route path="/network-guides">
+          <Route index element={<NetworkGuidesIndex />} />
+          <Route path=":slug" element={<NetworkGuidesPost />} />
         </Route>
 
         {/* Contact */}

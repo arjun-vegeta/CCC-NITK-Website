@@ -6,12 +6,12 @@ import { MDXProvider } from "@mdx-js/react";
 import { mdxComponents } from "../mdxComponents";
 import { extractHeadingsFromElement } from "../components/ExtractHeadings";
 
-function HowtoPost() {
+function NetworkGuidesPost() {
   const { slug } = useParams();
   const location = useLocation();
-  const slugPath = location.pathname.replace(/^\/guides\//, "");
+  const slugPath = location.pathname.replace(/^\/network-guides\//, "");
 
-  const modules = require.context("../content/guides", true, /\.mdx$/);
+  const modules = require.context("../content/network_guides", true, /\.mdx$/);
   const posts = [];
 
   modules.keys().forEach((path) => {
@@ -21,7 +21,7 @@ function HowtoPost() {
     const title = module.frontmatter?.title || fileSlug;
 
     let currentLevel = posts;
-    let currentPath = "/guides";
+    let currentPath = "/network-guides";
 
     parts.forEach((part) => {
       const folderSlug = part.toLowerCase().replace(/\s+/g, "_");
@@ -80,4 +80,4 @@ function HowtoPost() {
   );
 }
 
-export default HowtoPost;
+export default NetworkGuidesPost;

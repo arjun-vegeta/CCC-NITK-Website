@@ -26,6 +26,22 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const contentRef = useRef(null);
 
   const hoverTimeoutRef = useRef(null);
+  
+  // State to track window width
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // Listen to window resize events and update the state
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   // --- Breadcrumb generation ---
   const generateBreadcrumbs = () => {
     const pathnames = location.pathname.split("/").filter((x) => x);
@@ -33,8 +49,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
       { label: "Home", href: "/" },
       ...pathnames.map((segment, index) => ({
         label: segment
-          .replace(/-/g, " ")
-          .replace(/\b\w/g, (char) => char.toUpperCase()),
+          .replace(/_/g, " ") // Replace underscores with spaces
+          .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
         href: "/" + pathnames.slice(0, index + 1).join("/"),
       })),
     ];
@@ -229,8 +245,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Left sidebar */}
-      {sidebar && (
+      {/* Left sidebar - only shown if window width > 768 */}
+      {windowWidth > 768 && sidebar && (
         <div className="w-[300px] flex-shrink-0 sticky top-0 h-screen overflow-auto">
           {sidebar}
         </div>
@@ -271,7 +287,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
             </div>
             
             {/* Article content */}
-            <div className="flex-1 border-l border-gray-200 px-12 pb-6">
+            <div className="flex-1 border-l border-gray-200 px-6 md:px-12">
               <div style={{ width: "100%" }} className="prose max-w-none" ref={contentRef}>
                 {children}
               </div>
@@ -279,7 +295,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           </div>
           
           {/* Table of Contents sidebar */}
-          {structuredHeadings.length > 0 && (
+          {windowWidth > 768 && sidebar && structuredHeadings.length > 0 && (
             <div className="w-80 flex-shrink-0">
               <div className="sticky border-l top-24 p-4 toc-container relative">
                 {/* Animated trapezium indicator */}

@@ -33,7 +33,7 @@ function Navbar({ className }) {
         </div>
 
         {/* Center: Smaller Rounded Search Bar with Search Icon */}
-        <div className="flex justify-center w-[400px]">
+        <div className="flex justify-center w-[30%]">
           <div className="flex items-center border border-gray-300 rounded-full w-full">
             <FiSearch className="text-gray-500 ml-4" />
             <input
@@ -47,10 +47,10 @@ function Navbar({ className }) {
         {/* Right: Navigation Links */}
         <div className="flex items-center space-x-6">
           <Link
-            to="/guides"
+            to="/network-guides"
             className="font-semibold text-[#192F59] hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all"
           >
-            Guides
+            Network Guides
           </Link>
           <Link
             to="/facilities"

@@ -4,8 +4,8 @@ import Sidebar from '../components/Sidebar';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
-function HowtoIndexPage() {
-  const modules = require.context('../content/guides', true, /\.mdx$/);
+function NetworkGuidesIndex() {
+  const modules = require.context('../content/network_guides', true, /\.mdx$/);
   const posts = [];
   const flatPosts = [];
   
@@ -17,7 +17,7 @@ function HowtoIndexPage() {
     const content = module.default?.toString().slice(0, 150) + '...';
   
     let currentLevel = posts;
-    let currentPath = "/guides";
+    let currentPath = "/network-guides";
   
     parts.forEach((part) => {
       const folderSlug = part.toLowerCase().replace(/\s+/g, '_');
@@ -39,15 +39,15 @@ function HowtoIndexPage() {
 
   return (
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>
-      <div className="space-y-8">
+      <div className="px-2 pb-6">
         <div>
-          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-violet-600 text-transparent bg-clip-text">Guides</h1>
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-black to-black text-transparent bg-clip-text">Network Guides</h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
             A collection of guides to help you make the most of our computing facilities and services.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {flatPosts.map((post) => (
             <Link 
               key={post.slug}
@@ -71,4 +71,4 @@ function HowtoIndexPage() {
   );
 }
 
-export default HowtoIndexPage;
+export default NetworkGuidesIndex;
