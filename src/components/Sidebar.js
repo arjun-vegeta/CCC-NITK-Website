@@ -101,7 +101,7 @@ const Sidebar = ({ links }) => {
   };
 
   return (
-    <div className="h-[full] p-6 pr-4 bg-white dark:bg-gray-900 relative sidebar-container dark-transition">
+    <div className="h-[full] p-6 pr-4 bg-white dark:bg-black relative sidebar-container dark-transition">
       {/* Animated indicator */}
       <div
         className="absolute transition-all duration-200"

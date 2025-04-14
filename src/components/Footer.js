@@ -5,7 +5,7 @@ const Footer = () => {
   const { darkMode } = useDarkMode();
   
   return (
-    <footer className={`${darkMode ? 'bg-gray-900' : 'bg-[#08152a]'} text-white py-8 transition-colors duration-200`}>
+    <footer className={`${darkMode ? 'bg-black' : 'bg-[#08152a]'} text-white py-8 transition-colors duration-200`}>
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-20">
         {/* Quick Links Section - Appears First on Phones */}
         <div className="order-1 md:order-none text-center md:text-left">

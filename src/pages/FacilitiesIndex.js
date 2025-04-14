@@ -60,7 +60,7 @@ function FacilitiesIndex() {
             <Link
               key={post.slug}
               to={post.href}
-              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-gray-800 hover:shadow-lg dark:hover:shadow-gray-700 no-underline w-full dark-transition"
+              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-black hover:shadow-lg dark:hover:shadow-gray-900 no-underline w-full dark-transition"
             >
               <div className="flex flex-col h-full">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-black dark:group-hover:text-white transition-colors no-underline">

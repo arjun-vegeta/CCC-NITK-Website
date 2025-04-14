@@ -51,7 +51,7 @@ export const DesktopSidebar = ({ className, children, ...props }) => {
   return (
     <motion.div
       className={cn(
-        "h-screen px-4 py-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-gray-900 w-[300px] shrink-0 border-r border-gray-200 dark:border-gray-800 dark-transition",
+        "h-screen px-4 py-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-black w-[300px] shrink-0 border-r border-gray-200 dark:border-gray-800 dark-transition",
         className
       )}
       animate={{ width: animate ? (open ? "300px" : "300px") : "300px" }} // Always full width
@@ -69,7 +69,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
     <>
       <div
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 dark:bg-gray-900 w-full dark-transition",
+          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 dark:bg-black w-full dark-transition",
           className
         )}
         {...props}
@@ -85,7 +85,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
               exit={{ x: "-100%", opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-white dark:bg-gray-900 p-10 z-[100] flex flex-col justify-between dark-transition",
+                "fixed h-full w-full inset-0 bg-white dark:bg-black p-10 z-[100] flex flex-col justify-between dark-transition",
                 className
               )}
             >
@@ -139,7 +139,7 @@ export function SidebarDemo() {
 
   const [open, setOpen] = useState(false);
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-gray-700 dark:bg-gray-900 h-screen dark-transition">
+    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-gray-700 dark:bg-black h-screen dark-transition">
       <Sidebar open={open} setOpen={setOpen} animate={false}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
