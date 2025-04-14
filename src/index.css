@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    /* Light mode colors */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
@@ -29,14 +30,30 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* Custom light mode colors */
+    --sidebar-bg: 0 0% 100%;
+    --sidebar-fg: 222.2 84% 4.9%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-hover: 210 40% 96.1%;
+    --sidebar-active: 222.2 47.4% 11.2%;
+    --sidebar-active-fg: 210 40% 98%;
+
+    --breadcrumb-fg: 222.2 84% 4.9%;
+    --breadcrumb-hover: 222.2 47.4% 11.2%;
+    --breadcrumb-active: 222.2 47.4% 11.2%;
+
+    --header-bg: 0 0% 100%;
+    --header-fg: 222.2 84% 4.9%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    /* Dark mode colors */
+    --background: 240 10% 3.9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 240 10% 3.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 10% 3.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
@@ -56,6 +73,21 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Custom dark mode colors */
+    --sidebar-bg: 240 10% 7%;
+    --sidebar-fg: 210 40% 98%;
+    --sidebar-border: 240 5% 15%;
+    --sidebar-hover: 240 5% 20%;
+    --sidebar-active: 210 40% 98%;
+    --sidebar-active-fg: 222.2 47.4% 11.2%;
+
+    --breadcrumb-fg: 210 40% 98%;
+    --breadcrumb-hover: 210 40% 90%;
+    --breadcrumb-active: 210 40% 98%;
+
+    --header-bg: 240 10% 5%;
+    --header-fg: 210 40% 98%;
   }
 }
 
@@ -63,6 +95,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -76,20 +109,29 @@ body {
 
 /* For Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 0px; /* Sets width of the entire scrollbar */
+  width: 0px;
+  /* Sets width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
   background: #f0f0f0;
+  @apply dark:bg-gray-800;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: #360E10;
   border-radius: 10px;
-  border: 2px solid #f0f0f0; /* Adds padding effect */
+  border: 2px solid #f0f0f0;
+  /* Adds padding effect */
+  @apply dark:border-gray-800;
 }
 
 .bg-custom {
-  background-color: #7B181D; /* Your custom color */
+  background-color: #7B181D;
+  /* Your custom color */
 }
 
+/* Dark mode transition */
+.dark-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}

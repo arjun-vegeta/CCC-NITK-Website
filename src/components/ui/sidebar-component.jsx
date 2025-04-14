@@ -50,9 +50,13 @@ export const DesktopSidebar = ({ className, children, ...props }) => {
   const { open, setOpen, animate } = useSidebar();
   return (
     <motion.div
-      className={cn("h-screen px-4 py-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-neutral-800 w-[300px] shrink-0", className)}
+      className={cn(
+        "h-screen px-4 py-4 hidden md:flex md:flex-col bg-neutral-100 dark:bg-gray-900 w-[300px] shrink-0 border-r border-gray-200 dark:border-gray-800 dark-transition",
+        className
+      )}
       animate={{ width: animate ? (open ? "300px" : "300px") : "300px" }} // Always full width
-      {...props}>
+      {...props}
+    >
       {children}
     </motion.div>
   );
@@ -63,9 +67,15 @@ export const MobileSidebar = ({ className, children, ...props }) => {
   const { open, setOpen } = useSidebar();
   return (
     <>
-      <div className={cn("h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 dark:bg-neutral-800 w-full")} {...props}>
+      <div
+        className={cn(
+          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 dark:bg-gray-900 w-full dark-transition",
+          className
+        )}
+        {...props}
+      >
         <div className="flex justify-end z-20 w-full">
-          <IconMenu2 className="text-neutral-800 dark:text-neutral-200" onClick={() => setOpen(!open)} />
+          <IconMenu2 className="text-neutral-800 dark:text-gray-200" onClick={() => setOpen(!open)} />
         </div>
         <AnimatePresence>
           {open && (
@@ -74,8 +84,12 @@ export const MobileSidebar = ({ className, children, ...props }) => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "-100%", opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className={cn("fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between", className)}>
-              <div className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200" onClick={() => setOpen(!open)}>
+              className={cn(
+                "fixed h-full w-full inset-0 bg-white dark:bg-gray-900 p-10 z-[100] flex flex-col justify-between dark-transition",
+                className
+              )}
+            >
+              <div className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-gray-200" onClick={() => setOpen(!open)}>
                 <IconX />
               </div>
               {children}
@@ -91,14 +105,23 @@ export const MobileSidebar = ({ className, children, ...props }) => {
 export const SidebarLink = ({ link, className, ...props }) => {
   const { open, animate } = useSidebar();
   return (
-    <Link to={link.href} className={cn("flex items-center justify-start gap-2 group/sidebar py-2", className)} {...props}>
-      {link.icon}
+    <Link
+      to={link.href}
+      className={cn(
+        "flex items-center justify-start gap-2 group/sidebar py-2 text-neutral-700 dark:text-gray-200 hover:text-neutral-900 dark:hover:text-white dark-transition",
+        className
+      )}
+      {...props}
+    >
+      {link.icon && React.cloneElement(link.icon, {
+        className: cn("h-5 w-5 text-neutral-700 dark:text-gray-300", link.icon.props.className)
+      })}
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "inline-block") : "inline-block",
           opacity: animate ? (open ? 1 : 1) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0">
+        className="text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0">
         {link.label}
       </motion.span>
     </Link>
@@ -108,15 +131,15 @@ export const SidebarLink = ({ link, className, ...props }) => {
 // SidebarDemo (Merged Inside Sidebar)
 export function SidebarDemo() {
   const links = [
-    { label: "Dashboard", href: "/", icon: <IconBrandTabler className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Profile", href: "/profile", icon: <IconUserBolt className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Settings", href: "/settings", icon: <IconSettings className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
-    { label: "Logout", href: "/logout", icon: <IconArrowLeft className="h-5 w-5 text-neutral-700 dark:text-neutral-200" /> },
+    { label: "Dashboard", href: "/", icon: <IconBrandTabler className="h-5 w-5" /> },
+    { label: "Profile", href: "/profile", icon: <IconUserBolt className="h-5 w-5" /> },
+    { label: "Settings", href: "/settings", icon: <IconSettings className="h-5 w-5" /> },
+    { label: "Logout", href: "/logout", icon: <IconArrowLeft className="h-5 w-5" /> },
   ];
 
   const [open, setOpen] = useState(false);
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-neutral-700 dark:bg-neutral-800 h-screen">
+    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-hidden rounded-md border border-neutral-200 bg-gray-100 md:flex-row dark:border-gray-700 dark:bg-gray-900 h-screen dark-transition">
       <Sidebar open={open} setOpen={setOpen} animate={false}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">

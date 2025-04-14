@@ -9,9 +9,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
+import { useDarkMode } from "../utils/DarkModeContext";
 
 const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const location = useLocation();
+  const { darkMode } = useDarkMode();
 
   // New state: Keep track of a manual override while a TOC item is clicked.
   const [manualOverride, setManualOverride] = useState(false);
@@ -211,10 +213,11 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           <div
             ref={(el) => (headingsRefs.current[id] = el)}
             data-id={id}
-            // Conditionally applied classes remain the same.
             className={`group flex items-center cursor-pointer transition-colors duration-200 ${
-              activeHeading === id ? "font-medium text-black" : "font-normal text-gray-600"
-            } $`}
+              activeHeading === id 
+                ? "font-medium text-black dark:text-white" 
+                : "font-normal text-gray-600 dark:text-gray-400"
+            } dark-transition`}
             onClick={() => handleClick(id)}
             onMouseEnter={() => {
               // Clear any pending timeout to avoid conflict
@@ -230,7 +233,9 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
               }, 150); // Adjust delay time as desired
             }}
           >
-            <span className="text-sm">{title}</span>
+            <span className="text-sm group-hover:text-gray-900 dark:group-hover:text-gray-200">
+              {title}
+            </span>
           </div>
 
           {children.length > 0 && (
@@ -259,8 +264,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           {/* Article content with breadcrumb */}
           <div className="flex-1 flex flex-col">
             {/* Breadcrumb */}
-            <div className="sticky top-0 z-10 pt-1 bg-white border-l border-gray-200">
-              <Breadcrumb className="px-12 py-4 ">
+            <div className="sticky top-0 z-10 pt-1 bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 dark-transition">
+              <Breadcrumb className="px-12 py-4">
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, index) => (
                     <React.Fragment key={index}>
@@ -268,7 +273,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                         {index === 0 ? (
                           <BreadcrumbLink href={crumb.href} asChild>
                             <Link to={crumb.href} className="flex items-center gap-1">
-                              <Home className="h-4 w-4" />
+                              <Home className="h-4 w-4 text-gray-600 dark:text-gray-300" />
                             </Link>
                           </BreadcrumbLink>
                         ) : index < breadcrumbs.length - 1 ? (
@@ -287,8 +292,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
             </div>
             
             {/* Article content */}
-            <div className="flex-1 border-l border-gray-200 px-6 md:px-12">
-              <div style={{ width: "100%" }} className="prose max-w-none" ref={contentRef}>
+            <div className="flex-1 border-l border-gray-200 dark:border-gray-700 px-6 md:px-12 dark-transition">
+              <div style={{ width: "100%" }} className="prose dark:prose-invert max-w-none dark-transition" ref={contentRef}>
                 {children}
               </div>
             </div>
@@ -297,8 +302,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           {/* Table of Contents sidebar */}
           {windowWidth > 768 && sidebar && structuredHeadings.length > 0 && (
             <div className="w-80 flex-shrink-0">
-              <div className="sticky border-l top-24 p-4 toc-container relative">
-                {/* Animated trapezium indicator */}
+              <div className="sticky border-l border-gray-200 dark:border-gray-700 top-24 p-4 toc-container relative dark-transition">
+                {/* Animated indicator */}
                 <div
                   className="absolute transition-all duration-200"
                   style={{
@@ -306,7 +311,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                     top: `${headingLinePosition.top}px`,
                     height: `${headingLinePosition.height}px`,
                     width: "2.5px",
-                    background: "#000000",
+                    background: darkMode ? "#f3f4f6" : "#000000",
                     clipPath:
                       "polygon(0 4px, 100% 6px, 100% calc(100% - 4px), 0 calc(100% - 2px))",
                     borderRadius: "3px",
@@ -316,7 +321,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                   }}
                 ></div>
                 <div className="pl-0">
-                  <h3 className="text-base font-semibold mb-6 text-gray-900">Table of Contents</h3>
+                  <h3 className="text-base font-semibold mb-6 text-gray-900 dark:text-gray-100 dark-transition">Table of Contents</h3>
                   <div className="relative">
                     <div className="space-y-4 relative">
                       {renderHeadings(structuredHeadings)}
