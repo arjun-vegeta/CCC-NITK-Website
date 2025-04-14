@@ -4,26 +4,26 @@ const GuideSection = () => {
   // Data for the info boxes with image paths
   const infoBoxes = [
     {
-      heading: "10000+ Hostels",
-      description: "Description texts here",
+      heading: "Eduroam",
+      description: "Guide to connecting to eduroam WiFi at NITK",
       width: "w-full",
       image: "/HomeGuide/image1.jpg" // Replace with actual image filename
     },
     {
-      heading: "Heading Text",
-      description: "Description texts here",
+      heading: "NITK Net",
+      description: "NITK Net Captive Portal Configuration",
       width: "w-full",
       image: "/HomeGuide/image2.jpg" // Replace with actual image filename
     },
     {
-      heading: "Heading Text",
-      description: "Description texts here",
+      heading: "Troubleshooting",
+      description: "Step-by-step guide for troubleshooting network",
       width: "w-full",
       image: "/HomeGuide/image3.jpg" // Replace with actual image filename
     },
     {
-      heading: "Heading Text",
-      description: "Description texts here",
+      heading: "NITK VPN",
+      description: "Read Guide",
       width: "w-full",
       image: "/HomeGuide/image4.jpg" // Replace with actual image filename
     }
