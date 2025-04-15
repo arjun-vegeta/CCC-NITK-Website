@@ -36,7 +36,7 @@ const SecondHeroSection = () => {
   const cards = [
     {
       id: 1,
-      title: "10000+ Students and Staff",
+      title: "6000+ Students and Staff",
       description: "Description texts here",
       imgHeight: 290,
       imgSrc: "/stats/user.png"

@@ -7,7 +7,7 @@ import { useDarkMode } from '../utils/DarkModeContext';
 
 function NetworkGuidesIndex() {
   const { darkMode } = useDarkMode();
-  const modules = require.context('../content/network_guides', true, /\.mdx$/);
+  const modules = require.context('../content/guides', true, /\.mdx$/);
   const posts = [];
   const flatPosts = [];
   
@@ -19,7 +19,7 @@ function NetworkGuidesIndex() {
     const content = module.default?.toString().slice(0, 150) + '...';
   
     let currentLevel = posts;
-    let currentPath = "/network-guides";
+    let currentPath = "/guides";
   
     parts.forEach((part) => {
       const folderSlug = part.toLowerCase().replace(/\s+/g, '_');

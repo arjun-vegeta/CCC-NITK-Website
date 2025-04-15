@@ -32,7 +32,7 @@ function App() {
               </Route>
 
               {/* Network Guides */}
-              <Route path="/network-guides">
+              <Route path="/guides">
                 <Route index element={<NetworkGuidesIndex />} />
                 <Route path=":slug" element={<NetworkGuidesPost />} />
               </Route>

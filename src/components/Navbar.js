@@ -46,7 +46,7 @@ function Navbar() {
           
           {/* Guides link */}
           <Link
-            to="/network-guides"
+            to="/guides"
             className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] hover:border-b-2 hover:border-[#0FA444] transition-all dark-transition"
           >
             Guides

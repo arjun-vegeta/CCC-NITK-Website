@@ -18,7 +18,7 @@ function NavbarTest() {
   const navLinks = [
     { to: "/about-us", label: "About Us" },
     { to: "/facilities", label: "Facilities" },
-    { to: "/network-guides", label: "Network Guides" },
+    { to: "/guides", label: "Network Guides" },
     { to: "/contact", label: "Contact" },
   ];
 

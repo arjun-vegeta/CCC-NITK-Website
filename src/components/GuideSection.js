@@ -8,25 +8,25 @@ const GuideSection = () => {
       heading: "Request for Institute URL",
       description: "Instructions to request and access the official NITK institute URL.",
       image: "/HomeGuide/image1.jpg",
-      link: "/network-guides/eduroam"
+      link: "/guides/eduroam"
     },
     {
       heading: "Request For Container",
       description: "Steps to request a container for internet access at NITK.",
       image: "/HomeGuide/image2.jpg",
-      link: "/network-guides/captive_portal"
+      link: "/guides/captive_portal"
     },
     {
       heading: "Guest Captive Portal ID",
       description: "How to request a guest login ID for NITK's captive portal.",
       image: "/HomeGuide/image3.jpg",
-      link: "/network-guides/guide_for_troubleshooting"
+      link: "/guides/guide_for_troubleshooting"
     },
     {
       heading: "Request For NITK VPN",
       description: "Guide to request VPN and connect securely to NITK's network.",
       image: "/HomeGuide/image4.jpg",
-      link: "/network-guides/vpn"
+      link: "/guides/vpn"
     }
   ];
   
@@ -65,7 +65,7 @@ const GuideSection = () => {
         viewport={{ once: true, amount: 0.1 }}
       >
         <Link
-          to="/network-guides"
+          to="/guides"
           className="inline-block mt-3 px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#1a2e60] transition-colors duration-300"
         >
           View All Guides
