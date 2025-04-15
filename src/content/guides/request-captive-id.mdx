@@ -1,0 +1,56 @@
+export const frontmatter = { title: "Request for Captive Portal ID" }
+import { Table, Thead, Tbody, Tr, Th, Td } from '../../components/ui/tables'
+import Button from '../../components/ui/button'
+
+# Request for Captive Portal ID
+
+## How to Apply
+
+1. Go to [IRIS](https://iris.nitk.ac.in/)
+2. Navigate to **Service Requests**
+3. Select **Request for Captive Portal ID**
+
+## Request Flow
+
+Faculty → HoD → CCC Chairman
+
+> *Note: Only Faculty can make this request.*
+
+## Fields
+
+<Table>
+  <Thead>
+    <Tr>
+      <Th>Field</Th>
+      <Th>Type</Th>
+      <Th>Required</Th>
+      <Th>Notes</Th>
+    </Tr>
+  </Thead>
+  <Tbody>
+    <Tr>
+      <Td>Time Required For</Td>
+      <Td>Radio / Select</Td>
+      <Td>Yes</Td>
+      <Td>Choose Long Term or Temporary</Td>
+    </Tr>
+    <Tr>
+      <Td>Service Termination Date</Td>
+      <Td>Date</Td>
+      <Td>Yes (if Temporary selected)</Td>
+      <Td>Use `NIL` if not applicable</Td>
+    </Tr>
+    <Tr>
+      <Td>Reason</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>Purpose of the ID</Td>
+    </Tr>
+  </Tbody>
+</Table>
+
+<div className="mt-8 mb-10 flex justify-center">
+  <Button href="https://iris.nitk.ac.in/request/" size="md" variant="auto">
+    Apply Now
+  </Button>
+</div>

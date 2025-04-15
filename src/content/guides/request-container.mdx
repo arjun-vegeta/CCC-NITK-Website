@@ -1,0 +1,72 @@
+export const frontmatter = { title: "Request for Container" }
+import { Table, Thead, Tbody, Tr, Th, Td } from '../../components/ui/tables'
+import Button from '../../components/ui/button'
+
+# Request for Container
+
+## How to Apply
+
+1. Go to [IRIS](https://iris.nitk.ac.in/)
+2. Navigate to **Service Requests**
+3. Select **Request for Container**
+
+## Request Flow
+
+Faculty → HoD → CCC Chairman
+
+> *Note: Only Faculty can request this (can request on behalf of students).*
+
+## Fields
+
+<Table>
+  <Thead>
+    <Tr>
+      <Th>Field</Th>
+      <Th>Type</Th>
+      <Th>Required</Th>
+      <Th>Notes</Th>
+    </Tr>
+  </Thead>
+  <Tbody>
+    <Tr>
+      <Td>Configuration</Td>
+      <Td>Radio / Select</Td>
+      <Td>Yes</Td>
+      <Td>Choose "Default" or "Custom"</Td>
+    </Tr>
+    <Tr>
+      <Td>Custom Configuration Text</Td>
+      <Td>Text</Td>
+      <Td>Yes (if "Custom" selected)</Td>
+      <Td></Td>
+    </Tr>
+    <Tr>
+      <Td>Service Termination Date</Td>
+      <Td>Date</Td>
+      <Td>Yes</Td>
+      <Td>Use `NIL` if not applicable</Td>
+    </Tr>
+    <Tr>
+      <Td>Reason</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>Why container is required</Td>
+    </Tr>
+    <Tr>
+      <Td>Declaration</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>IRIS username in BLOCK letters</Td>
+    </Tr>
+  </Tbody>
+</Table>
+
+## Declaration Format
+
+Enter your IRIS username in **BLOCK letters**, including salutation if applicable, exactly as shown in your profile.
+
+<div className="mt-8 flex justify-center">
+  <Button href="https://iris.nitk.ac.in/request/" size="lg" variant="auto">
+    Apply Now
+  </Button>
+</div>

@@ -11,6 +11,12 @@ import {
 } from "./ui/breadcrumb";
 import { useDarkMode } from "../utils/DarkModeContext";
 
+// Extracted prose styles for easier customization
+const proseStyles = {
+  container: "flex-1 border-l border-gray-200 dark:border-gray-700 px-6 md:px-12 dark-transition",
+  content: "prose dark:prose-invert max-w-none dark-transition",
+};
+
 const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const location = useLocation();
   const { darkMode } = useDarkMode();
@@ -292,8 +298,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
             </div>
             
             {/* Article content */}
-            <div className="flex-1 border-l border-gray-200 dark:border-gray-700 px-6 md:px-12 dark-transition">
-              <div style={{ width: "100%" }} className="prose dark:prose-invert max-w-none dark-transition" ref={contentRef}>
+            <div className={proseStyles.container}>
+              <div style={{ width: "100%" }} className={proseStyles.content} ref={contentRef}>
                 {children}
               </div>
             </div>

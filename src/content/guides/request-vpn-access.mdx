@@ -1,0 +1,72 @@
+export const frontmatter = { title: "Request for VPN Access" }
+import { Table, Thead, Tbody, Tr, Th, Td } from '../../components/ui/tables'
+import Button from '../../components/ui/button'
+
+# Request for VPN Access
+
+## How to Apply
+
+1. Go to [IRIS](https://iris.nitk.ac.in/)
+2. Navigate to **Service Requests**
+3. Select **Request for VPN Access**
+
+## Request Flow
+
+Faculty → HoD → CCC Chairman
+
+> *Note: Only Faculty can make this request.*
+
+## Fields
+
+<Table>
+  <Thead>
+    <Tr>
+      <Th>Field</Th>
+      <Th>Type</Th>
+      <Th>Required</Th>
+      <Th>Notes</Th>
+    </Tr>
+  </Thead>
+  <Tbody>
+    <Tr>
+      <Td>IPs for VPN access</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>List of IPs for access</Td>
+    </Tr>
+    <Tr>
+      <Td>Sophos User ID</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>Sophos firewall ID</Td>
+    </Tr>
+    <Tr>
+      <Td>Service Termination Date</Td>
+      <Td>Date</Td>
+      <Td>Yes</Td>
+      <Td>Use `NIL` if not applicable</Td>
+    </Tr>
+    <Tr>
+      <Td>Reason</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>Why VPN access is needed</Td>
+    </Tr>
+    <Tr>
+      <Td>Declaration</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>IRIS username in BLOCK letters</Td>
+    </Tr>
+  </Tbody>
+</Table>
+
+## Declaration Format
+
+Enter your IRIS username in **BLOCK letters**, including salutation if applicable, exactly as shown in your profile.
+
+<div className="mt-8 flex justify-center">
+  <Button href="https://iris.nitk.ac.in/request/" size="lg" variant="auto">
+    Apply Now
+  </Button>
+</div>
