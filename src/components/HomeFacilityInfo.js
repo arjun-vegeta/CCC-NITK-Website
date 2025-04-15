@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const facilities = [
   { id: 1, name: "Facility 1", image: "/images_mdx/placeholder.png" },
@@ -7,29 +8,82 @@ const facilities = [
   { id: 4, name: "Facility 4", image: "/images_mdx/placeholder.png" },
 ];
 
+// Animation Variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i = 1) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: i * 0.3,       // Slightly more delayed
+      duration: 0.7,
+      ease: "easeOut",
+    },
+  }),
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.3, // Match the child delay
+    },
+  },
+};
+
 const FacilityInfo = () => {
   const [selectedFacility, setSelectedFacility] = useState(facilities[0]);
-  const [isImageError, setIsImageError] = useState(false); // Track image load error state
+  const [isImageError, setIsImageError] = useState(false);
+
+  const headingRef = useRef(null);
+  const isHeadingInView = useInView(headingRef, { once: true, margin: "-100px" });
+
+  const timelineRef = useRef(null);
+  const isTimelineInView = useInView(timelineRef, { once: true, margin: "-100px" });
+
+  const imageRef = useRef(null);
+  const isImageInView = useInView(imageRef, { once: true, margin: "-100px" });
 
   const handleFacilityClick = (facility) => {
     setSelectedFacility(facility);
-    setIsImageError(false); // Reset error when changing facility
+    setIsImageError(false);
   };
 
   return (
     <div className="w-full min-h-[calc(100vh-200px)] px-6 py-12 bg-white">
-      <h2 className="text-4xl font-semibold text-gray-800 mb-0">
+      {/* Heading */}
+      <motion.h2
+        ref={headingRef}
+        initial="hidden"
+        animate={isHeadingInView ? "visible" : "hidden"}
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+        }}
+        className="text-4xl font-semibold text-gray-800 mb-0"
+      >
         Some of our <br />
         <span>Facilities</span>
-      </h2>
+      </motion.h2>
 
       <div className="flex">
-        {/* Left Sidebar */}
-        <div className="w-1/3 flex flex-col justify-around">
-          {facilities.map((facility, index, array) => (
-            <div className="flex items-center justify-start gap-x-3 mb-0" key={facility.id}>
+        {/* Left Sidebar - Timeline */}
+        <motion.div
+          className="w-1/3 flex flex-col justify-around"
+          ref={timelineRef}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isTimelineInView ? "visible" : "hidden"}
+        >
+          {facilities.map((facility, index) => (
+            <motion.div
+              custom={index}
+              variants={fadeInUp}
+              className="flex items-center justify-start gap-x-3 mb-0"
+              key={facility.id}
+            >
               <div
-                className={`relative ${index === array.length - 1
+                className={`relative ${index === facilities.length - 1
                   ? ""
                   : "after:absolute after:top-14 after:-bottom-16 after:start-0 after:w-[3px] after:translate-x-[26px] after:bg-[#172F59]"
                   }`}
@@ -47,15 +101,20 @@ const FacilityInfo = () => {
                   {facility.name}
                 </h3>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Right Content */}
-        <div className="w-2/3 flex justify-end items-start relative">
+        {/* Right Content - Image or Placeholder */}
+        <motion.div
+          className="w-2/3 flex justify-end items-start relative"
+          ref={imageRef}
+          initial={{ opacity: 0 }}
+          animate={isImageInView ? { opacity: 1, transition: { duration: 0.9 } } : {}}
+        >
           <div className="bg-white shadow-lg rounded-t-xl overflow-hidden border border-gray-300 w-full">
             {/* Browser Tab */}
-            <div className="absolute w-[20%] flex justify-center -top-9 left-2 bg-[#172F59] px-4 py-1 rounded-t-md shadow font-medium text-white ml-2 text-xl">
+            <div className="absolute w-[20%] flex justify-center -top-8 left-4 bg-[#172F59] px-4 py-1 rounded-t-xl shadow font-medium text-white ml-2 text-xl">
               {selectedFacility.name}
             </div>
 
@@ -66,7 +125,7 @@ const FacilityInfo = () => {
                   src={selectedFacility.image}
                   alt={selectedFacility.name}
                   className="w-full h-full object-cover rounded-lg"
-                  onError={() => setIsImageError(true)} // Set image error state to true on error
+                  onError={() => setIsImageError(true)}
                 />
               ) : (
                 <div className="text-white text-3xl font-semibold text-center">
@@ -75,7 +134,7 @@ const FacilityInfo = () => {
               )}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

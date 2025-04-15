@@ -78,15 +78,17 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8, duration: 0.6 }}
         >
-          <Link
-            to="/report-problem"
+          <a
+            href="https://iris.nitk.ac.in/hrms/hostels/hostel_complaints"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-6 inline-flex items-center gap-2 w-fit px-9 py-[16px] bg-[#0D1C44] text-white text-lg font-semibold rounded-full hover:bg-[#1c2e6d] transition-colors duration-300"
           >
             REPORT PROBLEM
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
             </svg>
-          </Link>
+          </a>
         </motion.div>
       </div>
 
