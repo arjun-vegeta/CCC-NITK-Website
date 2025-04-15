@@ -100,12 +100,14 @@ const FacilityInfo = () => {
         
         {/* Learn more link */}
         <motion.div 
-          className="text-right"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        >
-          <p className="text-lg mb-2">Learn more about all the facilities provided by ccc</p>
+  className="text-right"
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.4, duration: 0.7 }}
+  viewport={{ once: true, amount: 0.9 }}
+>
+
+          <p className="text-lg mt-2 mb-1">Learn more about all the facilities provided by ccc</p>
           <Link to="/facilities" className="text-lg font-medium text-[#1a365d] underline underline-offset-2 flex items-center justify-end">
             Facilities Page
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

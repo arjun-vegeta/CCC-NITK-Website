@@ -62,11 +62,11 @@ const GuideSection = () => {
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.1 }}
       >
         <Link
           to="/network-guides"
-          className="inline-block px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#1a2e60] transition-colors duration-300"
+          className="inline-block mt-3 px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#1a2e60] transition-colors duration-300"
         >
           View All Guides
         </Link>
