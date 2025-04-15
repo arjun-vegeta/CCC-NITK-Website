@@ -16,6 +16,11 @@ module.exports = {
         '2xl': '1400px'
       }
     },
+    fontFamily: {
+      sans: ["Montserrat", "sans-serif"],
+      Montserrat: ["Montserrat", "sans-serif"],
+      Geist: ["Geist", "sans-serif"]
+    },
     extend: {
       typography: {
         DEFAULT: {
@@ -23,6 +28,7 @@ module.exports = {
             'h1, h2, h3, h4, h5, h6': {
               position: 'relative',
               scrollMarginTop: '120px',
+              fontFamily: "'Montserrat', sans-serif",
             },
             h1: {
               fontSize: '2rem',
@@ -41,6 +47,15 @@ module.exports = {
               marginTop: '1.5rem',
               marginBottom: '0.75rem',
               fontWeight: '500',
+            },
+            p: {
+              fontFamily: "'Montserrat', sans-serif",
+            },
+            a: {
+              fontFamily: "'Montserrat', sans-serif",
+            },
+            li: {
+              fontFamily: "'Montserrat', sans-serif",
             },
           },
         },

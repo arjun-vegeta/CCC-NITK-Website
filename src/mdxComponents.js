@@ -3,7 +3,7 @@ import React from 'react';
 // Common styling patterns extracted for easier editing
 const styles = {
   headings: {
-    base: "w-full dark-transition",
+    base: "w-full dark-transition font-['Montserrat']",
     h1: "text-10xl font-extrabold mb-8 mt-10 pb-4 border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white relative",
     h2: "text-2xl font-bold mb-6 mt-8 pb-2 border-b border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-100 relative",
     h3: "text-xl font-semibold mb-4 mt-6 text-gray-800 dark:text-gray-200",
@@ -14,12 +14,12 @@ const styles = {
     }
   },
   text: {
-    paragraph: "mb-4 leading-relaxed text-gray-700 dark:text-gray-300 w-full tracking-wide dark-transition",
-    link: "text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline transition-colors dark-transition",
+    paragraph: "mb-4 leading-relaxed text-gray-700 dark:text-gray-300 w-full tracking-wide dark-transition font-['Montserrat']",
+    link: "text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline transition-colors dark-transition font-['Montserrat']",
     list: {
-      ul: "mb-4 pl-6 list-disc space-y-2 w-full",
-      ol: "mb-4 pl-6 list-decimal space-y-2 w-full",
-      li: "text-gray-700 dark:text-gray-300 tracking-wide dark-transition"
+      ul: "mb-4 pl-6 list-disc space-y-2 w-full font-['Montserrat']",
+      ol: "mb-4 pl-6 list-decimal space-y-2 w-full font-['Montserrat']",
+      li: "text-gray-700 dark:text-gray-300 tracking-wide dark-transition font-['Montserrat']"
     }
   },
   blocks: {

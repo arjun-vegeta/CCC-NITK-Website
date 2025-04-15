@@ -14,7 +14,7 @@ import { useDarkMode } from "../utils/DarkModeContext";
 // Extracted prose styles for easier customization
 const proseStyles = {
   container: "flex-1 border-l border-gray-200 dark:border-gray-700 px-6 md:px-12 dark-transition",
-  content: "prose dark:prose-invert max-w-none dark-transition",
+  content: "prose dark:prose-invert max-w-none dark-transition font-['Montserrat']",
 };
 
 const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
