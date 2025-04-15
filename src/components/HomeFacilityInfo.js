@@ -1,40 +1,73 @@
 import React, { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const facilities = [
-  { id: 1, name: "Facility 1", image: "/images_mdx/placeholder.png" },
-  { id: 2, name: "Facility 2", image: "/images_mdx/placeholder.png" },
-  { id: 3, name: "Facility 3", image: "/images_mdx/placeholder.png" },
-  { id: 4, name: "Facility 4", image: "/images_mdx/placeholder.png" },
+  { 
+    id: 1, 
+    name: "Facility 1 Name", 
+    image: "/hero/ccc.jpg",
+    description: "Description texts here\nMulti Line Description"
+  },
+  { 
+    id: 2, 
+    name: "Facility 2 Name", 
+    image: "/hero/dc.png",
+    description: "Description texts here\nMulti Line Description"
+  },
+  { 
+    id: 3, 
+    name: "Facility 3 Name", 
+    image: "/hero/dc.jpg",
+    description: "Description texts here\nMulti Line Description"
+  },
+  { 
+    id: 4, 
+    name: "Facility 4 Name", 
+    image: "/hero/ccc.jpg",
+    description: "Description texts here\nMulti Line Description"
+  },
 ];
 
-// Animation Variants
+// Animation variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
   visible: (i = 1) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.3,       // Slightly more delayed
+      delay: i * 0.3,
       duration: 0.7,
       ease: "easeOut",
     },
   }),
 };
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.3, // Match the child delay
-    },
+// Enhanced image animations
+const imageVariants = {
+  enter: { opacity: 0, scale: 0.95 },
+  center: { 
+    opacity: 1, 
+    scale: 1,
+    transition: { 
+      duration: 0.5,
+      ease: [0.4, 0.0, 0.2, 1] 
+    } 
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 1.05,
+    transition: { 
+      duration: 0.3,
+      ease: [0.4, 0.0, 0.2, 1] 
+    } 
   },
 };
 
 const FacilityInfo = () => {
   const [selectedFacility, setSelectedFacility] = useState(facilities[0]);
-  const [isImageError, setIsImageError] = useState(false);
-
+  const [hoveredFacility, setHoveredFacility] = useState(null);
+  
   const headingRef = useRef(null);
   const isHeadingInView = useInView(headingRef, { once: true, margin: "-100px" });
 
@@ -46,93 +79,162 @@ const FacilityInfo = () => {
 
   const handleFacilityClick = (facility) => {
     setSelectedFacility(facility);
-    setIsImageError(false);
   };
 
   return (
-    <div className="w-full min-h-[calc(100vh-200px)] px-6 py-12 bg-white">
-      {/* Heading */}
-      <motion.h2
-        ref={headingRef}
-        initial="hidden"
-        animate={isHeadingInView ? "visible" : "hidden"}
-        variants={{
-          hidden: { opacity: 0, y: 20 },
-          visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-        }}
-        className="text-4xl font-semibold text-gray-800 mb-0"
-      >
-        Some of our <br />
-        <span>Facilities</span>
-      </motion.h2>
+    <div className="w-full max-w-[1280px] mx-auto px-6 py-12 font-Montserrat">
+      <div className="flex justify-between items-start mb-8">
+        {/* Heading */}
+        <motion.h2
+          ref={headingRef}
+          initial="hidden"
+          animate={isHeadingInView ? "visible" : "hidden"}
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+          }}
+          className="text-4xl font-bold text-[#0D1C44]"
+        >
+          Some of our Facilities
+        </motion.h2>
+        
+        {/* Learn more link */}
+        <motion.div 
+          className="text-right"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+        >
+          <p className="text-lg mb-2">Learn more about all the facilities provided by ccc</p>
+          <Link to="/facilities" className="text-lg font-medium text-[#1a365d] underline underline-offset-2 flex items-center justify-end">
+            Facilities Page
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </Link>
+        </motion.div>
+      </div>
 
       <div className="flex">
         {/* Left Sidebar - Timeline */}
         <motion.div
-          className="w-1/3 flex flex-col justify-around"
+          className="w-1/3"
           ref={timelineRef}
-          variants={containerVariants}
           initial="hidden"
           animate={isTimelineInView ? "visible" : "hidden"}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.3,
+              }
+            }
+          }}
         >
-          {facilities.map((facility, index) => (
-            <motion.div
-              custom={index}
-              variants={fadeInUp}
-              className="flex items-center justify-start gap-x-3 mb-0"
-              key={facility.id}
-            >
-              <div
-                className={`relative ${index === facilities.length - 1
-                  ? ""
-                  : "after:absolute after:top-14 after:-bottom-16 after:start-0 after:w-[3px] after:translate-x-[26px] after:bg-[#172F59]"
-                  }`}
+          {facilities.map((facility, index) => {
+            const isActive = selectedFacility.id === facility.id;
+            const isHovered = hoveredFacility === facility.id;
+            
+            return (
+              <motion.div 
+                key={facility.id} 
+                custom={index}
+                variants={fadeInUp}
+                className="flex mb-12 cursor-pointer"
+                onClick={() => handleFacilityClick(facility)}
+                onMouseEnter={() => setHoveredFacility(facility.id)}
+                onMouseLeave={() => setHoveredFacility(null)}
               >
-                <div className="relative z-10 size-19 flex justify-center items-center">
-                  <div className="size-14 rounded-full bg-[#172F59]"></div>
+                {/* Timeline dot and line */}
+                <div className="relative mr-4">
+                  <div className={`bg-[#0D1C44] rounded-full h-14 w-14 flex items-center justify-center z-10 relative`}>
+                    {/* Active indicator (triangle) */}
+                    {isActive && (
+                      // <div className="w-0 h-0 translate-x-[2px]
+                      //   border-t-[10px] border-t-transparent 
+                      //   border-l-[15px] border-l-white 
+                      //   border-b-[10px] border-b-transparent">
+                      // </div>
+                      <div className="absolute w-5 h-5 bg-white rounded-full"></div>
+                    )}
+                    
+                    {/* Hover indicator (inner circle) */}
+                    {isHovered && !isActive && (
+                      <div className="absolute w-4 h-4 bg-gray-400 rounded-full"></div>
+                    )}
+                  </div>
+                  
+                  {index < facilities.length - 1 && (
+                    <div className="absolute top-16 bottom-0 left-1/2 w-0.5 bg-[#1a365d] -translate-x-1/2 h-[50px]"></div>
+                  )}
                 </div>
-              </div>
+                
+                {/* Facility text with hover effect */}
+                <div>
+                  <h3 
+                    className={`text-xl transition-colors duration-300 ${
+                      isActive ? 'font-bold' : 'font-semibold'
+                    } ${isHovered ? 'text-[#3182ce]' : 'text-[#1a365d]'}`}  
+                  >
+                    {facility.name}
+                  </h3>
+                  <p 
+                    className={`whitespace-pre-line transition-colors duration-300 ${
+                      isActive ? 'font-normal' : 'font-normal'
+                    } ${isHovered ? 'text-[#3182ce]' : 'text-gray-700'}`}
 
-              <div>
-                <h3
-                  className="flex gap-x-1.5 text-2xl cursor-pointer font-semibold text-[#172F59]"
-                  onClick={() => handleFacilityClick(facility)}
-                >
-                  {facility.name}
-                </h3>
-              </div>
-            </motion.div>
-          ))}
+                  >
+                    {facility.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </motion.div>
 
-        {/* Right Content - Image or Placeholder */}
+        {/* Right Content - Image with enhanced animations */}
         <motion.div
-          className="w-2/3 flex justify-end items-start relative"
+          className="w-2/3 relative"
           ref={imageRef}
           initial={{ opacity: 0 }}
-          animate={isImageInView ? { opacity: 1, transition: { duration: 0.9 } } : {}}
+          animate={isImageInView ? { opacity: 1, transition: { duration: 0.9, delay: 0.5 } } : {}}
         >
-          <div className="bg-white shadow-lg rounded-t-xl overflow-hidden border border-gray-300 w-full">
-            {/* Browser Tab */}
-            <div className="absolute w-[20%] flex justify-center -top-8 left-4 bg-[#172F59] px-4 py-1 rounded-t-xl shadow font-medium text-white ml-2 text-xl">
-              {selectedFacility.name}
-            </div>
-
-            {/* Facility Image or Placeholder */}
-            <div className="w-full bg-[#192F59] h-[calc(100vh-150px)] flex items-center justify-center">
-              {!isImageError ? (
-                <img
-                  src={selectedFacility.image}
+          <div className="rounded-xl overflow-hidden shadow-lg">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedFacility.id}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                variants={imageVariants}
+                className="relative"
+                style={{ transformOrigin: "center" }}
+              >
+                <motion.img
+                  src={selectedFacility.image || "/images_mdx/placeholder.png"}
                   alt={selectedFacility.name}
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={() => setIsImageError(true)}
+                  className="w-full h-[450px] object-cover"
+                  onError={(e) => {
+                    e.target.src = "/images_mdx/placeholder.png";
+                  }}
+                  whileHover={{ 
+                    scale: 1.03,
+                    transition: { duration: 0.3 }
+                  }}
                 />
-              ) : (
-                <div className="text-white text-3xl font-semibold text-center">
-                  {selectedFacility.name}
-                </div>
-              )}
-            </div>
+                
+                {/* Optional highlight boxes */}
+                {/* <div className="absolute top-4 right-4 flex space-x-4">
+                  <div className="bg-[#1a365d] text-white p-6 rounded-lg">
+                    <h4 className="text-xl font-semibold mb-2">Facility Highlight</h4>
+                    <p>Description text</p>
+                  </div>
+                  <div className="bg-[#1a365d] text-white p-6 rounded-lg">
+                    <h4 className="text-xl font-semibold mb-2">Facility Highlight</h4>
+                    <p>Description text</p>
+                  </div>
+                </div> */}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>

@@ -5,30 +5,31 @@ import { Link } from "react-router-dom";
 const GuideSection = () => {
   const infoBoxes = [
     {
-      heading: "Eduroam",
-      description: "Guide to connecting to eduroam WiFi at NITK",
+      heading: "Request for Institute URL",
+      description: "Instructions to request and access the official NITK institute URL.",
       image: "/HomeGuide/image1.jpg",
       link: "/network-guides/eduroam"
     },
     {
-      heading: "NITK Net",
-      description: "NITK Net Captive Portal Configuration",
+      heading: "Request For Container",
+      description: "Steps to request a container for internet access at NITK.",
       image: "/HomeGuide/image2.jpg",
       link: "/network-guides/captive_portal"
     },
     {
-      heading: "Troubleshooting",
-      description: "Step-by-step guide for troubleshooting network",
+      heading: "Guest Captive Portal ID",
+      description: "How to request a guest login ID for NITK's captive portal.",
       image: "/HomeGuide/image3.jpg",
       link: "/network-guides/guide_for_troubleshooting"
     },
     {
-      heading: "NITK VPN",
-      description: "Guide to request and connect to NITK VPN",
+      heading: "Request For NITK VPN",
+      description: "Guide to request VPN and connect securely to NITK's network.",
       image: "/HomeGuide/image4.jpg",
       link: "/network-guides/vpn"
     }
   ];
+  
 
   return (
     <section className="max-w-[1280px] mx-auto py-16 px-4 font-Montserrat">
