@@ -5,29 +5,30 @@ import { Link } from "react-router-dom";
 const facilities = [
   { 
     id: 1, 
-    name: "Facility 1 Name", 
-    image: "/hero/ccc.jpg",
-    description: "Description texts here\nMulti Line Description"
+    name: "Data Centre & Server Infrastructure", 
+    image: "/hero/dc.jpg",
+    description: "High-performance servers and secure data storage for all your business needs."
   },
   { 
     id: 2, 
-    name: "Facility 2 Name", 
-    image: "/hero/dc.png",
-    description: "Description texts here\nMulti Line Description"
+    name: "General Purpose Computing & Labs", 
+    image: "/images_mdx/Lab.png",
+    description: "Fully equipped labs for software development, research, and innovation."
   },
   { 
     id: 3, 
-    name: "Facility 3 Name", 
-    image: "/hero/dc.jpg",
-    description: "Description texts here\nMulti Line Description"
+    name: "Website Hosting & Management Service", 
+    image: "/hero/dc.png",
+    description: "Reliable hosting services with seamless management and  monitoring."
   },
   { 
     id: 4, 
-    name: "Facility 4 Name", 
-    image: "/hero/ccc.jpg",
-    description: "Description texts here\nMulti Line Description"
+    name: "Skill Development Centre", 
+    image: "/images_mdx/Lab.png",
+    description: "Enhancing skills through training programs and hands-on learning."
   },
 ];
+
 
 // Animation variants
 const fadeInUp = {
@@ -120,7 +121,7 @@ const FacilityInfo = () => {
       <div className="flex">
         {/* Left Sidebar - Timeline */}
         <motion.div
-          className="w-1/3"
+          className="w-1/3 mr-10"
           ref={timelineRef}
           initial="hidden"
           animate={isTimelineInView ? "visible" : "hidden"}
@@ -141,7 +142,7 @@ const FacilityInfo = () => {
                 key={facility.id} 
                 custom={index}
                 variants={fadeInUp}
-                className="flex mb-12 cursor-pointer"
+                className="flex mb-9 cursor-pointer"
                 onClick={() => handleFacilityClick(facility)}
                 onMouseEnter={() => setHoveredFacility(facility.id)}
                 onMouseLeave={() => setHoveredFacility(null)}
@@ -166,15 +167,15 @@ const FacilityInfo = () => {
                   </div>
                   
                   {index < facilities.length - 1 && (
-                    <div className="absolute top-16 bottom-0 left-1/2 w-0.5 bg-[#1a365d] -translate-x-1/2 h-[50px]"></div>
+                    <div className="absolute top-16 bottom-0 left-1/2 w-0.5 bg-[#1a365d] -translate-x-1/2 h-[66px]"></div>
                   )}
                 </div>
                 
                 {/* Facility text with hover effect */}
                 <div>
                   <h3 
-                    className={`text-xl transition-colors duration-300 ${
-                      isActive ? 'font-bold' : 'font-semibold'
+                    className={`text-lg transition-colors duration-300 ${
+                      isActive ? 'font-bold' : 'font-bold'
                     } ${isHovered ? 'text-[#3182ce]' : 'text-[#1a365d]'}`}  
                   >
                     {facility.name}
@@ -195,7 +196,7 @@ const FacilityInfo = () => {
 
         {/* Right Content - Image with enhanced animations */}
         <motion.div
-          className="w-2/3 relative"
+          className="w-2/3 relative mt-6"
           ref={imageRef}
           initial={{ opacity: 0 }}
           animate={isImageInView ? { opacity: 1, transition: { duration: 0.9, delay: 0.5 } } : {}}

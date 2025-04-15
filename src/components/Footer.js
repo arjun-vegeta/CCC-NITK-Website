@@ -112,7 +112,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Social Media Links
       <div className="mt-8 border-t-2 border-green-600 pt-4">
         <div className="container mx-auto flex justify-center space-x-8">
           <a
@@ -186,7 +185,7 @@ const Footer = () => {
             </svg>{" "}
           </a>
         </div>
-      </div> */}
+      </div> 
     </footer>
   );
 };

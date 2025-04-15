@@ -7,26 +7,26 @@ const GuideSection = () => {
     {
       heading: "Request for Institute URL",
       description: "Instructions to request and access the official NITK institute URL.",
-      image: "/HomeGuide/image1.jpg",
-      link: "/guides/eduroam"
+      image: "/guides/url.png",
+      link: "/guides/request-institute-url"
     },
     {
       heading: "Request For Container",
       description: "Steps to request a container for internet access at NITK.",
-      image: "/HomeGuide/image2.jpg",
-      link: "/guides/captive_portal"
+      image: "/guides/server.png",
+      link: "/guides/request-container"
     },
     {
       heading: "Guest Captive Portal ID",
       description: "How to request a guest login ID for NITK's captive portal.",
-      image: "/HomeGuide/image3.jpg",
-      link: "/guides/guide_for_troubleshooting"
+      image: "/guides/captive.png",
+      link: "/guides/request-captive-id"
     },
     {
       heading: "Request For NITK VPN",
       description: "Guide to request VPN and connect securely to NITK's network.",
-      image: "/HomeGuide/image4.jpg",
-      link: "/guides/vpn"
+      image: "/guides/vpn.png",
+      link: "/guides/request-vpn-access"
     }
   ];
   
@@ -41,13 +41,14 @@ const GuideSection = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
-          Learn More About Guides
-        </h2>
-        <p className="text-gray-600">
-          Some Long Description Line Goes Right Here, Keep It Long Itself For Design Sake
-        </p>
-      </motion.div>
+  <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
+    Learn More About Guides
+  </h2>
+  <p className="text-gray-600">
+    Discover guides to help you navigate the Central Computer Center's services, resources and facilities.
+  </p>
+</motion.div>
+
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 mb-10">

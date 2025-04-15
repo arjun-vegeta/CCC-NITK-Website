@@ -37,28 +37,28 @@ const SecondHeroSection = () => {
     {
       id: 1,
       title: "6000+ Students and Staff",
-      description: "Description texts here",
+      description: "",
       imgHeight: 290,
       imgSrc: "/stats/user.png"
     },
     {
       id: 2,
       title: "22+ Hostels",
-      description: "Description texts here",
+      description: "",
       imgHeight: 340,
       imgSrc: "/stats/hostel.png"
     },
     {
       id: 3,
       title: "200+ Staff Quarters",
-      description: "Description texts here",
+      description: "",
       imgHeight: 400,
       imgSrc: "/stats/dept.png"
     },
     {
       id: 4,
       title: "1000+ Access Points",
-      description: "Description texts here",
+      description: "",
       imgHeight: 320,
       imgSrc: "/stats/wifi.png"
     }

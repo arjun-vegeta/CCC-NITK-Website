@@ -1,0 +1,91 @@
+export const frontmatter = { title: "Problem Reporting" }
+import { Table, Thead, Tbody, Tr, Th, Td } from '../../components/ui/tables'
+import Button from '../../components/ui/button'
+
+# Problem Reporting
+
+## How to create a complaint
+
+1. Go to [IRIS](https://iris.nitk.ac.in/)
+2. Navigate to **Hostel Dashboard** under the **Campus** section
+3. Select **Hostel Complaint** from the sidebar
+4. Click on **New Complaint** to file your complaint
+
+Alternatively, you can go directly to the complaint page:
+- [Hostel Complaint Page](https://iris.nitk.ac.in/hrms/hostels/hostel_complaints)
+
+## Read Before Reporting
+
+Please make sure to check the troubleshooting guide before filing a complaint: [Troubleshooting Guide](/guides/guide_for_troubleshooting)
+
+## Fields
+
+<Table>
+  <Thead>
+    <Tr>
+      <Th>Field</Th>
+      <Th>Type</Th>
+      <Th>Required</Th>
+      <Th>Notes</Th>
+    </Tr>
+  </Thead>
+  <Tbody>
+    <Tr>
+      <Td>Contact Number</Td>
+      <Td>Text</Td>
+      <Td>Yes</Td>
+      <Td>Your phone number for contact</Td>
+    </Tr>
+    <Tr>
+      <Td>Complaint Nature</Td>
+      <Td>Select</Td>
+      <Td>Yes</Td>
+      <Td>Select the nature of the complaint</Td>
+    </Tr>
+    <Tr>
+      <Td>Block</Td>
+      <Td>Select</Td>
+      <Td>Yes</Td>
+      <Td>Select your hostel block</Td>
+    </Tr>
+    <Tr>
+      <Td>Complaint Sub Nature</Td>
+      <Td>Select</Td>
+      <Td>Yes</Td>
+      <Td>Subcategory of the complaint (e.g., Network Complaint)</Td>
+    </Tr>
+    <Tr>
+      <Td>Issue With</Td>
+      <Td>Select</Td>
+      <Td>Yes</Td>
+      <Td>Select the issue you're facing (e.g., LAN Port)</Td>
+    </Tr>
+    <Tr>
+      <Td>Description</Td>
+      <Td>Text Area</Td>
+      <Td>Yes</Td>
+      <Td>Provide a detailed description of the issue</Td>
+    </Tr>
+  </Tbody>
+</Table>
+
+## Application Flow
+
+1. Fill in the required fields on the complaint form.
+2. Submit the complaint.
+3. You can check the status of your complaint later on the **Hostel Complaint Dashboard** in IRIS.
+
+<div className="mt-8 mb-10 flex justify-center">
+  <Button href="https://iris.nitk.ac.in/hrms/hostels/hostel_complaints/new" size="lg" variant="auto">
+    Report Problem Now
+  </Button>
+</div>
+
+## Contact Information
+
+For further assistance or support, you can contact:
+- **Email**: [notifyccc@nitk.edu.in](mailto:notifyccc@nitk.edu.in)
+- **Phone**: +91-824-2473083
+
+
+---
