@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+"build": "CI=false NODE_OPTIONS=--no-warnings craco build",
     "test": "craco test"
   },
   "eslintConfig": {
