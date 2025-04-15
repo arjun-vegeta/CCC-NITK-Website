@@ -3,15 +3,15 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 const DarkModeContext = createContext();
 
 export function DarkModeProvider({ children }) {
-  // Initialize state from localStorage or default to user's preference
+  // Initialize state from localStorage or default to light mode
   const [darkMode, setDarkMode] = useState(() => {
     // Check if a value exists in localStorage
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode !== null) {
       return savedMode === 'true';
     }
-    // If no saved preference, use system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Default to light mode (false)
+    return false;
   });
 
   useEffect(() => {
@@ -44,4 +44,4 @@ export function useDarkMode() {
     throw new Error('useDarkMode must be used within a DarkModeProvider');
   }
   return context;
-} 
+}
