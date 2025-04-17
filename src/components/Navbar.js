@@ -3,49 +3,46 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { IoSearch, IoMoon, IoSunny } from "react-icons/io5";
 import { useDarkMode } from "../utils/DarkModeContext";
+import SearchbarModal from "./SearchBarModal";
 
 function Navbar() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [textOpacity, setTextOpacity] = useState(1);
   const logoRef = useRef(null);
   const textRef = useRef(null);
-  
-  // Dynamic underline state
-  const [underlineStyle, setUnderlineStyle] = useState({ 
-    width: 0, 
-    left: 0, 
-    opacity: 0 
-  });
+
+  const [underlineStyle, setUnderlineStyle] = useState({ width: 0, left: 0, opacity: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const navItemsRef = useRef([]);
   const navContainerRef = useRef(null);
+
+  // Tooltip visibility states
+  const [showThemeTooltip, setShowThemeTooltip] = useState(false);
+  const [showSearchTooltip, setShowSearchTooltip] = useState(false);
+
+  const [showSearchBar, setSearchBar] = useState(false);
   
-  // Calculate underline position more precisely
+  // Mobile menu state
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const calculateUnderlinePosition = (index) => {
     const item = navItemsRef.current[index];
     const container = navContainerRef.current;
-    
+
     if (item && container) {
       const rect = item.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
-      
-      // Get the text node width more precisely
       const textWidth = rect.width;
-      
-      // Calculate position relative to the container
       const left = rect.left - containerRect.left;
-      
+
       return { width: textWidth, left };
     }
-    
+
     return { width: 0, left: 0 };
   };
-  
-  // Set default underline position on initial render (Home)
+
   useEffect(() => {
     const position = calculateUnderlinePosition(0);
-    
-    // Set initial position but keep opacity 0 initially
     setUnderlineStyle({
       width: position.width,
       left: position.left,
@@ -53,15 +50,13 @@ function Navbar() {
     });
   }, []);
 
-  // Recalculate on window resize
   useEffect(() => {
     const handleResize = () => {
       if (isHovering) {
-        // Find the currently hovered index
         const index = navItemsRef.current.findIndex(ref => 
-          ref === document.activeElement || ref.matches(':hover')
+          ref === document.activeElement || ref?.matches?.(':hover')
         );
-        
+
         if (index >= 0) {
           const position = calculateUnderlinePosition(index);
           setUnderlineStyle(prev => ({
@@ -71,16 +66,20 @@ function Navbar() {
           }));
         }
       }
+      
+      // Close mobile menu on resize above mobile breakpoint
+      if (window.innerWidth >= 768 && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isHovering]);
+  }, [isHovering, isMenuOpen]);
 
-  // Handle hover effect
   const handleMouseEnter = (index) => {
     const position = calculateUnderlinePosition(index);
-    
+
     setUnderlineStyle({
       width: position.width,
       left: position.left,
@@ -88,7 +87,7 @@ function Navbar() {
     });
     setIsHovering(true);
   };
-  
+
   const handleMouseLeave = () => {
     setUnderlineStyle(prev => ({
       ...prev,
@@ -97,78 +96,85 @@ function Navbar() {
     setIsHovering(false);
   };
 
+  // Close the search modal
+  const closeSearchBar = () => {
+    setSearchBar(false);
+  };
+
+  // Toggle mobile menu
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <div className="w-full h-26 sticky px-20 pt-2 pb-1 top-0 z-50 bg-[#0A182F] dark:bg-black border-b border-gray-300 dark:border-gray-700 dark-transition home-navbar shadow-sm">
-      {/* Single line navbar */}
-      <div className="flex items-center justify-between px-6 py-2">
-        {/* Left side - Logo area remains the same */}
+    <div className="w-full sticky top-0 z-50 bg-[#0A182F] dark:bg-black border-b border-gray-300 dark:border-gray-700 dark-transition home-navbar shadow-sm">
+      <div className="flex items-center justify-between px-4 md:px-6 py-2">
+        
+        {/* Logo */}
         <div className="flex items-center cursor-pointer" ref={logoRef}>
           <Link to="/" className="flex items-center">
             <img
               src={darkMode ? "/logo-dark.png" : "/logo-dark.png"}
               alt="NITK Logo"
-              className="w-20 object-scale-down transition-all duration-300"
+              className="w-12 md:w-20 object-scale-down transition-all duration-300"
             />
             <div
               className="ml-2 leading-tight transition-opacity duration-300"
               style={{ opacity: textOpacity }}
               ref={textRef}
             >
-              <h1 className="font-bold text-[#ffffff] dark:text-gray-200 text-xl dark-transition">National Institute of Technology Karnataka</h1>
-              <h1 className="font-black text-[#ffffff] dark:text-gray-100 text-3xl dark-transition">CCC</h1>
+              <h1 className="font-bold text-[#ffffff] dark:text-gray-200 text-sm md:text-xl dark-transition">National Institute of Technology Karnataka</h1>
+              <h1 className="font-black text-[#ffffff] dark:text-gray-100 text-xl md:text-3xl dark-transition">CCC</h1>
             </div>
           </Link>
         </div>
 
-        {/* Right side - Navigation with dynamic underline */}
-        <div className="flex items-center space-x-6">
-          {/* Navigation links */}
+        {/* Hamburger Menu Button (Mobile) */}
+        <div className="md:hidden">
+          <button 
+            onClick={toggleMenu}
+            className="flex flex-col justify-center items-center w-10 h-10 relative focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            <span 
+              className={`block w-6 h-0.5 bg-white rounded-sm transition-all duration-300 ease-out ${
+                isMenuOpen ? 'rotate-45 translate-y-1' : ''
+              }`}
+            />
+            <span 
+              className={`block w-6 h-0.5 bg-white rounded-sm mt-1.5 transition-all duration-300 ease-out ${
+                isMenuOpen ? 'opacity-0' : ''
+              }`}
+            />
+            <span 
+              className={`block w-6 h-0.5 bg-white rounded-sm mt-1.5 transition-all duration-300 ease-out ${
+                isMenuOpen ? '-rotate-45 -translate-y-[11px]' : ''
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* Navigation and Controls (Desktop) */}
+        <div className="hidden md:flex items-center space-x-6">
+          
+          {/* Navigation Links */}
           <div 
             className="flex items-center space-x-6 relative" 
             onMouseLeave={handleMouseLeave}
             ref={navContainerRef}
           >
-            {/* Home link - Using spans inside links for more precise text measuring */}
-            <Link
-              to="/"
-              ref={el => navItemsRef.current[0] = el}
-              onMouseEnter={() => handleMouseEnter(0)}
-              className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
-            >
-              <span className="inline-block">Home</span>
-            </Link>
-            
-            {/* Guides link */}
-            <Link
-              to="/guides"
-              ref={el => navItemsRef.current[1] = el}
-              onMouseEnter={() => handleMouseEnter(1)}
-              className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
-            >
-              <span className="inline-block">Guides</span>
-            </Link>
-            
-            {/* Facilities link */}
-            <Link
-              to="/facilities"
-              ref={el => navItemsRef.current[2] = el}
-              onMouseEnter={() => handleMouseEnter(2)}
-              className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
-            >
-              <span className="inline-block">Facilities</span>
-            </Link>
-            
-            {/* About Us link */}
-            <Link
-              to="/about"
-              ref={el => navItemsRef.current[3] = el}
-              onMouseEnter={() => handleMouseEnter(3)}
-              className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
-            >
-              <span className="inline-block">About</span>
-            </Link>
-            
-            {/* Dynamic underline element */}
+            {["Home", "Guides", "Facilities", "About"].map((label, i) => (
+              <Link
+                key={label}
+                to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
+                ref={el => navItemsRef.current[i] = el}
+                onMouseEnter={() => handleMouseEnter(i)}
+                className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
+              >
+                <span className="inline-block">{label}</span>
+              </Link>
+            ))}
+
             <div 
               className="absolute bottom-0 bg-[#0FA444] h-0.5 transition-all duration-300 ease-in-out"
               style={{
@@ -179,29 +185,108 @@ function Navbar() {
               }}
             />
           </div>
-          
-          {/* Search icon button */}
-          <button 
-            aria-label="Search"
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+
+          {/* Search Icon with Tooltip */}
+          <div 
+            className="relative flex flex-col items-center"
+            onMouseEnter={() => setShowSearchTooltip(true)}
+            onMouseLeave={() => setShowSearchTooltip(false)}
           >
-            <IoSearch className="text-xl text-gray-100 dark:text-gray-200" />
-          </button>
-          
-          {/* Dark/Light mode toggle */}
-          <button 
-            onClick={toggleDarkMode}
-            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-            className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-          >
-            {darkMode ? (
-              <IoSunny className="text-xl text-yellow-500" />
-            ) : (
-              <IoMoon className="text-xl text-gray-100 dark:text-gray-400" />
+            <button 
+              aria-label="Search"
+              className="p-2 rounded-full hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors"
+              onClick={() => setSearchBar(!showSearchBar)}
+            >
+              <IoSearch className="text-xl text-gray-100 dark:text-gray-200" />
+            </button>
+            {showSearchTooltip && (
+              <div className="absolute top-full mt-1 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow z-10 whitespace-nowrap">
+                Toggle search
+              </div>
             )}
-          </button>
+          </div>
+
+          {/* Dark/Light Mode Toggle with Tooltip */}
+          <div 
+            className="relative flex flex-col items-center"
+            onMouseEnter={() => setShowThemeTooltip(true)}
+            onMouseLeave={() => setShowThemeTooltip(false)}
+          >
+            <button 
+              onClick={toggleDarkMode}
+              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+              className="p-2 rounded-full hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors"
+            >
+              {darkMode ? (
+                <IoSunny className="text-xl text-gray-100" />
+              ) : (
+                <IoMoon className="text-xl text-gray-100 dark:text-gray-400" />
+              )}
+            </button>
+            {showThemeTooltip && (
+              <div className="absolute top-full mt-1 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow z-10 whitespace-nowrap">
+                Toggle theme
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      <div 
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
+          isMenuOpen ? 'max-h-96' : 'max-h-0'
+        }`}
+      >
+        <div className="px-4 py-2 bg-[#0A182F] dark:bg-black">
+          {/* Mobile Navigation Links */}
+          <nav className="flex flex-col space-y-4 py-4">
+            {["Home", "Guides", "Facilities", "About"].map((label) => (
+              <Link
+                key={label}
+                to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
+                className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all py-2 px-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+          
+          {/* Mobile Search and Theme Controls */}
+          <div className="flex items-center justify-between py-4 border-t border-gray-700">
+            <button 
+              onClick={() => {
+                setSearchBar(!showSearchBar);
+                setIsMenuOpen(false);
+              }}
+              className="flex items-center space-x-2 text-white p-2"
+            >
+              <IoSearch className="text-xl" />
+              <span>Search</span>
+            </button>
+            
+            <button 
+              onClick={toggleDarkMode}
+              className="flex items-center space-x-2 text-white p-2"
+            >
+              {darkMode ? (
+                <>
+                  <IoSunny className="text-xl" />
+                  <span>Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <IoMoon className="text-xl" />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+      <SearchbarModal display={showSearchBar} closeSearch={closeSearchBar}/>
     </div>
   );
 }

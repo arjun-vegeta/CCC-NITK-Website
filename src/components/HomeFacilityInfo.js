@@ -1,34 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const facilities = [
-  { 
-    id: 1, 
-    name: "Data Centre & Server Infrastructure", 
+  {
+    id: 1,
+    name: "Data Centre & Server Infrastructure",
     image: "/hero/dc.jpg",
     description: "High-performance servers and secure data storage for all your business needs."
   },
-  { 
-    id: 2, 
-    name: "General Purpose Computing & Labs", 
+  {
+    id: 2,
+    name: "General Purpose Computing & Labs",
     image: "/images_mdx/Lab.png",
     description: "Fully equipped labs for software development, research, and innovation."
   },
-  { 
-    id: 3, 
-    name: "Website Hosting & Management Service", 
+  {
+    id: 3,
+    name: "Website Hosting & Management Service",
     image: "/hero/dc.png",
-    description: "Reliable hosting services with seamless management and  monitoring."
+    description: "Reliable hosting services with seamless management and monitoring."
   },
-  { 
-    id: 4, 
-    name: "Skill Development Centre", 
+  {
+    id: 4,
+    name: "Skill Development Centre",
     image: "/images_mdx/Lab.png",
     description: "Enhancing skills through training programs and hands-on learning."
   },
 ];
-
 
 // Animation variants
 const fadeInUp = {
@@ -47,28 +46,30 @@ const fadeInUp = {
 // Enhanced image animations
 const imageVariants = {
   enter: { opacity: 0, scale: 0.95 },
-  center: { 
-    opacity: 1, 
+  center: {
+    opacity: 1,
     scale: 1,
-    transition: { 
+    transition: {
       duration: 0.5,
-      ease: [0.4, 0.0, 0.2, 1] 
-    } 
+      ease: [0.4, 0.0, 0.2, 1]
+    }
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     scale: 1.05,
-    transition: { 
+    transition: {
       duration: 0.3,
-      ease: [0.4, 0.0, 0.2, 1] 
-    } 
+      ease: [0.4, 0.0, 0.2, 1]
+    }
   },
 };
 
 const FacilityInfo = () => {
   const [selectedFacility, setSelectedFacility] = useState(facilities[0]);
   const [hoveredFacility, setHoveredFacility] = useState(null);
-  
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  // Create refs for intersection observers
   const headingRef = useRef(null);
   const isHeadingInView = useInView(headingRef, { once: true, margin: "-100px" });
 
@@ -78,13 +79,49 @@ const FacilityInfo = () => {
   const imageRef = useRef(null);
   const isImageInView = useInView(imageRef, { once: true, margin: "-100px" });
 
+  // Create refs for each facility item to track visibility
+  const facilityRefs = useRef(facilities.map(() => React.createRef()));
+
+  // Set up intersection observers for mobile scrolling behavior
+  useEffect(() => {
+    // Only run on mobile
+    if (window.innerWidth > 768) return;
+
+    const observers = facilityRefs.current.map((ref, index) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const [entry] = entries;
+          if (entry.isIntersecting) {
+            setSelectedFacility(facilities[index]);
+          }
+        },
+        { threshold: 0.7 } // Trigger when 70% of element is visible
+      );
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return observer;
+    });
+
+    // Cleanup observers
+    return () => {
+      observers.forEach((observer, index) => {
+        if (facilityRefs.current[index].current) {
+          observer.unobserve(facilityRefs.current[index].current);
+        }
+      });
+    };
+  }, []);
+
   const handleFacilityClick = (facility) => {
     setSelectedFacility(facility);
   };
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto px-6 py-12 font-Montserrat">
-      <div className="flex justify-between items-start mb-8">
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-6 py-12 font-Montserrat">
+      <div className="flex justify-between items-start mb-8 flex-wrap">
         {/* Heading */}
         <motion.h2
           ref={headingRef}
@@ -94,20 +131,19 @@ const FacilityInfo = () => {
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
           }}
-          className="text-4xl font-bold text-[#0D1C44]"
+          className="text-4xl font-bold text-[#0D1C44] md:text-3xl sm:text-2xl"
         >
           Some of our Facilities
         </motion.h2>
-        
-        {/* Learn more link */}
-        <motion.div 
-  className="text-right"
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ delay: 0.4, duration: 0.7 }}
-  viewport={{ once: true, amount: 0.9 }}
->
 
+        {/* Learn more link - Hidden on mobile */}
+        <motion.div
+          className="text-right hidden md:block"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.7 }}
+          viewport={{ once: true, amount: 0.9 }}
+        >
           <p className="text-lg mt-2 mb-1">Learn more about all the facilities provided by ccc</p>
           <Link to="/facilities" className="text-lg font-medium text-[#1a365d] underline underline-offset-2 flex items-center justify-end">
             Facilities Page
@@ -118,7 +154,8 @@ const FacilityInfo = () => {
         </motion.div>
       </div>
 
-      <div className="flex">
+      {/* Desktop Layout */}
+      <div className="hidden md:flex">
         {/* Left Sidebar - Timeline */}
         <motion.div
           className="w-1/3 mr-10"
@@ -136,10 +173,10 @@ const FacilityInfo = () => {
           {facilities.map((facility, index) => {
             const isActive = selectedFacility.id === facility.id;
             const isHovered = hoveredFacility === facility.id;
-            
+
             return (
-              <motion.div 
-                key={facility.id} 
+              <motion.div
+                key={facility.id}
                 custom={index}
                 variants={fadeInUp}
                 className="flex mb-9 cursor-pointer"
@@ -152,39 +189,29 @@ const FacilityInfo = () => {
                   <div className={`bg-[#0D1C44] rounded-full h-14 w-14 flex items-center justify-center z-10 relative`}>
                     {/* Active indicator (triangle) */}
                     {isActive && (
-                      // <div className="w-0 h-0 translate-x-[2px]
-                      //   border-t-[10px] border-t-transparent 
-                      //   border-l-[15px] border-l-white 
-                      //   border-b-[10px] border-b-transparent">
-                      // </div>
                       <div className="absolute w-5 h-5 bg-white rounded-full"></div>
                     )}
-                    
+
                     {/* Hover indicator (inner circle) */}
                     {isHovered && !isActive && (
                       <div className="absolute w-4 h-4 bg-gray-400 rounded-full"></div>
                     )}
                   </div>
-                  
+
                   {index < facilities.length - 1 && (
                     <div className="absolute top-16 bottom-0 left-1/2 w-0.5 bg-[#1a365d] -translate-x-1/2 h-[66px]"></div>
                   )}
                 </div>
-                
+
                 {/* Facility text with hover effect */}
                 <div>
-                  <h3 
-                    className={`text-lg transition-colors duration-300 ${
-                      isActive ? 'font-bold' : 'font-bold'
-                    } ${isHovered ? 'text-[#3182ce]' : 'text-[#1a365d]'}`}  
+                  <h3
+                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce]' : 'text-[#1a365d]'}`}
                   >
                     {facility.name}
                   </h3>
-                  <p 
-                    className={`whitespace-pre-line transition-colors duration-300 ${
-                      isActive ? 'font-normal' : 'font-normal'
-                    } ${isHovered ? 'text-[#3182ce]' : 'text-gray-700'}`}
-
+                  <p
+                    className={`whitespace-pre-line transition-colors duration-300 ${isActive ? 'font-normal' : 'font-normal'} ${isHovered ? 'text-[#3182ce]' : 'text-gray-700'}`}
                   >
                     {facility.description}
                   </p>
@@ -219,27 +246,86 @@ const FacilityInfo = () => {
                   onError={(e) => {
                     e.target.src = "/images_mdx/placeholder.png";
                   }}
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.03,
                     transition: { duration: 0.3 }
                   }}
                 />
-                
-                {/* Optional highlight boxes */}
-                {/* <div className="absolute top-4 right-4 flex space-x-4">
-                  <div className="bg-[#1a365d] text-white p-6 rounded-lg">
-                    <h4 className="text-xl font-semibold mb-2">Facility Highlight</h4>
-                    <p>Description text</p>
-                  </div>
-                  <div className="bg-[#1a365d] text-white p-6 rounded-lg">
-                    <h4 className="text-xl font-semibold mb-2">Facility Highlight</h4>
-                    <p>Description text</p>
-                  </div>
-                </div> */}
               </motion.div>
             </AnimatePresence>
           </div>
         </motion.div>
+      </div>
+
+      {/* Mobile Layout - Scrollable Timeline */}
+      <div className="md:hidden">
+        <div className="border-l-2 border-[#0D1C44] pl-6 ml-4">
+          {facilities.map((facility, index) => {
+            const isLast = index === facilities.length - 1;
+
+            return (
+              <div
+                key={facility.id}
+                ref={facilityRefs.current[index]}
+                className='mb-12 relative pl-6'
+              >
+                {/* Timeline dot */}
+                <div className="absolute -left-[45px] top-0">
+                  <div className="bg-[#0D1C44] rounded-full h-10 w-10 flex items-center justify-center relative">
+                    {selectedFacility.id === facility.id && (
+                      <div className="absolute w-4 h-4 bg-white rounded-full"></div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Facility heading */}
+                <motion.h3
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="text-xl font-bold text-[#1a365d] mb-4"
+                >
+                  {facility.name}
+                </motion.h3>
+
+                {/* Facility image */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="rounded-xl overflow-hidden shadow-lg"
+                >
+                  <img
+                    src={facility.image || "/images_mdx/placeholder.png"}
+                    alt={facility.name}
+                    className="w-full h-[220px] object-cover"
+                    onError={(e) => {
+                      e.target.src = "/images_mdx/placeholder.png";
+                    }}
+                  />
+                </motion.div>
+              </div>
+            );
+          })}
+
+          {/* View All Facilities button for mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-8 flex justify-center"
+          >
+            <Link
+              to="/facilities"
+              className="bg-[#0D1C44] text-white py-3 px-8 rounded-full font-semibold shadow-md hover:bg-[#152a5c] transition-colors text-center"
+            >
+              View All Facilities
+            </Link>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

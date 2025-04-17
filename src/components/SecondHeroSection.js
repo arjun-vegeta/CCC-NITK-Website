@@ -7,7 +7,10 @@ const SecondHeroSection = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (!sectionRef.current) return;
+      if (!sectionRef.current || window.innerWidth <= 768) {
+        setScrollProgress(0);
+        return;
+      }
 
       const rect = sectionRef.current.getBoundingClientRect();
       const sectionTop = rect.top;
@@ -38,14 +41,14 @@ const SecondHeroSection = () => {
       id: 1,
       title: "6000+ Students and Staff",
       description: "",
-      imgHeight: 290,
+      imgHeight: 400,
       imgSrc: "/stats/user.png"
     },
     {
       id: 2,
       title: "22+ Hostels",
       description: "",
-      imgHeight: 340,
+      imgHeight: 400,
       imgSrc: "/stats/hostel.png"
     },
     {
@@ -59,15 +62,13 @@ const SecondHeroSection = () => {
       id: 4,
       title: "1000+ Access Points",
       description: "",
-      imgHeight: 320,
+      imgHeight: 400,
       imgSrc: "/stats/wifi.png"
     }
   ];
 
-  // Function to get scroll-based offset for each card
-  const getOffset = (height) => {
-    if (height === 400) return 0;
-    return scrollProgress * (400 - height);
+  const getOffset = () => {
+    return window.innerWidth > 768 ? scrollProgress * 50 : 0;
   };
 
   return (
@@ -81,7 +82,7 @@ const SecondHeroSection = () => {
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.8 }}
-        viewport={{ once: true }}
+        viewport={{ once: true, delay: 0.2}}
       >
         <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
           Providing Internet Access to Thousands Across Campus
@@ -95,7 +96,7 @@ const SecondHeroSection = () => {
       {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative pb-8">
         {cards.map((card, index) => {
-          const yOffset = getOffset(card.imgHeight);
+          const yOffset = getOffset();
 
           return (
             <motion.div
@@ -103,14 +104,14 @@ const SecondHeroSection = () => {
               className="flex flex-col"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: index * 0.2 }}
-              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: index * 0.3 }}
+              viewport={{ once: true, delay: 0.2 }}
             >
               <motion.div style={{ y: yOffset }}>
                 <img
                   src={card.imgSrc}
                   alt={card.title}
-                  className="w-full rounded-2xl bg-[#1e2c50] mb-3"
+                  className="w-full rounded-2xl bg-[#1e2c50] mb-3 object-cover"
                   style={{ height: `${card.imgHeight}px` }}
                 />
                 <h3 className="font-bold text-[#0D1C44] text-lg mb-1">
