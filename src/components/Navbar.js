@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { IoSearch, IoMoon, IoSunny } from "react-icons/io5";
@@ -105,6 +104,8 @@ function Navbar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // No longer need the handleOutsideClick since we moved that logic to the SearchbarModal component
 
   return (
     <div className="w-full sticky top-0 z-50 bg-[#0A182F] dark:bg-black border-b border-gray-300 dark:border-gray-700 dark-transition home-navbar shadow-sm">
@@ -286,7 +287,9 @@ function Navbar() {
           </div>
         </div>
       </div>
-      <SearchbarModal display={showSearchBar} closeSearch={closeSearchBar}/>
+      
+      {/* Updated SearchbarModal call - no ref being passed */}
+      <SearchbarModal display={showSearchBar} closeSearch={closeSearchBar} />
     </div>
   );
 }
