@@ -51,8 +51,8 @@ const GuideSection = () => {
 
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 mb-10">
-        {infoBoxes.map((box, index) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
+                {infoBoxes.map((box, index) => (
           <GuideCard key={index} box={box} index={index} />
         ))}
       </div>
