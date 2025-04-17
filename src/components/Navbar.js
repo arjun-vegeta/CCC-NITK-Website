@@ -117,15 +117,20 @@ function Navbar() {
             <img
               src={darkMode ? "/logo-dark.png" : "/logo-dark.png"}
               alt="NITK Logo"
-              className="w-12 md:w-20 object-scale-down transition-all duration-300"
+              className="w-12 md:w-20 p-0 md:p-2 object-scale-down transition-all duration-300"
             />
             <div
               className="ml-2 leading-tight transition-opacity duration-300"
               style={{ opacity: textOpacity }}
               ref={textRef}
             >
-              <h1 className="font-bold text-[#ffffff] dark:text-gray-200 text-sm md:text-xl dark-transition">National Institute of Technology Karnataka</h1>
-              <h1 className="font-black text-[#ffffff] dark:text-gray-100 text-xl md:text-3xl dark-transition">CCC</h1>
+ <h1 className="font-bold text-[#ffffff] dark:text-gray-200 text-sm lg:text-xl dark-transition">
+    National Institute of Technology Karnataka
+  </h1>
+  <h1 className="font-black text-[#ffffff] dark:text-gray-100 text-2xl lg:text-4xl tracking-widest dark-transition">
+  CCC
+</h1>
+
             </div>
           </Link>
         </div>

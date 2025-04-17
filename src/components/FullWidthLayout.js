@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Home } from "lucide-react";
+import { Home, X } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,7 +11,7 @@ import {
 } from "./ui/breadcrumb";
 import { useDarkMode } from "../utils/DarkModeContext";
 
-// Extracted prose styles for easier customization
+// Extracted prose styles
 const proseStyles = {
   container: "flex-1 border-l border-gray-200 dark:border-gray-700 px-6 md:px-12 dark-transition",
   content: "prose dark:prose-invert max-w-none dark-transition",
@@ -21,268 +21,249 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const location = useLocation();
   const { darkMode } = useDarkMode();
 
-  // New state: Keep track of a manual override while a TOC item is clicked.
+  // --- TOC state & refs ---
   const [manualOverride, setManualOverride] = useState(false);
-  // State to keep track of the active (currently visible or clicked) heading.
   const [activeHeading, setActiveHeading] = useState(null);
-  // State for the animated indicator
   const [hoveredHeading, setHoveredHeading] = useState(null);
   const [headingLinePosition, setHeadingLinePosition] = useState({ top: 0, height: 0 });
-  
-  // Refs to TOC heading DOM nodes and the article content
   const headingsRefs = useRef({});
   const contentRef = useRef(null);
-
   const hoverTimeoutRef = useRef(null);
-  
-  // State to track window width
+
+  // --- window width & resize listener ---
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  // Listen to window resize events and update the state
   useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    const onResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  // --- Sidebar open/close & tooltip ---
+  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 800);
+  const [showSidebarTooltip, setShowSidebarTooltip] = useState(false);
+  const sidebarRef = useRef(null);
+  const toggleSidebar = () => setSidebarOpen((o) => !o);
+
+  // Close sidebar on any link click in mobile
+  useEffect(() => {
+    const node = sidebarRef.current;
+    if (!node) return;
+    const handleClick = (e) => {
+      if (windowWidth <= 800) {
+        const link = e.target.closest("a");
+        if (link) setSidebarOpen(false);
+      }
+    };
+    node.addEventListener("click", handleClick);
+    return () => node.removeEventListener("click", handleClick);
+  }, [windowWidth]);
 
   // --- Breadcrumb generation ---
   const generateBreadcrumbs = () => {
-    const pathnames = location.pathname.split("/").filter((x) => x);
+    const parts = location.pathname.split("/").filter((x) => x);
     return [
       { label: "Home", href: "/" },
-      ...pathnames.map((segment, index) => ({
-        label: segment
-          .replace(/_/g, " ") // Replace underscores with spaces
-          .replace(/\b\w/g, (char) => char.toUpperCase()), // Capitalize first letter of each word
-        href: "/" + pathnames.slice(0, index + 1).join("/"),
+      ...parts.map((seg, idx) => ({
+        label: seg.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        href: "/" + parts.slice(0, idx + 1).join("/"),
       })),
     ];
   };
-
   const breadcrumbs = generateBreadcrumbs();
 
-  // --- Smooth scroll to a section ---
-  const handleClick = (id) => {
-    // Immediately mark the clicked heading as active.
+  // --- Smooth scroll handler ---
+  const handleClickHeading = (id) => {
     setActiveHeading(id);
-    // Activate manual override to prevent the intersection observer from updating activeHeading.
     setManualOverride(true);
     updateHeadingLinePosition(id);
-
-    const targetElement = document.getElementById(id);
-    if (targetElement) {
-      // Update URL with the hash.
+    const el = document.getElementById(id);
+    if (el) {
       window.history.pushState(null, "", `#${id}`);
-      
-      // Calculate offset accounting for a sticky header.
-      const headerOffset = 70;
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.scrollY - headerOffset;
-      
-      // Smooth scroll.
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    } else {
-      console.warn(`Element with id "${id}" not found`);
+      const headerOffset = 56; // match your navbar height
+      const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
-
-    // Clear manual override after scrolling settles (adjust timeout if needed).
-    setTimeout(() => setManualOverride(false), 5000 );
+    setTimeout(() => setManualOverride(false), 5000);
   };
 
-  // --- Parsing and building a tree for headings ---
-  const parseHeadings = (flatHeadings) => {
-    return flatHeadings.map((heading) => {
-      let title = "";
-      let level = 1;
-      if (typeof heading === "string") {
-        const match = heading.match(/^(#+)\s*(.+)/);
-        if (match) {
-          level = match[1].length;
-          title = match[2].trim();
-        } else {
-          title = heading;
-        }
-      } else if (heading && heading.title) {
-        title = heading.title;
-        level = heading.level || 1;
-      }
-      const id = title.toLowerCase().replace(/\s+/g, "-");
-      return { title, id, level, children: [] };
-    });
-  };
-
-  const buildTree = (headings) => {
-    const root = [];
-    const stack = [];
-    // Optionally filter out level 1 headings if needed.
-    const filteredHeadings = headings.filter((heading) => heading.level > 1);
-    filteredHeadings.forEach((heading) => {
-      while (stack.length && stack[stack.length - 1].level >= heading.level) {
-        stack.pop();
-      }
-      if (stack.length === 0) {
-        root.push(heading);
+  // --- Parse & build TOC tree ---
+  const parseHeadings = (flat) =>
+    flat.map((h) => {
+      let title = "", level = 1;
+      if (typeof h === "string") {
+        const m = h.match(/^(#+)\s*(.+)/);
+        if (m) { level = m[1].length; title = m[2].trim(); }
+        else title = h;
       } else {
-        stack[stack.length - 1].children.push(heading);
+        title = h.title; level = h.level || 1;
       }
-      stack.push(heading);
+      return { title, id: title.toLowerCase().replace(/\s+/g, "-"), level, children: [] };
+    });
+  const buildTree = (nodes) => {
+    const root = [], stack = [];
+    nodes.filter((h) => h.level > 1).forEach((h) => {
+      while (stack.length && stack[stack.length - 1].level >= h.level) stack.pop();
+      if (!stack.length) root.push(h);
+      else stack[stack.length - 1].children.push(h);
+      stack.push(h);
     });
     return root;
   };
-
   const structuredHeadings = buildTree(parseHeadings(headings));
 
-  // --- Update the position of the animated indicator based on a heading element ---
+  // --- Indicator position updater ---
   const updateHeadingLinePosition = (id) => {
-    const element = headingsRefs.current[id];
-    if (element) {
-      const container = element.closest(".toc-container");
-      if (container) {
-        const containerRect = container.getBoundingClientRect();
-        const rect = element.getBoundingClientRect();
-        setHeadingLinePosition({
-          top: rect.top - containerRect.top,
-          height: rect.height,
-        });
-      }
-    }
+    const el = headingsRefs.current[id];
+    if (!el) return;
+    const container = el.closest(".toc-container");
+    const cRect = container.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    setHeadingLinePosition({ top: r.top - cRect.top, height: r.height });
   };
 
-  // --- Hover handling ---
+  // --- TOC hover handlers ---
   const handleHeadingHover = (id) => {
     setHoveredHeading(id);
     updateHeadingLinePosition(id);
   };
 
+  // --- On initial hash ---
   useEffect(() => {
-    // If URL contains a hash initially, update the indicator.
-    const activeId = location.hash.replace("#", "");
-    if (activeId && headingsRefs.current[activeId]) {
-      updateHeadingLinePosition(activeId);
-    }
+    const id = location.hash.replace("#", "");
+    if (id && headingsRefs.current[id]) updateHeadingLinePosition(id);
   }, [location]);
 
-  // --- Intersection Observer for active heading ---
+  // --- IntersectionObserver for scrolling ---
   useEffect(() => {
     if (!contentRef.current) return;
-    const headingElements = contentRef.current.querySelectorAll("h2, h3, h4, h5, h6");
-
-    const observer = new IntersectionObserver((entries) => {
-      // Skip updating if a manual override is active.
+    const elems = contentRef.current.querySelectorAll("h2, h3, h4, h5, h6");
+    const obs = new IntersectionObserver((entries) => {
       if (manualOverride) return;
-
-      const visibleEntries = entries.filter(entry => entry.isIntersecting);
-      if (visibleEntries.length === 0) return;
-
-      // Choose the entry closest to the top of the viewport.
-      const sorted = visibleEntries.sort(
-        (a, b) => a.boundingClientRect.top - b.boundingClientRect.top
-      );
-      const newActiveId = sorted[0].target.id;
-      setActiveHeading(newActiveId);
-    }, {
-      root: null,
-      // Adjust rootMargin to control when a heading becomes "active."
-      rootMargin: "0px 0px -70% 0px",
-      threshold: 0.1,
-    });
-
-    headingElements.forEach((elem) => {
-      observer.observe(elem);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
+      const visible = entries.filter((e) => e.isIntersecting);
+      if (!visible.length) return;
+      const nearest = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      setActiveHeading(nearest.target.id);
+    }, { root: null, rootMargin: "0px 0px -70% 0px", threshold: 0.1 });
+    elems.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
   }, [children, manualOverride]);
 
-  // --- Update the animated indicator from active heading if not hovering ---
+  // --- Sync indicator when activeHeading changes ---
   useEffect(() => {
-    if (!hoveredHeading && activeHeading && headingsRefs.current[activeHeading]) {
-      updateHeadingLinePosition(activeHeading);
-    }
+    if (!hoveredHeading && activeHeading) updateHeadingLinePosition(activeHeading);
   }, [activeHeading, hoveredHeading]);
 
-  // --- Render the table of contents headings recursively ---
+  // --- Recursive TOC render ---
   const renderHeadings = (items, depth = 0) => (
     <ul className={`space-y-3.5 ${depth > 0 ? "pl-6" : ""}`}>
       {items.map(({ title, id, children }) => (
         <li key={id} className="relative">
           <div
             ref={(el) => (headingsRefs.current[id] = el)}
-            data-id={id}
-            className={`group flex items-center cursor-pointer transition-colors duration-200 ${
-              activeHeading === id 
-                ? "font-medium text-black dark:text-white" 
-                : "font-normal text-gray-600 dark:text-gray-400"
-            } dark-transition`}
-            onClick={() => handleClick(id)}
+            className={`
+              group flex items-center cursor-pointer transition-colors duration-200
+              ${activeHeading === id
+                ? "font-medium text-black dark:text-white"
+                : "font-normal text-gray-600 dark:text-gray-400"}
+              dark-transition
+            `}
+            onClick={() => handleClickHeading(id)}
             onMouseEnter={() => {
-              // Clear any pending timeout to avoid conflict
-              if (hoverTimeoutRef.current) {
-                clearTimeout(hoverTimeoutRef.current);
-              }
+              hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
               handleHeadingHover(id);
             }}
             onMouseLeave={() => {
-              // Delay clearing hovered heading for smoother transition
-              hoverTimeoutRef.current = setTimeout(() => {
-                setHoveredHeading(null);
-              }, 150); // Adjust delay time as desired
+              hoverTimeoutRef.current = setTimeout(() => setHoveredHeading(null), 150);
             }}
           >
             <span className="text-sm group-hover:text-gray-900 dark:group-hover:text-gray-200">
               {title}
             </span>
           </div>
-
-          {children.length > 0 && (
-            <div className="mt-3.5">
-              {renderHeadings(children, depth + 1)}
-            </div>
-          )}
+          {children.length > 0 && <div className="mt-3.5">{renderHeadings(children, depth + 1)}</div>}
         </li>
       ))}
     </ul>
   );
 
   return (
-    <div className="flex min-h-screen">
-      {/* Left sidebar - only shown if window width > 768 */}
-      {windowWidth > 768 && sidebar && (
-        <div className="w-[300px] flex-shrink-0 sticky top-[104px] h-screen overflow-auto">
+    <div className="flex min-h-screen relative">
+      {/* Sidebar */}
+      {sidebar && (
+        <div
+        ref={sidebarRef}
+        className={`
+          ${windowWidth > 800 ? "absolute top-[5px] bottom-0 left-0" : "absolute top-14 bottom-0"}
+          ${windowWidth > 800 ? "w-[300px]" : "w-4/5"}
+          bg-white dark:bg-black overflow-y-auto
+          transition-transform duration-300 ease-in-out z-20
+          ${isSidebarOpen
+            ? "translate-x-0"
+            : windowWidth > 800
+            ? "-translate-x-[300px]"
+            : "-translate-x-full"}
+          border-r border-gray-200 dark:border-gray-700
+        `}
+      >
+          {/* Close button on mobile */}
+          {windowWidth <= 800 && (
+            <button
+              onClick={toggleSidebar}
+              className="absolute top-4 right-4 p-2 text-gray-600 dark:text-gray-300 focus:outline-none"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          )}
           {sidebar}
         </div>
       )}
-      
-      {/* Main content */}
-      <div className="flex-1 flex flex-col">
-        {/* Content + Right sidebar */}
-        <div className="flex flex-1">
-          {/* Article content with breadcrumb */}
-          <div className="flex-1 flex flex-col">
-            {/* Breadcrumb */}
-            <div className="z-10 pt-1 shadow-sm bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
-              <Breadcrumb className="px-12 py-4">
-                <BreadcrumbList>
-                  {breadcrumbs.map((crumb, index) => (
-                    <React.Fragment key={index}>
+
+      {/* Main content (shifts on desktop) */}
+      <div
+        className={`flex-1 flex flex-col transition-[margin] duration-300 ease-in-out ${
+          windowWidth > 800 && isSidebarOpen ? "ml-[300px]" : "ml-0"
+        }`}
+      >
+        {/* Navbar + breadcrumb + toggle */}
+        <div className="z-10 sticky top-0 shadow-sm bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
+          <div className="flex items-center">
+            <button
+              onClick={toggleSidebar}
+              onMouseEnter={() => setShowSidebarTooltip(true)}
+              onMouseLeave={() => setShowSidebarTooltip(false)}
+              className="relative h-full px-4 py-4 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-black text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="19" height="19"
+                viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2"
+                strokeLinecap="round" strokeLinejoin="round"
+                className="icon icon-tabler icon-tabler-layout-sidebar"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                <path d="M9 4l0 16" />
+              </svg>
+              {showSidebarTooltip && (
+                <div className="absolute left-12 top-full mt-1 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow z-30 whitespace-nowrap">
+                  {isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+                </div>
+              )}
+            </button>
+            <div className="flex-1">
+              <Breadcrumb className="px-8 py-4">
+                <BreadcrumbList className="flex items-center">
+                  {breadcrumbs.map((crumb, idx) => (
+                    <React.Fragment key={idx}>
                       <BreadcrumbItem>
-                        {index === 0 ? (
+                        {idx === 0 ? (
                           <BreadcrumbLink href={crumb.href} asChild>
                             <Link to={crumb.href} className="flex items-center gap-1">
                               <Home className="h-4 w-4 text-gray-600 dark:text-gray-300" />
                             </Link>
                           </BreadcrumbLink>
-                        ) : index < breadcrumbs.length - 1 ? (
+                        ) : idx < breadcrumbs.length - 1 ? (
                           <BreadcrumbLink href={crumb.href} asChild>
                             <Link to={crumb.href}>{crumb.label}</Link>
                           </BreadcrumbLink>
@@ -290,26 +271,30 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                           <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
                         )}
                       </BreadcrumbItem>
-                      {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+                      {idx < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
                     </React.Fragment>
                   ))}
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
-            
-            {/* Article content */}
+          </div>
+        </div>
+
+        {/* Content & TOC */}
+        <div className="flex flex-1">
+          {/* Main article */}
+          <div className="flex-1 flex flex-col">
             <div className={proseStyles.container}>
-              <div style={{ width: "100%" }} className={proseStyles.content} ref={contentRef}>
+              <div ref={contentRef} className={proseStyles.content} style={{ width: "100%" }}>
                 {children}
               </div>
             </div>
           </div>
-          
-          {/* Table of Contents sidebar */}
-          {windowWidth > 768 && sidebar && structuredHeadings.length > 0 && (
+
+          {/* TOC (desktop only >800px) */}
+          {windowWidth > 800 && sidebar && structuredHeadings.length > 0 && (
             <div className="w-80 flex-shrink-0">
-              <div className="sticky border-l border-gray-200 dark:border-gray-700 top-28 p-4 toc-container  dark-transition">
-                {/* Animated indicator */}
+              <div className="sticky border-l border-gray-200 dark:border-gray-700 top-28 p-4 toc-container dark-transition">
                 <div
                   className="absolute transition-all duration-200"
                   style={{
@@ -317,23 +302,18 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                     top: `${headingLinePosition.top}px`,
                     height: `${headingLinePosition.height}px`,
                     width: "2.5px",
-                    background: darkMode ? "#f3f4f6" : "#000000",
+                    background: darkMode ? "#f3f4f6" : "#000",
                     clipPath:
                       "polygon(0 4px, 100% 6px, 100% calc(100% - 4px), 0 calc(100% - 2px))",
                     borderRadius: "3px",
                     opacity: hoveredHeading || activeHeading ? 1 : 0,
-                    transform: "translateX(0)",
                     zIndex: 10,
                   }}
-                ></div>
-                <div className="pl-0">
-                  <h3 className="text-base font-semibold mb-6 text-gray-900 dark:text-gray-100 dark-transition">Table of Contents</h3>
-                  <div className="relative">
-                    <div className="space-y-4 relative">
-                      {renderHeadings(structuredHeadings)}
-                    </div>
-                  </div>
-                </div>
+                />
+                <h3 className="text-base font-semibold mb-6 text-gray-900 dark:text-gray-100 dark-transition">
+                  Table of Contents
+                </h3>
+                {renderHeadings(structuredHeadings)}
               </div>
             </div>
           )}

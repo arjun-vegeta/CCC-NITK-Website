@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -41,18 +41,17 @@ const GuideSection = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-  <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
-    Learn More About Guides
-  </h2>
-  <p className="text-gray-600">
-    Discover guides to help you navigate the Central Computer Center's services, resources and facilities.
-  </p>
-</motion.div>
+        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
+          Learn More About Guides
+        </h2>
+        <p className="text-gray-600">
+          Discover guides to help you navigate the Central Computer Center's services, resources and facilities.
+        </p>
+      </motion.div>
 
-
-      {/* Cards Grid */}
+      {/* Cards Grid - Updated for responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
-                {infoBoxes.map((box, index) => (
+        {infoBoxes.map((box, index) => (
           <GuideCard key={index} box={box} index={index} />
         ))}
       </div>
@@ -78,6 +77,18 @@ const GuideSection = () => {
 
 const GuideCard = ({ box, index }) => {
   const [hovered, setHovered] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 768;
 
   return (
     <motion.div
@@ -98,13 +109,13 @@ const GuideCard = ({ box, index }) => {
             backgroundPosition: "center"
           }}
         >
-          {/* Animated Circle */}
+          {/* Animated Circle - Always visible on mobile */}
           <motion.div
             className="absolute top-4 right-4 w-12 h-12 rounded-full bg-white text-[#0D1C44] flex items-center justify-center shadow-lg pointer-events-none"
-            initial={{ y: "-120%", opacity: 0 }}
+            initial={{ y: isMobile ? "0%" : "-120%", opacity: isMobile ? 1 : 0 }}
             animate={{
-              y: hovered ? "0%" : "-120%",
-              opacity: hovered ? 1 : 0
+              y: hovered || isMobile ? "0%" : "-120%",
+              opacity: hovered || isMobile ? 1 : 0
             }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
