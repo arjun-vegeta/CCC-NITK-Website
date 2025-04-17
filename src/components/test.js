@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { TimelineDemo } from "./FacilityInfoTimeline";
 
 const facilities = [
   {
@@ -121,7 +120,7 @@ const FacilityInfo = () => {
   };
 
   return (
-    <div className="w-full max-w-[1280px] mx-auto md:px-6 py-12 font-Montserrat">
+    <div className="w-full max-w-[1280px] mx-auto px-4 md:px-6 py-12 font-Montserrat">
       <div className="flex justify-between items-start mb-8 flex-wrap">
         {/* Heading */}
         <motion.h2
@@ -132,7 +131,7 @@ const FacilityInfo = () => {
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
           }}
-          className="text-4xl font-bold text-[#0D1C44] ml-4 md:text-3xl sm:text-2xl"
+          className="text-4xl font-bold text-[#0D1C44] md:text-3xl sm:text-2xl"
         >
           Some of our Facilities
         </motion.h2>
@@ -260,22 +259,73 @@ const FacilityInfo = () => {
 
       {/* Mobile Layout - Scrollable Timeline */}
       <div className="md:hidden">
-        <TimelineDemo />
-        {/* View All Facilities button for mobile */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
-                    className="mt-8 flex justify-center"
-                  >
-                    <Link
-                      to="/facilities"
-                      className="bg-[#0D1C44] text-white py-3 px-8 rounded-full font-semibold shadow-md hover:bg-[#152a5c] transition-colors text-center"
-                    >
-                      View All Facilities
-                    </Link>
-                  </motion.div>
+        <div className="border-l-2 border-[#0D1C44] pl-6 ml-4">
+          {facilities.map((facility, index) => {
+            const isLast = index === facilities.length - 1;
+
+            return (
+              <div
+                key={facility.id}
+                ref={facilityRefs.current[index]}
+                className='mb-12 relative pl-6'
+              >
+                {/* Timeline dot */}
+                <div className="absolute -left-[45px] top-0">
+                  <div className="bg-[#0D1C44] rounded-full h-10 w-10 flex items-center justify-center relative">
+                    {selectedFacility.id === facility.id && (
+                      <div className="absolute w-4 h-4 bg-white rounded-full"></div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Facility heading */}
+                <motion.h3
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="text-xl font-bold text-[#1a365d] mb-4"
+                >
+                  {facility.name}
+                </motion.h3>
+
+                {/* Facility image */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="rounded-xl overflow-hidden shadow-lg"
+                >
+                  <img
+                    src={facility.image || "/images_mdx/placeholder.png"}
+                    alt={facility.name}
+                    className="w-full h-[220px] object-cover"
+                    onError={(e) => {
+                      e.target.src = "/images_mdx/placeholder.png";
+                    }}
+                  />
+                </motion.div>
+              </div>
+            );
+          })}
+
+          {/* View All Facilities button for mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="mt-8 flex justify-center"
+          >
+            <Link
+              to="/facilities"
+              className="bg-[#0D1C44] text-white py-3 px-8 rounded-full font-semibold shadow-md hover:bg-[#152a5c] transition-colors text-center"
+            >
+              View All Facilities
+            </Link>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

@@ -53,7 +53,7 @@ const HeroSection = () => {
           >
             <Link
               to="/guides"
-              className="px-9 py-3.5 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
+              className="px-6 md:px-9 py-3.5 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
             >
               VIEW GUIDES
             </Link>
@@ -66,7 +66,7 @@ const HeroSection = () => {
           >
             <Link
               to="/facilities"
-              className="px-9 py-3.5 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
+              className="px-6 md:px-9 py-3.5 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
             >
               FACILITIES
             </Link>

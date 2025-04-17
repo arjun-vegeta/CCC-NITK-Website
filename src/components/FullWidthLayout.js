@@ -270,7 +270,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           {/* Article content with breadcrumb */}
           <div className="flex-1 flex flex-col">
             {/* Breadcrumb */}
-            <div className="sticky top-[104px] z-10 pt-1 shadow-sm bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
+            <div className="z-10 pt-1 shadow-sm bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
               <Breadcrumb className="px-12 py-4">
                 <BreadcrumbList>
                   {breadcrumbs.map((crumb, index) => (
