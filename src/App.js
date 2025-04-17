@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { DarkModeProvider } from './utils/DarkModeContext';
 import ScrollToTop from './components/ScrollToTop';
+import AdvancedSearchPage from './components/AdvancedSearchPage';
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
             <Routes>
               {/* Home Page */}
               <Route path="/" element={<Home />} />
+
+              <Route path="/advanced-search" element={<AdvancedSearchPage />} />
+
 
               {/* About Us */}
               <Route path="/about" element={<AboutUs />} />
