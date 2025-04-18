@@ -97,7 +97,7 @@ const HeroSection = () => {
         >
           <Link
             to="/guides/problem-reporting"
-            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-900 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
+            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-800 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
           >
             REPORT PROBLEM
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-[22px]">
@@ -155,7 +155,7 @@ const HeroSection = () => {
                       </p>
                                         {/* Small square box for collapsed cards */}
                   {!isActive && (
-                    <div className="absolute -z-10 bottom-[0px] left-4 w-14 h-14 bg-[#0A182F]" />
+                    <div className="absolute -z-10 bottom-[0px] left-4 w-14 h-14 bg-[#0A182F] dark:bg-blue-950" />
                   )}
                     </div>
                   )}
@@ -226,7 +226,7 @@ const HeroSection = () => {
 
                   {/* Small square box for collapsed cards */}
                   {!isActive && (
-                    <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#0A182F]" />
+                    <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#0A182F] dark:bg-blue-950" />
                   )}
                 </div>
               </motion.div>

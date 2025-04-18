@@ -53,9 +53,9 @@ const Sidebar = ({ links }) => {
             <div
               ref={el => itemsRef.current[item.slug] = el}
               data-href={item.href}
-              className={`flex justify-between items-center cursor-pointer py-2 px-2 group transition-all duration-200 rounded-lg ${
+              className={`flex justify-between items-center cursor-pointer py-2 pl-3 pr-2 group transition-all duration-200 rounded-lg ${
                 location.pathname === item.href 
-                  ? "bg-gray-200/80 dark:bg-gray-800" 
+                  ? "bg-gray-200/90 dark:bg-gray-800" 
                   : ""
               } ${
                 hoveredItem === item.slug ? "translate-x-2" : ""

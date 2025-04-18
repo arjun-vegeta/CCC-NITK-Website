@@ -13,7 +13,7 @@ import { useDarkMode } from "../utils/DarkModeContext";
 
 // Extracted prose styles
 const proseStyles = {
-  container: "flex-1 border-l border-gray-300 dark:border-gray-700 px-6 md:px-12 dark-transition",
+  container: "flex-1 px-6 md:px-12 dark-transition",
   content: "prose dark:prose-invert max-w-none dark-transition",
 };
 
@@ -194,7 +194,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           ref={sidebarRef}
           className={`
           ${windowWidth > 800
-              ? `${isSidebarOpen ? "w-[300px]" : "w-0"} sticky top-[89px] md:top-[93px] h-[calc(100vh-93px)] left-0 transition-[width] duration-300 ease-in-out`
+              ? `${isSidebarOpen ? "w-[300px]" : "w-0"} sticky top-[89px] md:top-[93px] h-[calc(100vh-93px)] -left-1 transition-[width] duration-300 ease-in-out`
               : `${isSidebarOpen ? "w-4/5" : "w-0"} absolute top-14 bottom-0 transition-[width] duration-300 ease-in-out`}
           bg-[#f5f5f5] dark:bg-[#0b0c10] overflow-y-auto
           z-20
@@ -203,12 +203,14 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
               : windowWidth > 800
                 ? "-translate-x-0"
                 : "-translate-x-0"}
-          border-r border-gray-300 dark:border-gray-700
         `}
         >
-
           {/* Only render sidebar content if open on desktop, always on mobile */}
-          {(isSidebarOpen || windowWidth > 800) && sidebar}
+          {(isSidebarOpen || windowWidth > 800) && (
+            <div className="h-full border-r border-gray-300 dark:border-gray-700">
+              {sidebar}
+            </div>
+          )}
         </div>
       )}
 
@@ -217,7 +219,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
         className={"flex-1 flex flex-col transition-[margin] duration-300 ease-in-out"}
       >
         {/* Navbar + breadcrumb + toggle */}
-        <div className="z-10 sticky top-[89px] md:top-[93px] shadow-md bg-[#f5f5f5] dark:bg-[#0b0c10] border-l border-gray-300 dark:border-b dark:border-gray-700 dark-transition">
+        <div className="z-40 sticky top-[89px] md:top-[93px] shadow-md bg-[#f5f5f5] dark:bg-[#0b0c10] border-gray-300 dark:border-b dark:border-gray-700 dark-transition">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
