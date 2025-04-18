@@ -44,7 +44,7 @@ const GuideSection = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] dark:text-white mb-6">
           Learn More About Guides
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-gray-600 dark:text-blue-300">
           Discover guides to help you navigate the Central Computer Center's services, resources and facilities.
         </p>
       </motion.div>
@@ -104,7 +104,7 @@ const GuideCard = ({ box, index }) => {
         <div
           className="rounded-2xl aspect-square mb-3 p-4 flex flex-col justify-end relative overflow-hidden"
           style={{
-            backgroundImage: `linear-gradient(to bottom, rgba(30,44,80,0.3), rgba(30,44,80,0.9)), url(${box.image})`,
+            backgroundImage: `url(${box.image})`,
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}

@@ -70,7 +70,7 @@ const HeroSection = () => {
           >
             <Link
               to="/guides"
-              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
+              className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
             >
               VIEW GUIDES
             </Link>
@@ -83,7 +83,7 @@ const HeroSection = () => {
           >
             <Link
               to="/facilities"
-              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
+              className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
             >
               FACILITIES
             </Link>

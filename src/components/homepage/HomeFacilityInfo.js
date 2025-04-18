@@ -145,8 +145,8 @@ const FacilityInfo = () => {
           transition={{ delay: 0.4, duration: 0.7 }}
           viewport={{ once: true, amount: 0.9 }}
         >
-          <p className="text-lg mt-2 mb-1 text-gray-700 dark:text-gray-300">Learn more about all the facilities provided by ccc</p>
-          <Link to="/facilities" className="text-lg font-medium text-[#1a365d] dark:text-blue-300 underline underline-offset-2 flex items-center justify-end">
+          <p className="text-lg mt-2 mb-1 text-gray-700 dark:text-blue-300">Learn more about all the facilities provided by ccc</p>
+          <Link to="/facilities" className="text-lg font-medium text-[#1a365d] dark:text-blue-100 underline underline-offset-2 flex items-center justify-end">
             Facilities Page
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -207,7 +207,7 @@ const FacilityInfo = () => {
                 {/* Facility text with hover effect */}
                 <div>
                   <h3
-                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce] dark:text-blue-300' : 'text-[#1a365d] dark:text-gray-100'}`}
+                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce] dark:text-blue-500' : 'text-[#1a365d] dark:text-blue-200'}`}
                   >
                     {facility.name}
                   </h3>
