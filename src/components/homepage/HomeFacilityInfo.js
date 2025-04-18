@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { TimelineDemo } from "./FacilityInfoTimeline";
+import { TimelineDemo } from "../FacilityInfoTimeline";
 
 const facilities = [
   {

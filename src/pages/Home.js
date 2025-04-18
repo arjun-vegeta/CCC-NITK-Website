@@ -1,8 +1,8 @@
 import React from "react";
-import HeroSection from "../components/HeroSection";
-import SecondHeroSection from "../components/SecondHeroSection";
-import GuideSection from "../components/GuideSection";
-import FacilityInfo from "../components/HomeFacilityInfo";
+import HeroSection from "../components/homepage/HeroSection";
+import SecondHeroSection from "../components/homepage/SecondHeroSection";
+import GuideSection from "../components/homepage/GuideSection";
+import FacilityInfo from "../components/homepage/HomeFacilityInfo";
 
 function Home() {
   return (

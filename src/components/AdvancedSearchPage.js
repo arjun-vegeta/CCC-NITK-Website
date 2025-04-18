@@ -40,7 +40,7 @@ const AdvancedSearchPage = () => {
     
     preview = preview.replace(
       new RegExp(`(${query})`, 'gi'),
-      '<mark class="bg-yellow-100 dark:bg-yellow-900/50 px-1 rounded">$1</mark>'
+      '<mark class="bg-yellow-200 dark:bg-yellow-300/100 px-0">$1</mark>'
     );
     
     return `...${preview}...`;
@@ -49,10 +49,10 @@ const AdvancedSearchPage = () => {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-10 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        <h1 className="text-4xl font-Montserrat font-bold text-gray-900 dark:text-white mb-3">
           Advanced Search
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-gray-600 font-Montserrat dark:text-gray-400">
           Search across all documentation guides and facilities.
         </p>
       </div>
@@ -144,7 +144,7 @@ const AdvancedSearchPage = () => {
         </div>
       ) : query.length > 2 ? (
         <div className="text-center py-16">
-          <div className="mb-4 text-6xl">😕</div>
+          <div className="mb-4 text-6xl">:(</div>
           <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
             No results found
           </h3>

@@ -71,7 +71,7 @@ const SearchbarModal = ({ display, closeSearch }) => {
     const handleOutsideClick = (e) => {
       // Only process if the modal is displayed
       if (!display) return;
-      
+
       // Check if the click was outside the modal
       if (modalRef.current && !modalRef.current.contains(e.target)) {
         closeSearch();
@@ -107,20 +107,20 @@ const SearchbarModal = ({ display, closeSearch }) => {
               className="p-2 text-gray-300 hover:text-white transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6 6 18"/>
-                <path d="m6 6 12 12"/>
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
               </svg>
             </button>
           </div>
 
           {/* Search Input Container */}
-          <div className="relative bg-white dark:bg-gray-900 rounded-lg shadow-xl">
+          <div className="relative bg-white dark:bg-gray-900 rounded-lg shadow-xl max-h-[70vh] overflow-hidden">
             <div className="relative">
               {/* Search Icon */}
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="m21 21-4.3-4.3"/>
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
                 </svg>
               </div>
 
@@ -130,9 +130,9 @@ const SearchbarModal = ({ display, closeSearch }) => {
                 placeholder="Search facilities, guides and policies..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full text-lg pl-12 pr-12 py-5 rounded-lg border-0 focus:ring-2 focus:ring-[#0FA444] dark:bg-gray-900 dark:text-white placeholder-gray-400"
-                autoFocus
+                className="w-full text-lg pl-12 pr-12 py-5 rounded-lg border-2 border-inset border-green-500 dark:bg-gray-900 dark:text-white placeholder-gray-400"
               />
+
 
               {/* Clear Button */}
               {query && (
@@ -141,57 +141,48 @@ const SearchbarModal = ({ display, closeSearch }) => {
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 6 6 18"/>
-                    <path d="m6 6 12 12"/>
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
                   </svg>
                 </button>
               )}
             </div>
 
             <div className="mt-4">
-            <Link
-  to="/advanced-search"
-  state={{ query }} // Pass current query
-  onClick={handleLinkClick}
-  className="inline-flex ml-4 mb-3 items-center text-base text-[#0FA444] hover:text-[#0d8c3a] transition-colors"
->
-  {/* <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-4 w-4 mr-2"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-  </svg> */}
-  Advanced Search
-</Link>
-</div>
+              <Link
+                to="/advanced-search"
+                state={{ query }}
+                onClick={handleLinkClick}
+                className="inline-flex ml-4 mb-3 items-center text-base font-medium text-[#0FA444] hover:text-[#0d8c3a] transition-colors"
+              >
+                Advanced Search
+              </Link>
+            </div>
 
-            {/* Search Results */}
-            {query && (
-              <div className="border-t border-gray-100 dark:border-gray-800 mt-2 pt-2">
-                {filteredItems.length > 0 ? (
-                  filteredItems.map((item, index) => (
-                    <Link
-                      key={index}
-                      to={item.link}
-                      onClick={handleLinkClick}
-                      className="flex px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
-                    >
-                      <span className="text-gray-700 dark:text-gray-200 group-hover:text-[#0FA444] transition-colors">
-                        {item.title}
-                      </span>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="px-6 py-4 text-gray-500 dark:text-gray-400">
-                    No results found for "{query}"
-                  </div>
-                )}
-              </div>
-            )}
+            {/* Scrollable Search Results */}
+            <div className="border-t border-gray-100 dark:border-gray-800 pt-2 overflow-y-auto max-h-[40vh] pr-1 custom-scroll">
+              {(query ? filteredItems : items).length > 0 ? (
+                (query ? filteredItems : items).map((item, index) => (
+                  <Link
+                    key={index}
+                    to={item.link}
+                    onClick={handleLinkClick}
+                    className="flex items-center px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
+                  >
+                    <span className="w-3 h-3 mr-3 rounded-full bg-[#0D1C44] dark:bg-gray-200 group-hover:bg-[#0FA444] flex-shrink-0"></span>
+                    <span className="text-gray-700 dark:text-gray-200 group-hover:text-[#0FA444] transition-colors">
+                      {item.title}
+                    </span>
+                  </Link>
+                ))
+              ) : (
+                <div className="px-6 py-4 text-gray-500 dark:text-gray-400">
+                  No results found for "{query}"
+                </div>
+              )}
+            </div>
           </div>
+
         </div>
       </div>
     )
