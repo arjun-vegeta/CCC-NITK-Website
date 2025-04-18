@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import { Home, X } from "lucide-react";
+import { Home } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -217,7 +217,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
         className={"flex-1 flex flex-col transition-[margin] duration-300 ease-in-out"}
       >
         {/* Navbar + breadcrumb + toggle */}
-        <div className="z-10 sticky top-[89px] md:top-[93px] shadow-md bg-[#f5f5f5] dark:bg-[#0b0c10] border-l border-gray-300 dark:border-gray-700 dark-transition">
+        <div className="z-10 sticky top-[89px] md:top-[93px] shadow-md bg-[#f5f5f5] dark:bg-[#0b0c10] border-l border-gray-300 dark:border-b dark:border-gray-700 dark-transition">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
