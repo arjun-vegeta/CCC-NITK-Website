@@ -18,7 +18,7 @@ function App() {
     <DarkModeProvider>
       <BrowserRouter>
         <ScrollToTop />
-        <div className="flex flex-col min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100 dark-transition">
+        <div className="flex flex-col min-h-screen bg-white dark:bg-[#0b0c10] text-gray-900 dark:text-gray-100 dark-transition">
           <Navbar />
           <main className="flex-grow">
             <Routes>

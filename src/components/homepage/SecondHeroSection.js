@@ -111,10 +111,10 @@ const SecondHeroSection = () => {
         transition={{ duration: 0.6, delay: 0.8 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0D1C44] mb-4 md:mb-6">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0D1C44] dark:text-white mb-4 md:mb-6">
           Providing Internet Access to Thousands Across Campus
         </h2>
-        <p className="text-gray-600 text-sm md:text-base">
+        <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">
           CCC maintains the campus network backbone connectivity and internet
           connections on 24x7 basis
         </p>
@@ -157,10 +157,10 @@ const SecondHeroSection = () => {
                     />
                   </div>
                 </div>
-                <h3 className="font-bold text-[#0D1C44] text-base sm:text-lg mt-3 mb-1">
+                <h3 className="font-bold text-[#0D1C44] dark:text-white text-base sm:text-lg mt-3 mb-1">
                   {card.title}
                 </h3>
-                <p className="text-gray-600 text-xs sm:text-sm">
+                <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
                   {card.description}
                 </p>
               </motion.div>

@@ -6,7 +6,7 @@ import FacilityInfo from "../components/homepage/HomeFacilityInfo";
 
 function Home() {
   return (
-    <div className="p-4 bg-[#f5f5f5]">
+    <div className="p-4 bg-[#f5f5f5] dark:bg-[#0b0c10]">
       <HeroSection />
       <SecondHeroSection />
       <FacilityInfo />

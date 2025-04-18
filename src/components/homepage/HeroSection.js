@@ -42,7 +42,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
-          className="text-5xl md:text-[62px] font-black leading-snug text-[#0D1C44]"
+          className="text-5xl md:text-[62px] font-black leading-snug text-[#0D1C44] dark:text-white"
         >
           CENTRAL <br />
           COMPUTER <br />
@@ -70,7 +70,7 @@ const HeroSection = () => {
           >
             <Link
               to="/guides"
-              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
+              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
             >
               VIEW GUIDES
             </Link>
@@ -83,7 +83,7 @@ const HeroSection = () => {
           >
             <Link
               to="/facilities"
-              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
+              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
             >
               FACILITIES
             </Link>
@@ -97,12 +97,13 @@ const HeroSection = () => {
         >
           <Link
             to="/guides/problem-reporting"
-            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] transition-colors duration-300"
+            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-900 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
           >
             REPORT PROBLEM
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-[22px]">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+</svg>
+
           </Link>
         </motion.div>
       </div>
@@ -144,12 +145,12 @@ const HeroSection = () => {
                 {/* Overlay for all states */}
                 <div className="absolute z-10 inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
                   {isActive ? (
-                    <p className="p-4 ml-2.5 mb-1 text-white font-semibold text-lg">
+                    <p className="p-4 ml-2.5 mb-1 text-white font-semibold text-lg dark:text-gray-100">
                       {image.label}
                     </p>
                   ) : (
                     <div className="flex w-full items-center justify-between p-3">
-                      <p className="text-white ml-2.5 mb-1 font-semibold">
+                      <p className="text-white ml-2.5 mb-1 font-semibold dark:text-gray-100">
                         {image.label}
                       </p>
                                         {/* Small square box for collapsed cards */}
@@ -206,7 +207,7 @@ const HeroSection = () => {
                     isActive ? "opacity-100" : "opacity-0"
                   }`}
                 >
-                  <p className="absolute z-10 bottom-20 left-16 text-2xl text-white font-bold transition-all duration-700 ease-in-out">
+                  <p className="absolute z-10 bottom-20 left-16 text-2xl text-white font-bold transition-all duration-700 ease-in-out dark:text-gray-100">
                     {image.label}
                   </p>
                 </div>
@@ -218,7 +219,7 @@ const HeroSection = () => {
                   }`}
                 >
                   <p 
-                    className="absolute z-10 bottom-[80px] left-16 origin-bottom-left transform -rotate-90 text-2xl text-white font-bold text-nowrap transition-all duration-700 ease-in-out"
+                    className="absolute z-10 bottom-[80px] left-16 origin-bottom-left transform -rotate-90 text-2xl text-white font-bold text-nowrap transition-all duration-700 ease-in-out dark:text-gray-100"
                   >
                     {image.label}
                   </p>

@@ -195,7 +195,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
         className={`
           ${windowWidth > 800 ? "absolute top-[5px] bottom-0 left-0" : "absolute top-14 bottom-0"}
           ${windowWidth > 800 ? "w-[300px]" : "w-4/5"}
-          bg-white dark:bg-black overflow-y-auto
+          bg-white dark:bg-[#0b0c10] overflow-y-auto
           transition-transform duration-300 ease-in-out z-20
           ${isSidebarOpen
             ? "translate-x-0"
@@ -225,13 +225,13 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
         }`}
       >
         {/* Navbar + breadcrumb + toggle */}
-        <div className="z-10 sticky top-0 shadow-sm bg-white dark:bg-black border-l border-gray-200 dark:border-gray-700 dark-transition">
+        <div className="z-10 sticky top-0 shadow-sm bg-white dark:bg-[#0b0c10] border-l border-gray-200 dark:border-gray-700 dark-transition">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
               onMouseEnter={() => setShowSidebarTooltip(true)}
               onMouseLeave={() => setShowSidebarTooltip(false)}
-              className="relative h-full px-4 py-4 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-black text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
+              className="relative h-full px-4 py-4 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0b0c10] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -245,7 +245,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
                 <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
                 <path d="M9 4l0 16" />
               </svg>
-              {showSidebarTooltip && (
+              {showSidebarTooltip && windowWidth > 800 && (
                 <div className="absolute left-12 top-full mt-1 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded shadow z-30 whitespace-nowrap">
                   {isSidebarOpen ? "Close sidebar" : "Open sidebar"}
                 </div>

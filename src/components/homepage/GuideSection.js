@@ -41,10 +41,10 @@ const GuideSection = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] mb-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] dark:text-white mb-6">
           Learn More About Guides
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300">
           Discover guides to help you navigate the Central Computer Center's services, resources and facilities.
         </p>
       </motion.div>
@@ -137,8 +137,8 @@ const GuideCard = ({ box, index }) => {
 
           {/* Card Content */}
           <div>
-            <h3 className="font-bold text-white text-lg mb-1">{box.heading}</h3>
-            <p className="text-gray-200 text-sm">{box.description}</p>
+            <h3 className="font-bold text-white text-lg mb-1 dark:text-blue-200">{box.heading}</h3>
+            <p className="text-gray-200 text-sm dark:text-gray-300">{box.description}</p>
           </div>
         </div>
       </Link>

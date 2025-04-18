@@ -132,7 +132,7 @@ const FacilityInfo = () => {
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
           }}
-          className="text-4xl font-bold text-[#0D1C44] ml-4 md:text-3xl sm:text-2xl"
+          className="text-4xl font-bold text-[#0D1C44] dark:text-white ml-4 md:text-3xl sm:text-2xl"
         >
           Some of our Facilities
         </motion.h2>
@@ -145,8 +145,8 @@ const FacilityInfo = () => {
           transition={{ delay: 0.4, duration: 0.7 }}
           viewport={{ once: true, amount: 0.9 }}
         >
-          <p className="text-lg mt-2 mb-1">Learn more about all the facilities provided by ccc</p>
-          <Link to="/facilities" className="text-lg font-medium text-[#1a365d] underline underline-offset-2 flex items-center justify-end">
+          <p className="text-lg mt-2 mb-1 text-gray-700 dark:text-gray-300">Learn more about all the facilities provided by ccc</p>
+          <Link to="/facilities" className="text-lg font-medium text-[#1a365d] dark:text-blue-300 underline underline-offset-2 flex items-center justify-end">
             Facilities Page
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -207,12 +207,12 @@ const FacilityInfo = () => {
                 {/* Facility text with hover effect */}
                 <div>
                   <h3
-                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce]' : 'text-[#1a365d]'}`}
+                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce] dark:text-blue-300' : 'text-[#1a365d] dark:text-gray-100'}`}
                   >
                     {facility.name}
                   </h3>
                   <p
-                    className={`whitespace-pre-line transition-colors duration-300 ${isActive ? 'font-normal' : 'font-normal'} ${isHovered ? 'text-[#3182ce]' : 'text-gray-700'}`}
+                    className={`whitespace-pre-line transition-colors duration-300 ${isActive ? 'font-normal' : 'font-normal'} ${isHovered ? 'text-[#3182ce] dark:text-blue-200' : 'text-gray-700 dark:text-gray-300'}`}
                   >
                     {facility.description}
                   </p>
