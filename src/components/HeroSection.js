@@ -37,12 +37,12 @@ const HeroSection = () => {
   return (
     <section className="flex flex-col md:flex-row items-center justify-center p-4 max-w-[1280px] mx-auto mt-0 md:mt-6 font-Montserrat">
       {/* Left Text Block */}
-      <div className="w-full md:w-[35%] flex flex-col gap-4 md:gap-6 mb-6 md:mb-0">
+      <div className="w-full md:w-[35%] flex flex-col gap-4 md:gap-10 mb-6 md:mb-0">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.7 }}
-          className="text-5xl md:text-[4.0rem] font-black leading-tight text-[#0D1C44]"
+          className="text-5xl md:text-[62px] font-black leading-snug text-[#0D1C44]"
         >
           CENTRAL <br />
           COMPUTER <br />
@@ -70,7 +70,7 @@ const HeroSection = () => {
           >
             <Link
               to="/guides"
-              className="px-5 md:px-9 py-3 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
+              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
             >
               VIEW GUIDES
             </Link>
@@ -83,7 +83,7 @@ const HeroSection = () => {
           >
             <Link
               to="/facilities"
-              className="px-5 md:px-9 py-3 border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
+              className="px-5 md:px-9 py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white transition-colors duration-300"
             >
               FACILITIES
             </Link>
