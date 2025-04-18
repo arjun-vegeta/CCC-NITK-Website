@@ -47,7 +47,7 @@ const Sidebar = ({ links }) => {
 
   const renderLinks = (items, depth = 0) => {
     return (
-      <ul className={`space-y-1.5 ${depth > 0 ? "ml-4 pl-2 border-l border-gray-200 dark:border-gray-700" : ""}`}>
+      <ul className={`space-y-1.5 ${depth > 0 ? "ml-4 pl-2 border-l border-gray-300 dark:border-gray-700" : ""}`}>
         {items.map((item) => (
           <li key={item.slug} className="relative">
             <div
@@ -55,7 +55,7 @@ const Sidebar = ({ links }) => {
               data-href={item.href}
               className={`flex justify-between items-center cursor-pointer py-2 px-2 group transition-all duration-200 rounded-lg ${
                 location.pathname === item.href 
-                  ? "bg-gray-100 dark:bg-gray-800" 
+                  ? "bg-gray-200/80 dark:bg-gray-800" 
                   : ""
               } ${
                 hoveredItem === item.slug ? "translate-x-2" : ""
@@ -101,7 +101,7 @@ const Sidebar = ({ links }) => {
   };
 
   return (
-    <div className="h-[full] p-6 pr-4 bg-white dark:bg-[#0b0c10] relative sidebar-container dark-transition">
+    <div className="h-full p-6 pr-4 bg-[#f5f5f5] dark:bg-[#0b0c10] relative sidebar-container dark-transition sticky top-[93px]">
       {/* Animated indicator */}
       <div
         className="absolute transition-all duration-200"
@@ -118,7 +118,12 @@ const Sidebar = ({ links }) => {
           zIndex: 10
         }}
       />
-      <div className="pl-0">
+      <div className={`pl-0 transition-opacity duration-300 ${!links || links.length === 0 ? '' : 'opacity-100'} ${typeof window !== 'undefined' && window.innerWidth > 800 && !document.querySelector('.w-0') ? 'opacity-100' : ''}`}
+        style={{
+          opacity: (typeof window !== 'undefined' && window.innerWidth > 800 && document.querySelector('.w-0')) ? 0 : 1,
+          transition: 'opacity 0.3s',
+        }}
+      >
         {renderLinks(links)}
       </div>
     </div>

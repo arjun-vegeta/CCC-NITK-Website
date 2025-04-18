@@ -13,7 +13,7 @@ import { useDarkMode } from "../utils/DarkModeContext";
 
 // Extracted prose styles
 const proseStyles = {
-  container: "flex-1 border-l border-gray-200 dark:border-gray-700 px-6 md:px-12 dark-transition",
+  container: "flex-1 border-l border-gray-300 dark:border-gray-700 px-6 md:px-12 dark-transition",
   content: "prose dark:prose-invert max-w-none dark-transition",
 };
 
@@ -191,47 +191,39 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
       {/* Sidebar */}
       {sidebar && (
         <div
-        ref={sidebarRef}
-        className={`
-          ${windowWidth > 800 ? "absolute top-[5px] bottom-0 left-0" : "absolute top-14 bottom-0"}
-          ${windowWidth > 800 ? "w-[300px]" : "w-4/5"}
-          bg-white dark:bg-[#0b0c10] overflow-y-auto
-          transition-transform duration-300 ease-in-out z-20
+          ref={sidebarRef}
+          className={`
+          ${windowWidth > 800
+              ? `${isSidebarOpen ? "w-[300px]" : "w-0"} sticky top-[89px] md:top-[93px] h-[calc(100vh-93px)] left-0 transition-[width] duration-300 ease-in-out`
+              : `${isSidebarOpen ? "w-4/5" : "w-0"} absolute top-14 bottom-0 transition-[width] duration-300 ease-in-out`}
+          bg-[#f5f5f5] dark:bg-[#0b0c10] overflow-y-auto
+          z-20
           ${isSidebarOpen
-            ? "translate-x-0"
-            : windowWidth > 800
-            ? "-translate-x-[300px]"
-            : "-translate-x-full"}
-          border-r border-gray-200 dark:border-gray-700
+              ? "translate-x-0"
+              : windowWidth > 800
+                ? "-translate-x-0"
+                : "-translate-x-0"}
+          border-r border-gray-300 dark:border-gray-700
         `}
-      >
-          {/* Close button on mobile */}
-          {windowWidth <= 800 && (
-            <button
-              onClick={toggleSidebar}
-              className="absolute top-4 right-4 p-2 text-gray-600 dark:text-gray-300 focus:outline-none"
-            >
-              <X className="h-6 w-6" />
-            </button>
-          )}
-          {sidebar}
+        >
+
+          {/* Only render sidebar content if open on desktop, always on mobile */}
+          {(isSidebarOpen || windowWidth > 800) && sidebar}
         </div>
       )}
 
       {/* Main content (shifts on desktop) */}
       <div
-        className={`flex-1 flex flex-col transition-[margin] duration-300 ease-in-out ${
-          windowWidth > 800 && isSidebarOpen ? "ml-[300px]" : "ml-0"
-        }`}
+        className={"flex-1 flex flex-col transition-[margin] duration-300 ease-in-out"}
       >
         {/* Navbar + breadcrumb + toggle */}
-        <div className="z-10 sticky top-0 shadow-sm bg-white dark:bg-[#0b0c10] border-l border-gray-200 dark:border-gray-700 dark-transition">
+        <div className="z-10 sticky top-[89px] md:top-[93px] shadow-md bg-[#f5f5f5] dark:bg-[#0b0c10] border-l border-gray-300 dark:border-gray-700 dark-transition">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
               onMouseEnter={() => setShowSidebarTooltip(true)}
               onMouseLeave={() => setShowSidebarTooltip(false)}
-              className="relative h-full px-4 py-4 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0b0c10] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
+              className="relative h-full px-4 py-4 border-r border-gray-300 dark:border-gray-700 bg-[#f5f5f5] dark:bg-[#0b0c10] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +286,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           {/* TOC (desktop only >800px) */}
           {windowWidth > 800 && sidebar && structuredHeadings.length > 0 && (
             <div className="w-80 flex-shrink-0">
-              <div className="sticky border-l border-gray-200 dark:border-gray-700 top-28 p-4 toc-container dark-transition">
+              <div className="sticky border-l border-gray-300 dark:border-gray-700 top-36 p-4 toc-container dark-transition">
                 <div
                   className="absolute transition-all duration-200"
                   style={{

@@ -4,7 +4,7 @@ import React from 'react';
 const styles = {
   headings: {
     base: "w-full dark-transition",
-    h1: "text-10xl font-extrabold mb-8 mt-10 pb-4 border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white relative",
+    h1: "text-10xl font-extrabold mb-8 mt-10 pb-4 border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white relative",
     h2: "text-2xl font-bold mb-6 mt-8 pb-2 border-b border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-100 relative",
     h3: "text-xl font-semibold mb-4 mt-6 text-gray-800 dark:text-gray-200",
     h4: "text-lg font-medium mb-3 mt-4 text-gray-700 dark:text-gray-300",

@@ -8,7 +8,7 @@ const Table = ({ children, className = "", ...props }) => {
   // If children are provided (MDX usage), render with children
   if (children) {
     return (
-      <div className="relative mb-6 rounded-lg border border-gray-200 dark:border-gray-700">
+      <div className="relative mb-6 rounded-lg border border-gray-300 dark:border-gray-700">
         {/* Fixed width container with horizontal scroll */}
         <div className="block w-full overflow-x-scroll" style={{ 
           overflowY: 'hidden',
@@ -30,7 +30,7 @@ const Table = ({ children, className = "", ...props }) => {
   const { headers, rows } = props;
   
   return (
-    <div className="relative mb-6 rounded-lg border border-gray-200 dark:border-gray-700">
+    <div className="relative mb-6 rounded-lg border border-gray-300 dark:border-gray-700">
       {/* Fixed width container with horizontal scroll */}
       <div className="block w-full overflow-x-scroll" style={{ 
         overflowY: 'hidden',

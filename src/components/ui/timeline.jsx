@@ -33,10 +33,10 @@ export const Timeline = ({
             <div
               className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
               <div
-                className="h-8 absolute left-3 md:left-3 w-8 rounded-full bg-[#0D1C44] flex items-center justify-center">
+                className="h-8 absolute left-3 md:left-3 w-8 rounded-full bg-white flex items-center justify-center">
               </div>
               <h3
-                className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
+                className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-blue-200 ">
                 {item.title}
               </h3>
             </div>
@@ -53,7 +53,7 @@ export const Timeline = ({
                 }}
               >
                   <h3
-                    className="md:hidden block text-2xl mb-4 text-left font-bold text-[#1a365d]">
+                    className="md:hidden block text-lg mb-4 text-left font-bold text-[#1a365d] dark:text-blue-200">
                     {item.title}
                   </h3>
                 {item.content} {" "}

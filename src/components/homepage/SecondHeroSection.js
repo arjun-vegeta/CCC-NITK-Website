@@ -157,7 +157,7 @@ const SecondHeroSection = () => {
                     />
                   </div>
                 </div>
-                <h3 className="font-bold text-[#0D1C44] dark:text-blue-200 text-base sm:text-lg mt-3 mb-1">
+                <h3 className="font-bold text-[#0D1C44] dark:text-blue-200 text-lg sm:text-lg mt-3 mb-1">
                   {card.title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">

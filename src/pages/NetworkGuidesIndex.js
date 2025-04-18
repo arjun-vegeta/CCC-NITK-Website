@@ -60,7 +60,7 @@ function NetworkGuidesIndex() {
             <Link 
               key={post.slug}
               to={post.href}
-              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-white dark:bg-[#0b0c10] hover:shadow-lg dark:hover:shadow-gray-900 no-underline dark-transition"
+              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-[#f5f5f5] dark:bg-[#0b0c10] hover:shadow-lg dark:hover:shadow-gray-900 no-underline dark-transition"
             >
               <div className="flex flex-col h-full">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-black dark:group-hover:text-white transition-colors no-underline">
