@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
-import AboutUs from './pages/AboutUs';
 import FacilitiesIndex from './pages/FacilitiesIndex';
 import FacilitiesPost from './pages/FacilitiesPost';
 import NetworkGuidesIndex from './pages/NetworkGuidesIndex';
@@ -12,6 +11,7 @@ import Footer from './components/Footer';
 import { DarkModeProvider } from './utils/DarkModeContext';
 import ScrollToTop from './components/ScrollToTop';
 import AdvancedSearchPage from './components/AdvancedSearchPage';
+import PeopleCCC from './pages/People';
 
 function App() {
   return (
@@ -28,8 +28,8 @@ function App() {
               <Route path="/advanced-search" element={<AdvancedSearchPage />} />
 
 
-              {/* About Us */}
-              <Route path="/about" element={<AboutUs />} />
+              {/* People */}
+              <Route path="/people" element={<PeopleCCC/>} />
 
               {/* Facilities */}
               <Route path="/facilities">

@@ -6,7 +6,7 @@ import SearchbarModal from "./SearchBarModal";
 
 function Navbar() {
   const { darkMode, toggleDarkMode } = useDarkMode();
-  const [textOpacity, setTextOpacity] = useState(1);
+  const [textOpacity ] = useState(1);
   const logoRef = useRef(null);
   const textRef = useRef(null);
 
@@ -169,7 +169,7 @@ function Navbar() {
             onMouseLeave={handleMouseLeave}
             ref={navContainerRef}
           >
-            {["Home", "Guides", "Facilities", "About"].map((label, i) => (
+            {["Home", "Guides", "Facilities", "People"].map((label, i) => (
               <Link
                 key={label}
                 to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
@@ -248,7 +248,7 @@ function Navbar() {
         <div className="px-4 py-2 bg-[#0A182F] dark:bg-black">
           {/* Mobile Navigation Links */}
           <nav className="flex flex-col space-y-4 py-4">
-            {["Home", "Guides", "Facilities", "About"].map((label) => (
+            {["Home", "Guides", "Facilities", "People"].map((label) => (
               <Link
                 key={label}
                 to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}

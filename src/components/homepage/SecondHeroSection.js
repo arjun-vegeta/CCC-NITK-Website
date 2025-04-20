@@ -108,7 +108,7 @@ const SecondHeroSection = () => {
         className="text-center mb-10 md:mb-14"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
         viewport={{ once: true }}
       >
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0D1C44] dark:text-white mb-4 md:mb-6">

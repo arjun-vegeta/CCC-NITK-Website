@@ -68,7 +68,8 @@ const imageVariants = {
 const FacilityInfo = () => {
   const [selectedFacility, setSelectedFacility] = useState(facilities[0]);
   const [hoveredFacility, setHoveredFacility] = useState(null);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAutoChanging] = useState(true);
 
   // Create refs for intersection observers
   const headingRef = useRef(null);
@@ -83,12 +84,32 @@ const FacilityInfo = () => {
   // Create refs for each facility item to track visibility
   const facilityRefs = useRef(facilities.map(() => React.createRef()));
 
+  // Auto-changing facility every 5 seconds
+  useEffect(() => {
+    let intervalId;
+
+    if (isAutoChanging) {
+      intervalId = setInterval(() => {
+        const nextIndex = (activeIndex + 1) % facilities.length;
+        setActiveIndex(nextIndex);
+        setSelectedFacility(facilities[nextIndex]);
+      }, 3000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [activeIndex, isAutoChanging]);
+
   // Set up intersection observers for mobile scrolling behavior
   useEffect(() => {
     // Only run on mobile
     if (window.innerWidth > 768) return;
 
-    const observers = facilityRefs.current.map((ref, index) => {
+    // Create a copy of the current refs to use in cleanup
+    const currentRefs = facilityRefs.current;
+
+    const observers = currentRefs.map((ref, index) => {
       const observer = new IntersectionObserver(
         (entries) => {
           const [entry] = entries;
@@ -96,7 +117,7 @@ const FacilityInfo = () => {
             setSelectedFacility(facilities[index]);
           }
         },
-        { threshold: 0.7 } // Trigger when 70% of element is visible
+        { threshold: 0.7 }
       );
 
       if (ref.current) {
@@ -106,18 +127,20 @@ const FacilityInfo = () => {
       return observer;
     });
 
-    // Cleanup observers
+    // Cleanup observers using the copied refs
     return () => {
       observers.forEach((observer, index) => {
-        if (facilityRefs.current[index].current) {
-          observer.unobserve(facilityRefs.current[index].current);
+        if (currentRefs[index].current) {
+          observer.unobserve(currentRefs[index].current);
         }
       });
     };
-  }, []);
+  }, []);  // Deps array remains empty
 
-  const handleFacilityClick = (facility) => {
+  const handleFacilityClick = (facility, index) => {
+    setActiveIndex(index);
     setSelectedFacility(facility);
+
   };
 
   return (
@@ -172,7 +195,7 @@ const FacilityInfo = () => {
           }}
         >
           {facilities.map((facility, index) => {
-            const isActive = selectedFacility.id === facility.id;
+            const isActive = activeIndex === index;
             const isHovered = hoveredFacility === facility.id;
 
             return (
@@ -181,7 +204,7 @@ const FacilityInfo = () => {
                 custom={index}
                 variants={fadeInUp}
                 className="flex mb-9 cursor-pointer"
-                onClick={() => handleFacilityClick(facility)}
+                onClick={() => handleFacilityClick(facility, index)}
                 onMouseEnter={() => setHoveredFacility(facility.id)}
                 onMouseLeave={() => setHoveredFacility(null)}
               >
@@ -200,19 +223,33 @@ const FacilityInfo = () => {
                   </div>
 
                   {index < facilities.length - 1 && (
-                    <div className="absolute top-16 bottom-0 left-1/2 w-0.5 bg-[#1a365d] -translate-x-1/2 h-[66px]"></div>
+                    <div className="absolute top-16 bottom-0 left-1/2 w-[3px] rounded-b-full bg-[#1a365d] -translate-x-1/2 h-[66px] overflow-hidden">
+                      {/* Color fill animation from top to bottom */}
+                      {isActive && (
+                        <motion.div
+                          className="absolute top-0 left-0 right-0 bg-gradient-to-b from-green-600 dark:from-blue-700 to-green-400 dark:to-blue-400"
+                          initial={{ height: 0 }}
+                          animate={{ height: "100%" }}
+                          transition={{
+                            duration: 3,
+                            ease: "linear",
+                            repeat: 0
+                          }}
+                        />
+                      )}
+                    </div>
                   )}
                 </div>
 
                 {/* Facility text with hover effect */}
                 <div>
                   <h3
-                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce] dark:text-blue-500' : 'text-[#1a365d] dark:text-blue-200'}`}
+                    className={`text-lg transition-colors duration-300 ${isActive ? 'font-bold' : 'font-bold'} ${isHovered ? 'text-[#3182ce] dark:text-blue-500' : isActive ? 'text-[#3182ce] dark:text-blue-400' : 'text-[#1a365d] dark:text-blue-200'}`}
                   >
                     {facility.name}
                   </h3>
                   <p
-                    className={`whitespace-pre-line transition-colors duration-300 ${isActive ? 'font-normal' : 'font-normal'} ${isHovered ? 'text-[#3182ce] dark:text-blue-200' : 'text-gray-700 dark:text-gray-300'}`}
+                    className={`whitespace-pre-line transition-colors duration-300 ${isActive ? 'font-normal' : 'font-normal'} ${isHovered ? 'text-[#3182ce] dark:text-blue-200' : isActive ? 'text-gray-900 dark:text-gray-200' : 'text-gray-700 dark:text-gray-300'}`}
                   >
                     {facility.description}
                   </p>
@@ -262,20 +299,20 @@ const FacilityInfo = () => {
       <div className="md:hidden">
         <TimelineDemo />
         {/* View All Facilities button for mobile */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
-                    className="mt-8 flex justify-center"
-                  >
-                    <Link
-                      to="/facilities"
-                      className="bg-[#0D1C44] text-white py-3 px-8 rounded-full font-semibold shadow-md hover:bg-[#152a5c] transition-colors text-center"
-                    >
-                      View All Facilities
-                    </Link>
-                  </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="mt-8 flex justify-center"
+        >
+          <Link
+            to="/facilities"
+            className="bg-[#0D1C44] text-white py-3 px-8 rounded-full font-semibold shadow-md hover:bg-[#152a5c] transition-colors text-center"
+          >
+            View All Facilities
+          </Link>
+        </motion.div>
       </div>
     </div>
   );

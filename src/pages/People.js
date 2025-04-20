@@ -59,14 +59,14 @@ const staff = [
   },
 ];
 
-const AboutCCC = () => {
+const PeopleCCC = () => {
   const { darkMode } = useDarkMode();
 
   return (
     <>
       
 
-      <div className={`px-4 md:px-8 lg:px-16 font-Montserrat ${darkMode ? 'text-gray-100' : 'text-[#192F59]'} dark-transition`}>
+      <div className={`px-8 md:px-8 lg:px-20 font-Montserrat ${darkMode ? 'text-gray-100' : 'text-[#192F59]'} dark-transition`}>
         {/* <div className="mt-10">
           <h2 className="font-extrabold underline text-2xl md:text-3xl">Central Computer Center</h2>
           <p className="mt-4 text-sm md:text-base dark:text-gray-300">
@@ -109,4 +109,4 @@ const AboutCCC = () => {
   );
 };
 
-export default AboutCCC;
+export default PeopleCCC;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 // Static Routes
 const staticItems = [
   { title: "Home", link: "/" },
-  { title: "About Us", link: "/about" },
+  { title: "people Us", link: "/about" },
   { title: "Facilities", link: "/facilities" },
   { title: "Network Guides", link: "/guides" },
 ];
