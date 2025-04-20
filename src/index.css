@@ -145,3 +145,35 @@ body {
 .dark-transition {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
+/* Prevent mobile zoom */
+@viewport {
+  width: device-width;
+  initial-scale: 1.0;
+  maximum-scale: 1.0;
+  user-zoom: fixed;
+}
+
+
+/* Optional: Improve table cell rendering */
+.th, .td {
+  min-width: 150px; /* Adjust based on your needs */
+  white-space: nowrap;
+  padding: 0.75rem 1rem;
+}
+
+.scrolling-touch {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+/* Improve scroll handoff between elements */
+html {
+  overscroll-behavior: none;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

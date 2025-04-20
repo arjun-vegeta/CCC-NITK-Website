@@ -48,6 +48,14 @@ const generateId = (children) => {
   return typeof children === 'string' ? children.toLowerCase().replace(/\s+/g, '-') : '';
 };
 
+export const Th = ({ children, ...props }) => (
+  <th className="th" {...props}>{children}</th>
+);
+
+export const Td = ({ children, ...props }) => (
+  <td className="td" {...props}>{children}</td>
+);
+
 export const mdxComponents = {
   // Heading components
   h1: ({ children, id }) => (

@@ -1,23 +1,36 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 /**
  * A mobile-first responsive table component
  * Uses CSS containment and a different approach to ensure mobile scrolling works
  */
 const Table = ({ children, className = "", ...props }) => {
-  // If children are provided (MDX usage), render with children
+  // Add touch event handlers
+  const containerRef = useRef(null);
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  const handleTouchStart = (e) => {
+    if (containerRef.current) {
+      const { scrollWidth, clientWidth } = containerRef.current;
+      setIsScrolling(scrollWidth > clientWidth);
+    }
+  };
+
+  // For MDX-based tables
   if (children) {
     return (
       <div className="relative mb-6 rounded-lg border border-gray-300 dark:border-gray-700">
-        {/* Fixed width container with horizontal scroll */}
-        <div className="block w-full overflow-x-scroll" style={{ 
-          overflowY: 'hidden',
-          WebkitOverflowScrolling: 'touch',
-          MsOverflowStyle: '-ms-autohiding-scrollbar'
-        }}>
-          {/* Force table layout */}
-          <div className="relative" style={{ minWidth: '100%' }}>
-            <table className="w-full" cellPadding="0" cellSpacing="0" {...props}>
+        <div 
+          ref={containerRef}
+          className="max-w-[85vw] overflow-x-auto touch-pan-x scrolling-touch"
+          onTouchStart={handleTouchStart}
+          style={{
+            // Allow vertical scrolling when not horizontally scrolling
+            touchAction: isScrolling ? 'pan-x' : 'pan-y'
+          }}
+        >
+          <div className="min-w-max">
+            <table className="w-auto" cellPadding="0" cellSpacing="0" {...props}>
               {children}
             </table>
           </div>
@@ -26,20 +39,22 @@ const Table = ({ children, className = "", ...props }) => {
     );
   }
 
-  // Legacy prop-based usage with headers and rows props
+  // For legacy prop-based tables
   const { headers, rows } = props;
   
   return (
     <div className="relative mb-6 rounded-lg border border-gray-300 dark:border-gray-700">
-      {/* Fixed width container with horizontal scroll */}
-      <div className="block w-full overflow-x-scroll" style={{ 
-        overflowY: 'hidden',
-        WebkitOverflowScrolling: 'touch',
-        MsOverflowStyle: '-ms-autohiding-scrollbar'
-      }}>
-        {/* Force table layout */}
-        <div className="relative" style={{ minWidth: '100%' }}>
-          <table className="w-full" cellPadding="0" cellSpacing="0">
+      <div 
+        ref={containerRef}
+        className="max-w-[100vw] overflow-x-auto touch-pan-x scrolling-touch"
+        onTouchStart={handleTouchStart}
+        style={{
+          // Allow vertical scrolling when not horizontally scrolling
+          touchAction: isScrolling ? 'pan-x' : 'pan-y'
+        }}
+      >
+        <div className="min-w-max">
+          <table className="w-auto" cellPadding="0" cellSpacing="0">
             <thead className="bg-gray-50 dark:bg-gray-800">
               <tr>
                 {headers?.map((header, index) => (
