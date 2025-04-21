@@ -65,6 +65,8 @@ const Sidebar = ({ links }) => {
                   toggleExpand(item.slug);
                 } else if (item.href) {
                   navigate(item.href);
+                  // No need to manually close sidebar here - 
+                  // The event listener in FullWidthLayout will handle it
                 }
               }}
               onMouseEnter={() => handleItemHover(item.slug)}

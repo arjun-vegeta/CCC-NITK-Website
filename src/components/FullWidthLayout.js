@@ -44,16 +44,23 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const sidebarRef = useRef(null);
   const toggleSidebar = () => setSidebarOpen((o) => !o);
 
-  // Close sidebar on any link click in mobile
   useEffect(() => {
     const node = sidebarRef.current;
     if (!node) return;
+    
     const handleClick = (e) => {
       if (windowWidth <= 800) {
-        const link = e.target.closest("a");
-        if (link) setSidebarOpen(false);
+        // Look for any link (anchor) or div with a onClick handler that navigates
+        const clickableElement = e.target.closest("a") || e.target.closest("[data-href]");
+        if (clickableElement) {
+          // Small delay to ensure navigation completes before closing sidebar
+          setTimeout(() => {
+            setSidebarOpen(false);
+          }, 350);
+        }
       }
     };
+    
     node.addEventListener("click", handleClick);
     return () => node.removeEventListener("click", handleClick);
   }, [windowWidth]);
@@ -286,7 +293,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           </div>
 
           {/* TOC (desktop only >800px) */}
-          {windowWidth > 800 && sidebar && structuredHeadings.length > 0 && (
+          {windowWidth > 996 && sidebar && structuredHeadings.length > 0 && (
             <div className="w-80 flex-shrink-0">
               <div className="sticky border-l border-gray-300 dark:border-gray-700 top-36 p-4 toc-container dark-transition">
                 <div
