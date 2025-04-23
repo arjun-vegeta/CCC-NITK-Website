@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const HeroSection = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const progressInterval = useRef(null);
+
+  // Images data
+  const images = [
+    { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Main Building" },
+    { src: "/images_mdx/Lab.png", alt: "CCC Labs", label: "CCC Labs" },
+    { src: "/hero/dc.jpg", alt: "Data Centre", label: "Data Centre" }
+  ];
 
   // Check if screen is mobile
   useEffect(() => {
@@ -22,21 +32,62 @@ const HeroSection = () => {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  const images = [
-    { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Main Building" },
-    { src: "/images_mdx/Lab.png", alt: "CCC Labs", label: "CCC Labs" },
-    { src: "/hero/dc.jpg", alt: "Data Centre", label: "Data Centre" }
-  ];
+  // Handle progress bar and image rotation
+  useEffect(() => {
+    if (isHovered) {
+      // Clear interval when hovered
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+        progressInterval.current = null;
+      }
+      return;
+    }
+    
+    // Reset progress when starting new interval
+    setProgress(0);
+    
+    // Clear any existing interval
+    if (progressInterval.current) {
+      clearInterval(progressInterval.current);
+    }
+    
+    // Update progress 60 times per 3 seconds (50ms intervals)
+    const intervalDuration = 50;
+    const totalDuration = 3000;
+    const steps = totalDuration / intervalDuration;
+    
+    progressInterval.current = setInterval(() => {
+      setProgress(prev => {
+        const newProgress = prev + (100 / steps);
+        
+        // When progress reaches 100%, change the image
+        if (newProgress >= 100) {
+          setActiveImage((prevIndex) => (prevIndex + 1) % images.length);
+          return 0; // Reset progress
+        }
+        
+        return newProgress;
+      });
+    }, intervalDuration);
+    
+    return () => {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+    };
+  }, [isHovered, images.length, activeImage]);
 
   const handleImageClick = (index) => {
     if (index !== activeImage) {
       setActiveImage(index);
+      setProgress(0); // Reset progress when changing image
     }
   };
 
   const handleImageHover = (index) => {
     if (index !== activeImage) {
       setActiveImage(index);
+      setProgress(0); // Reset progress when changing image
     }
   };
 
@@ -165,18 +216,32 @@ const HeroSection = () => {
                     </div>
                   )}
                 </div>
+                
+                {/* Mobile Progress Indicator (on right side for active image) */}
+                {isActive && !isHovered && (
+                  <div className="absolute right-2 top-4 bottom-4 w-1 z-20 bg-white/20 rounded-full overflow-hidden">
+                    <div 
+  className="absolute top-0 w-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
+  style={{ 
+    height: `${progress}%`
+  }} 
+/>
+                  </div>
+                )}
               </motion.div>
             );
           })}
         </motion.div>
       )}
 
-      {/* Desktop: Horizontal Expanding Cards (now using hover) */}
+      {/* Desktop: Horizontal Expanding Cards (using hover) */}
       {!isMobile && (
         <motion.div
           className="w-full mt-3 md:w-[70%] flex gap-[38px]"
           initial="hidden"
           animate="visible"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           variants={{
             visible: {
               transition: {
@@ -194,7 +259,7 @@ const HeroSection = () => {
                 className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-700 ease-in-out ${
                   isActive ? "w-[60%]" : "w-[15%]"
                 }`}
-                onMouseEnter={() => handleImageHover(index)} // Changed from onClick to onMouseEnter
+                onMouseEnter={() => handleImageHover(index)}
                 variants={{
                   hidden: { opacity: 0, x: -40 },
                   visible: { opacity: 1, x: 0 }
@@ -234,6 +299,18 @@ const HeroSection = () => {
                     <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#0A182F] dark:bg-blue-950" />
                   )}
                 </div>
+
+                {/* Desktop Progress Indicator (at bottom for active image) */}
+                {isActive && !isHovered && (
+                  <div className="absolute bottom-5 left-5 right-5 h-1.5 z-20 bg-white/30 rounded-full overflow-hidden">
+                   <div 
+  className="h-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
+  style={{ 
+    width: `${progress}%`
+  }}
+/>
+                  </div>
+                )}
               </motion.div>
             );
           })}
