@@ -22,7 +22,6 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const { darkMode } = useDarkMode();
 
   // --- TOC state & refs ---
-  const [manualOverride, setManualOverride] = useState(false);
   const [activeHeading, setActiveHeading] = useState(null);
   const [hoveredHeading, setHoveredHeading] = useState(null);
   const [headingLinePosition, setHeadingLinePosition] = useState({ top: 0, height: 0 });
@@ -81,16 +80,14 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   // --- Smooth scroll handler ---
   const handleClickHeading = (id) => {
     setActiveHeading(id);
-    setManualOverride(true);
     updateHeadingLinePosition(id);
     const el = document.getElementById(id);
     if (el) {
       window.history.pushState(null, "", `#${id}`);
-      const headerOffset = 56; // match your navbar height
+      const headerOffset = 170; // match your navbar height
       const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
-    setTimeout(() => setManualOverride(false), 5000);
   };
 
   // --- Parse & build TOC tree ---
@@ -145,7 +142,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
     if (!contentRef.current) return;
     const elems = contentRef.current.querySelectorAll("h2, h3, h4, h5, h6");
     const obs = new IntersectionObserver((entries) => {
-      if (manualOverride) return;
+       
       const visible = entries.filter((e) => e.isIntersecting);
       if (!visible.length) return;
       const nearest = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
@@ -153,7 +150,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
     }, { root: null, rootMargin: "0px 0px -70% 0px", threshold: 0.1 });
     elems.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
-  }, [children, manualOverride]);
+  }, [children]);
 
   // --- Sync indicator when activeHeading changes ---
   useEffect(() => {
