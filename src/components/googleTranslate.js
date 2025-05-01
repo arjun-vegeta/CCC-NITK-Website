@@ -65,11 +65,8 @@ const GoogleTranslate = () => {
     <div>
       {/* Hidden Google Translate Widget */}
       <div id="google_translate_element" ref={translateRef}></div>
-
-    
-      <div className="text-[17px] font-normal text-[#192F59]" translate="no">
+      <div className="text-[17px] font-medium hover:text-green-600 translate-y-[1px] text-white" translate="no">
         <button onClick={handleClick} style={{ display: 'flex', alignItems: 'center' }}>
-          <i className="fa fa-language mr-2" aria-hidden="true"></i>
           {buttonLabel}
         </button>
       </div>

@@ -295,6 +295,9 @@ function Navbar() {
                 </>
               )}
             </button>
+            <div>
+            <GoogleTranslate />
+          </div>
           </div>
         </div>
       </div>
