@@ -106,7 +106,9 @@ const GuideCard = ({ box, index }) => {
           style={{
             backgroundImage: `url(${box.image})`,
             backgroundSize: "cover",
-            backgroundPosition: "center"
+            backgroundPosition: "center",
+            transition: 'transform 0.4s cubic-bezier(0.4,0,0.2,1)',
+            transform: hovered ? 'scale(1.05)' : 'scale(1)'
           }}
         >
           {/* Animated Circle - Always visible on mobile */}
