@@ -5,14 +5,14 @@ import { Link } from "react-router-dom";
 const GuideSection = () => {
   const infoBoxes = [
     {
-      heading: "Request for Institute URL",
-      description: "Instructions to request and access the official NITK institute URL.",
+      heading: "Request For Subdomain",
+      description: "Instructions to request for subdomain (.nitk.ac.in).",
       image: "/guides/url.png",
       link: "/guides/request-institute-url"
     },
     {
       heading: "Request For Container",
-      description: "Steps to request a container for internet access at NITK.",
+      description: "Steps to request a Container/ Virtual Machine from CCC.",
       image: "/guides/server.png",
       link: "/guides/request-container"
     },

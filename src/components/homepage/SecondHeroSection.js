@@ -59,7 +59,7 @@ const SecondHeroSection = () => {
     },
     {
       id: 3,
-      title: "200+ Staff Quarters",
+      title: "300+ Staff Quarters",
       description: "",
       imgHeight: 400,
       imgSrc: "/stats/dept.png"
