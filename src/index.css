@@ -177,3 +177,31 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Hide the Google Translate widget */
+#google_translate_element {
+  display: none;
+}
+
+.skiptranslate {
+  margin-top: -40px;
+}
+
+iframe {
+  display: none;
+}
+
+#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.goog-te-banner-frame,
+.goog-te-menu-frame,
+.goog-te-gadget-simple {
+  pointer-events: none !important;
+  opacity: 0 !important; 
+}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IoSearch, IoMoon, IoSunny } from "react-icons/io5";
 import { useDarkMode } from "../utils/DarkModeContext";
 import SearchbarModal from "./SearchBarModal";
+import GoogleTranslate from "./googleTranslate";
 
 function Navbar() {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -234,6 +235,11 @@ function Navbar() {
                 Toggle theme
               </div>
             )}
+          </div>
+
+          {/* Google Translate Button */}
+          <div className="ml-2">
+            <GoogleTranslate />
           </div>
 
         </div>
