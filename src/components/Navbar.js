@@ -238,7 +238,7 @@ function Navbar() {
           </div>
 
           {/* Google Translate Button */}
-          <div className="ml-2">
+          <div className="ml-0">
             <GoogleTranslate />
           </div>
 

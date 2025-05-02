@@ -11,7 +11,7 @@ const HeroSection = () => {
 
   // Images data
   const images = [
-    { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Main Building" },
+    { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Building" },
     { src: "/images_mdx/Lab.png", alt: "CCC Labs", label: "CCC Labs" },
     { src: "/hero/dc.jpg", alt: "Data Centre", label: "Data Centre" }
   ];
@@ -201,12 +201,12 @@ const HeroSection = () => {
                 {/* Overlay for all states */}
                 <div className="absolute z-10 inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end">
                   {isActive ? (
-                    <p className="p-4 ml-2.5 mb-1 text-white font-semibold text-lg dark:text-gray-100">
+                    <p className="p-4 ml-2.5 mb-1 text-white tracking-wide font-semibold text-lg dark:text-gray-100">
                       {image.label}
                     </p>
                   ) : (
                     <div className="flex w-full items-center justify-between p-3">
-                      <p className="text-white ml-2.5 mb-1 font-semibold dark:text-gray-100">
+                      <p className="text-white tracking-wide ml-2.5 mb-1 font-semibold dark:text-gray-100">
                         {image.label}
                       </p>
                       {/* Small square box for collapsed cards */}
@@ -221,11 +221,11 @@ const HeroSection = () => {
                 {isActive && !isHovered && (
                   <div className="absolute right-2 top-4 bottom-4 w-1 z-20 bg-white/20 rounded-full overflow-hidden">
                     <div 
-  className="absolute top-0 w-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
-  style={{ 
-    height: `${progress}%`
-  }} 
-/>
+                      className="absolute top-0 w-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
+                      style={{ 
+                        height: `${progress}%`
+                      }} 
+                    />
                   </div>
                 )}
               </motion.div>
@@ -271,44 +271,47 @@ const HeroSection = () => {
                   className="h-[36rem] w-full object-cover rounded-lg"
                 />
 
-                {/* Label overlay for active */}
-                <div 
-                  className={`absolute inset-0 flex items-end transition-all duration-700 ease-in-out ${
-                    isActive ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <p className="absolute z-10 bottom-20 left-16 text-2xl text-white font-bold transition-all duration-700 ease-in-out dark:text-gray-100">
-                    {image.label}
-                  </p>
-                </div>
-
-                {/* Vertical text for collapsed */}
-                <div 
-                  className={`absolute inset-0 flex items-end justify-center transition-all duration-700 ease-in-out ${
-                    !isActive ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <p 
-                    className="absolute z-10 bottom-[80px] left-16 origin-bottom-left transform -rotate-90 text-2xl text-white font-bold text-nowrap transition-all duration-700 ease-in-out dark:text-gray-100"
+                {/* Overlay for all states (add gradient like mobile) */}
+                <div className="absolute z-10 inset-0 bg-gradient-to-t from-black/25 to-transparent flex items-end">
+                  {/* Label overlay for active */}
+                  <div 
+                    className={`w-full transition-all duration-700 ease-in-out ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
                   >
-                    {image.label}
-                  </p>
+                    <p className="absolute z-10 bottom-20 tracking-wider left-16 text-2xl text-white font-bold transition-all duration-700 ease-in-out dark:text-gray-100">
+                      {image.label}
+                    </p>
+                  </div>
 
-                  {/* Small square box for collapsed cards */}
-                  {!isActive && (
-                    <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#0A182F] dark:bg-blue-950" />
-                  )}
+                  {/* Vertical text for collapsed */}
+                  <div 
+                    className={`w-full flex items-end justify-center transition-all duration-700 ease-in-out ${
+                      !isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <p 
+                      className="absolute z-10 bottom-[80px] tracking-wider left-16 origin-bottom-left transform -rotate-90 text-2xl text-white font-bold text-nowrap transition-all duration-700 ease-in-out dark:text-gray-100"
+                    >
+                      {image.label}
+                    </p>
+
+                    {/* Small square box for collapsed cards */}
+                    {!isActive && (
+                      <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#0A182F] dark:bg-blue-950" />
+                    )}
+                  </div>
                 </div>
 
                 {/* Desktop Progress Indicator (at bottom for active image) */}
                 {isActive && !isHovered && (
                   <div className="absolute bottom-5 left-5 right-5 h-1.5 z-20 bg-white/30 rounded-full overflow-hidden">
-                   <div 
-  className="h-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
-  style={{ 
-    width: `${progress}%`
-  }}
-/>
+                    <div 
+                      className="h-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
+                      style={{ 
+                        width: `${progress}%`
+                      }}
+                    />
                   </div>
                 )}
               </motion.div>

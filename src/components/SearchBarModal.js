@@ -177,7 +177,7 @@ const SearchbarModal = ({ display, closeSearch }) => {
                 ))
               ) : (
                 <div className="px-6 py-4 text-gray-500 dark:text-gray-400">
-                  No results found for "{query}"
+                  No results found for "{query}" <br></br> Please try advanced search or check the spelling.
                 </div>
               )}
             </div>
