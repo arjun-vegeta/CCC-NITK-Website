@@ -12,7 +12,7 @@ const HeroSection = () => {
   // Images data
   const images = [
     { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Building" },
-    { src: "/images_mdx/Lab.png", alt: "CCC Labs", label: "CCC Labs" },
+    { src: "/hero/lab.png", alt: "CCC Labs", label: "CCC Labs" },
     { src: "/hero/dc.jpg", alt: "Data Centre", label: "Data Centre" }
   ];
 
