@@ -1,12 +1,15 @@
-export const frontmatter = { title: "NITK VPN Services" }
+export const frontmatter = { title: "How to use NITK’s VPN Services" }
 
 import CodeBlock from "../../components/ui/CodeBlock"
 import ZoomableImage from "../../components/ui/ZoomableImage"
+import NoteBox from "../../components/ui/NoteBox"
 
 # How to use NITK’s VPN Services
 
+<NoteBox>
 ⚠ **Note:** You need an approved VPN account to use these services.  
-Faculty can request VPN access through IRIS → [Request for VPN Access](/vpn-access).
+Faculty can request VPN access through IRIS → [Request for VPN Access](/guides/request-vpn-access).
+</NoteBox>
 
 Please follow the instructions below to configure VPN on your device.
 
@@ -30,7 +33,8 @@ Please follow the instructions below to configure VPN on your device.
    - `XXXX` is your employee code or user ID.
 
 5. For OpenVPN 2.4.x and later, edit the `.ovpn` file:  
-   Change `comp-lzo no` to `comp-lzo adaptive` and reconnect.
+Change `comp-lzo no` to `comp-lzo adaptive` and reconnect.
+
 
 ✅ Done! (All done via shell prompt)
 
@@ -55,7 +59,9 @@ Please follow the instructions below to configure VPN on your device.
 
 ## Notes
 
+<NoteBox>
 - You can check connectivity by pointing your browser or pinging an allowed IP within NITK.
 - If you forget the password, IRIS users can reset the captive portal password via IRIS (note: this will also change your IRIS password).
+</NoteBox>
 
 For queries, please contact: **notifyccc@nitk.edu.in**

@@ -12,6 +12,7 @@ import { DarkModeProvider } from './utils/DarkModeContext';
 import ScrollToTop from './components/ScrollToTop';
 import AdvancedSearchPage from './components/AdvancedSearchPage';
 import PeopleCCC from './pages/People';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
 
               {/* Contact */}
               <Route path="/contact" element={<Contact />} />
+
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
           <Footer />

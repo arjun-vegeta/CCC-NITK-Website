@@ -205,3 +205,17 @@ iframe {
   pointer-events: none !important;
   opacity: 0 !important; 
 }
+
+/* Default light mode variables */
+:root {
+  --note-box-bg: rgba(116, 151, 165, 0.5); /* Sky blue with transparency (glossy effect) */
+  --note-box-border: rgba(100, 150, 255, 0.7); /* Slightly darker blue for border */
+}
+
+/* Dark mode variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --note-box-bg: rgba(65, 105, 225, 0.5); /* Royal blue with transparency for dark mode */
+    --note-box-border: rgba(35, 55, 150, 0.7); /* Darker royal blue border */
+  }
+}
