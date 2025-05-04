@@ -1,0 +1,61 @@
+export const frontmatter = { title: "NITK VPN Services" }
+
+import CodeBlock from "../../components/ui/CodeBlock"
+import ZoomableImage from "../../components/ui/ZoomableImage"
+
+# How to use NITK’s VPN Services
+
+⚠ **Note:** You need an approved VPN account to use these services.  
+Faculty can request VPN access through IRIS → [Request for VPN Access](/vpn-access).
+
+Please follow the instructions below to configure VPN on your device.
+
+---
+
+## Steps to Install and Configure OpenVPN on Linux
+
+1. Login to the Sophos user-portal with your captive portal credentials at  
+   **vpnportal.nitk.ac.in** from an external network (i.e., outside NITK network).
+
+2. Click on **Download configuration for other OSs** under the SSL VPN tab (visible only if VPN access is enabled for you).
+
+3. Install OpenVPN:  
+   For Ubuntu, run:  
+   <CodeBlock>sudo apt install openvpn</CodeBlock>
+
+4. Run the OpenVPN command:  
+   <CodeBlock>sudo openvpn --config /etc/openvpn/XXXX__ssl_vpn_config.ovpn</CodeBlock>  
+   - `XXXX__ssl_vpn_config.ovpn` is the file downloaded from the Sophos portal.  
+   - Move it to `/etc/openvpn/` or use the correct path.  
+   - `XXXX` is your employee code or user ID.
+
+5. For OpenVPN 2.4.x and later, edit the `.ovpn` file:  
+   Change `comp-lzo no` to `comp-lzo adaptive` and reconnect.
+
+✅ Done! (All done via shell prompt)
+
+---
+
+## Steps to Install and Configure OpenVPN on Windows
+
+1. Login to the Sophos user-portal at  
+   **vpnportal.nitk.ac.in** from an external network.
+
+2. Download:  
+   - **Client and configuration for Windows**  
+   - **Configuration for Windows** under the SSL VPN tab.
+
+3. Install both `.exe` files by double-clicking on them.
+
+4. Right-click the SSL-VPN client in the system tray (bottom-right of the desktop) and connect with your credentials.
+
+✅ Done!
+
+---
+
+## Notes
+
+- You can check connectivity by pointing your browser or pinging an allowed IP within NITK.
+- If you forget the password, IRIS users can reset the captive portal password via IRIS (note: this will also change your IRIS password).
+
+For queries, please contact: **notifyccc@nitk.edu.in**
