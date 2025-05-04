@@ -32,7 +32,7 @@
     "react-scripts": "5.0.1",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
-    "remove-markdown": "^0.6.0",
+    "remove-markdown": "^0.6.2",
     "simplex-noise": "^4.0.3",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.6.0",
