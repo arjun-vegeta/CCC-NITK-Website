@@ -113,7 +113,7 @@ const PeopleCCC = () => {
 
       {/* Meet the Team Section */}
       <div className="mt-10 mb-16">
-        <h2 className="font-extrabold underline text-2xl md:text-3xl">Meet the Team</h2>
+        <h2 className="font-extrabold underline text-2xl md:text-3xl">Website Team</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {team.map((member, index) => (
             <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-xl shadow-md bg-white dark:bg-gray-800 dark-transition flex gap-4 items-center">

@@ -52,7 +52,7 @@ const SecondHeroSection = () => {
     },
     {
       id: 2,
-      title: "22+ Hostels",
+      title: "20+ Hostels",
       description: "",
       imgHeight: 340,
       imgSrc: "/stats/hostel.png"
