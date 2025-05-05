@@ -4,14 +4,17 @@ const NoteBox = ({ children }) => {
   return (
     <div
       style={{
-        backgroundColor: 'var(--note-box-bg)', // Background color will adapt based on the mode
-        borderLeft: '4px solid var(--note-box-border)', // Border color will adapt based on the mode
-        padding: '10px',
-        margin: '15px 0',
-        borderRadius: '5px',
+        padding: '1rem',
+        margin: '1rem 0',
+        borderLeftWidth: '4px',
+        borderLeftStyle: 'solid',
+        borderRadius: '0.5rem',
         fontSize: '1rem',
-        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', // Optional glossy effect shadow
+        boxSizing: 'border-box',
+        width: '75%',
+        maxWidth: '75%',
       }}
+      className="note-box"
     >
       {children}
     </div>
