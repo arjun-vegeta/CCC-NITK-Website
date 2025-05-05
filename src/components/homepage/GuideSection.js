@@ -45,7 +45,7 @@ const GuideSection = () => {
           Learn More About Guides
         </h2>
         <p className="text-gray-600 dark:text-blue-300">
-          Discover guides to help you navigate the Central Computer Center's services, resources and facilities.
+          Discover guides to help you navigate the Central Computer Centre's services, resources and facilities.
         </p>
       </motion.div>
 
