@@ -20,7 +20,7 @@ const staff = [
   {
     name: "C. Vairavanathan ",
     position: "Technical Officer",
-    image: "Vairavanthan.jpg",
+    image: "Vairavanathan.jpg",
   },
   {
     name: "M. N. Shanthakumar",
