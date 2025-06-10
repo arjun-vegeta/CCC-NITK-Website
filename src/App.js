@@ -9,16 +9,16 @@ import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { DarkModeProvider } from './utils/DarkModeContext';
-import ScrollToTop from './components/ScrollToTop';
 import AdvancedSearchPage from './components/AdvancedSearchPage';
 import PeopleCCC from './pages/People';
 import NotFoundPage from './pages/NotFoundPage';
+import HighlightAndScroll from './components/HighlightAndScroll';
 
 function App() {
   return (
     <DarkModeProvider>
       <BrowserRouter>
-        <ScrollToTop />
+        <HighlightAndScroll />
         <div className="flex flex-col min-h-screen bg-[#f5f5f5] dark:bg-[#0b0c10] text-gray-900 dark:text-gray-100 dark-transition">
           <Navbar />
           <main className="flex-grow">

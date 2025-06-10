@@ -125,7 +125,10 @@ const AdvancedSearchPage = () => {
               )}
               <div className="mt-3 text-sm text-[#0FA444] font-medium">
                 <Link
-                  to={item.path}
+                  to={{ 
+                    pathname: item.path, 
+                    search: `?highlight=${encodeURIComponent(query)}` 
+                  }}
                   className="inline-flex items-center hover:underline"
                 >
                   View more

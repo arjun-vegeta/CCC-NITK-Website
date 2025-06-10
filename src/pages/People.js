@@ -96,7 +96,7 @@ const PeopleCCC = () => {
         <h2 className="font-extrabold underline text-2xl md:text-3xl">People</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {staff.map((person, index) => (
-            <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-xl shadow-md bg-white dark:bg-gray-800 dark-transition flex gap-4 items-center">
+            <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-xl  bg-white dark:bg-gray-800 dark-transition flex gap-4 items-center">
               <img
                 src={`/People/${person.image}`}
                 alt={person.name}
@@ -116,7 +116,7 @@ const PeopleCCC = () => {
         <h2 className="font-extrabold underline text-2xl md:text-3xl">Website Team</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {team.map((member, index) => (
-            <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-xl shadow-md bg-white dark:bg-gray-800 dark-transition flex gap-4 items-center">
+            <div key={index} className="border border-gray-300 dark:border-gray-700 p-4 rounded-xl bg-white dark:bg-gray-800 dark-transition flex gap-4 items-center">
               <img
                 src={`/People/${member.image}`}
                 alt={member.name}
