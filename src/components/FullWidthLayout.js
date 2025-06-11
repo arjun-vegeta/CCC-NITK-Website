@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { Home } from "lucide-react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import { Home, ChevronDown } from "lucide-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,6 +10,8 @@ import {
   BreadcrumbSeparator,
 } from "./ui/breadcrumb";
 import { useDarkMode } from "../utils/DarkModeContext";
+import Sidebar from "./Sidebar";
+import Toc from "./Toc";
 
 // Extracted prose styles
 const proseStyles = {
@@ -30,42 +32,35 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   const hoverTimeoutRef = useRef(null);
 
   // --- window width & resize listener ---
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const getWindowWidth = () => (typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const [windowWidth, setWindowWidth] = useState(getWindowWidth());
   useEffect(() => {
-    const onResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    let frame;
+    const onResize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => setWindowWidth(getWindowWidth()));
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   // --- Sidebar open/close & tooltip ---
-  const [isSidebarOpen, setSidebarOpen] = useState(window.innerWidth > 800);
+  const [isSidebarOpen, setSidebarOpen] = useState(getWindowWidth() > 800);
   const [showSidebarTooltip, setShowSidebarTooltip] = useState(false);
-  const sidebarRef = useRef(null);
-  const toggleSidebar = () => setSidebarOpen((o) => !o);
+  const toggleSidebar = useCallback(() => setSidebarOpen((o) => !o), []);
 
-  useEffect(() => {
-    const node = sidebarRef.current;
-    if (!node) return;
-    
-    const handleClick = (e) => {
-      if (windowWidth <= 800) {
-        // Look for any link (anchor) or div with a onClick handler that navigates
-        const clickableElement = e.target.closest("a") || e.target.closest("[data-href]");
-        if (clickableElement) {
-          // Small delay to ensure navigation completes before closing sidebar
-          setTimeout(() => {
-            setSidebarOpen(false);
-          }, 350);
-        }
-      }
-    };
-    
-    node.addEventListener("click", handleClick);
-    return () => node.removeEventListener("click", handleClick);
+  // Handle mobile sidebar item clicks
+  const handleSidebarItemClick = useCallback(() => {
+    if (windowWidth <= 800) {
+      setTimeout(() => setSidebarOpen(false), 350);
+    }
   }, [windowWidth]);
 
   // --- Breadcrumb generation ---
-  const generateBreadcrumbs = () => {
+  const breadcrumbs = useMemo(() => {
     const parts = location.pathname.split("/").filter((x) => x);
     return [
       { label: "Home", href: "/" },
@@ -74,24 +69,23 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
         href: "/" + parts.slice(0, idx + 1).join("/"),
       })),
     ];
-  };
-  const breadcrumbs = generateBreadcrumbs();
+  }, [location.pathname]);
 
   // --- Smooth scroll handler ---
-  const handleClickHeading = (id) => {
+  const handleClickHeading = useCallback((id) => {
     setActiveHeading(id);
     updateHeadingLinePosition(id);
     const el = document.getElementById(id);
     if (el) {
       window.history.pushState(null, "", `#${id}`);
-      const headerOffset = 170; // match your navbar height
+      const headerOffset = 170;
       const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
-  };
+  }, []);
 
   // --- Parse & build TOC tree ---
-  const parseHeadings = (flat) =>
+  const parseHeadings = useCallback((flat) =>
     flat.map((h) => {
       let title = "", level = 1;
       if (typeof h === "string") {
@@ -102,8 +96,9 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
         title = h.title; level = h.level || 1;
       }
       return { title, id: title.toLowerCase().replace(/\s+/g, "-"), level, children: [] };
-    });
-  const buildTree = (nodes) => {
+    }),
+  []);
+  const buildTree = useCallback((nodes) => {
     const root = [], stack = [];
     nodes.filter((h) => h.level > 1).forEach((h) => {
       while (stack.length && stack[stack.length - 1].level >= h.level) stack.pop();
@@ -112,41 +107,48 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
       stack.push(h);
     });
     return root;
-  };
-  const structuredHeadings = buildTree(parseHeadings(headings));
+  }, []);
+  const structuredHeadings = useMemo(() => buildTree(parseHeadings(headings)), [headings, parseHeadings, buildTree]);
 
   // --- Indicator position updater ---
-  const updateHeadingLinePosition = (id) => {
+  const updateHeadingLinePosition = useCallback((id) => {
     const el = headingsRefs.current[id];
     if (!el) return;
     const container = el.closest(".toc-container");
     const cRect = container.getBoundingClientRect();
     const r = el.getBoundingClientRect();
     setHeadingLinePosition({ top: r.top - cRect.top, height: r.height });
-  };
+  }, []);
 
   // --- TOC hover handlers ---
-  const handleHeadingHover = (id) => {
+  const handleHeadingHover = useCallback((id) => {
     setHoveredHeading(id);
     updateHeadingLinePosition(id);
-  };
+  }, [updateHeadingLinePosition]);
 
   // --- On initial hash ---
   useEffect(() => {
     const id = location.hash.replace("#", "");
     if (id && headingsRefs.current[id]) updateHeadingLinePosition(id);
-  }, [location]);
+  }, [location, updateHeadingLinePosition]);
 
   // --- IntersectionObserver for scrolling ---
   useEffect(() => {
     if (!contentRef.current) return;
     const elems = contentRef.current.querySelectorAll("h2, h3, h4, h5, h6");
-    const obs = new IntersectionObserver((entries) => {
-       
-      const visible = entries.filter((e) => e.isIntersecting);
-      if (!visible.length) return;
-      const nearest = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-      setActiveHeading(nearest.target.id);
+    if (!elems.length) return;
+    let ticking = false;
+    const obs = new window.IntersectionObserver((entries) => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length) {
+          const nearest = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+          setActiveHeading(nearest.target.id);
+        }
+        ticking = false;
+      });
     }, { root: null, rootMargin: "0px 0px -70% 0px", threshold: 0.1 });
     elems.forEach((el) => obs.observe(el));
     return () => obs.disconnect();
@@ -155,80 +157,83 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
   // --- Sync indicator when activeHeading changes ---
   useEffect(() => {
     if (!hoveredHeading && activeHeading) updateHeadingLinePosition(activeHeading);
-  }, [activeHeading, hoveredHeading]);
+  }, [activeHeading, hoveredHeading, updateHeadingLinePosition]);
 
-  // --- Recursive TOC render ---
-  const renderHeadings = (items, depth = 0) => (
-    <ul className={`space-y-3.5 ${depth > 0 ? "pl-6" : ""}`}>
-      {items.map(({ title, id, children }) => (
-        <li key={id} className="relative">
-          <div
-            ref={(el) => (headingsRefs.current[id] = el)}
-            className={`
-              group flex items-center cursor-pointer transition-colors duration-200
-              ${activeHeading === id
-                ? "font-medium text-black dark:text-white"
-                : "font-normal text-gray-600 dark:text-gray-400"}
-              dark-transition
-            `}
-            onClick={() => handleClickHeading(id)}
-            onMouseEnter={() => {
-              hoverTimeoutRef.current && clearTimeout(hoverTimeoutRef.current);
-              handleHeadingHover(id);
-            }}
-            onMouseLeave={() => {
-              hoverTimeoutRef.current = setTimeout(() => setHoveredHeading(null), 150);
-            }}
-          >
-            <span className="text-sm group-hover:text-gray-900 dark:group-hover:text-gray-200">
-              {title}
-            </span>
-          </div>
-          {children.length > 0 && <div className="mt-3.5">{renderHeadings(children, depth + 1)}</div>}
-        </li>
-      ))}
-    </ul>
-  );
+  // --- Memoized sidebar toggle handlers ---
+  const handleSidebarMouseEnter = useCallback(() => setShowSidebarTooltip(true), []);
+  const handleSidebarMouseLeave = useCallback(() => setShowSidebarTooltip(false), []);
+
+  // --- Memoized TOC indicator style ---
+  const tocIndicatorStyle = useMemo(() => ({
+    left: "7px",
+    top: `${headingLinePosition.top}px`,
+    height: `${headingLinePosition.height}px`,
+    width: "2.5px",
+    background: darkMode ? "#f3f4f6" : "#000",
+    clipPath: "polygon(0 4px, 100% 6px, 100% calc(100% - 4px), 0 calc(100% - 2px))",
+    borderRadius: "3px",
+    opacity: hoveredHeading || activeHeading ? 1 : 0,
+    zIndex: 10,
+  }), [headingLinePosition, darkMode, hoveredHeading, activeHeading]);
+
+  // Extract sidebar links from the sidebar prop (assuming it's a Sidebar component with links)
+  const sidebarLinks = useMemo(() => {
+    if (!sidebar?.props?.links) return [];
+    return sidebar.props.links;
+  }, [sidebar]);
 
   return (
     <div className="flex min-h-screen relative">
       {/* Sidebar */}
       {sidebar && (
-        <div
-          ref={sidebarRef}
-          className={`
-          ${windowWidth > 800
-              ? `${isSidebarOpen ? "w-[300px]" : "w-0"} sticky top-[89px] md:top-[93px] h-[calc(100vh-93px)] -left-1 transition-[width] duration-300 ease-in-out`
-              : `${isSidebarOpen ? "w-4/5" : "w-0"} absolute top-14 bottom-0 transition-[width] duration-300 ease-in-out`}
-          bg-[#f5f5f5] dark:bg-[#0b0c10] overflow-y-auto
-          z-20
-          ${isSidebarOpen
-              ? "translate-x-0"
-              : windowWidth > 800
-                ? "-translate-x-0"
-                : "-translate-x-0"}
-        `}
-        >
-          {/* Only render sidebar content if open on desktop, always on mobile */}
-          {(isSidebarOpen || windowWidth > 800) && (
+        <>
+          <div
+            className={`
+              ${windowWidth > 800 
+                ? `w-[300px] sticky top-[89px] md:top-[93px] h-[calc(100vh-93px)]` 
+                : `w-4/5 absolute top-14 bottom-0`
+              }
+              bg-[#f5f5f5] dark:bg-[#0b0c10] overflow-y-auto z-20 
+              transition-transform duration-300 ease-in-out
+              ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+            `}
+          >
             <div className="h-full border-r border-gray-300 dark:border-gray-700">
-              {sidebar}
+              <Sidebar 
+                links={sidebarLinks} 
+                isOpen={isSidebarOpen}
+                onItemClick={handleSidebarItemClick}
+              />
             </div>
+          </div>
+
+          {/* Mobile overlay when sidebar is open */}
+          {windowWidth <= 800 && isSidebarOpen && (
+            <div 
+              className="fixed inset-0 bg-black bg-opacity-50 z-10"
+              onClick={() => setSidebarOpen(false)}
+            />
           )}
-        </div>
+        </>
       )}
 
-      {/* Main content (shifts on desktop) */}
+      {/* Main content - no margin adjustment, maintains original layout */}
       <div
-        className={"flex-1 flex flex-col transition-[margin] duration-300 ease-in-out"}
+        className={`flex-1 flex flex-col`}
+        style={{
+          transition: 'margin-left 0.3s, width 0.3s',
+          ...(sidebar && windowWidth > 800 && !isSidebarOpen
+            ? { marginLeft: "-300px", width: "calc(100% + 300px)" }
+            : {})
+        }}
       >
         {/* Navbar + breadcrumb + toggle */}
         <div className="z-40 sticky top-[89px] md:top-[93px] shadow-md bg-[#f5f5f5] dark:bg-[#0b0c10] border-gray-300 dark:border-b dark:border-gray-700 dark-transition">
           <div className="flex items-center">
             <button
               onClick={toggleSidebar}
-              onMouseEnter={() => setShowSidebarTooltip(true)}
-              onMouseLeave={() => setShowSidebarTooltip(false)}
+              onMouseEnter={handleSidebarMouseEnter}
+              onMouseLeave={handleSidebarMouseLeave}
               className="relative h-full px-4 py-4 border-r border-gray-300 dark:border-gray-700 bg-[#f5f5f5] dark:bg-[#0b0c10] text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none"
             >
               <svg
@@ -253,7 +258,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
               <Breadcrumb className="px-8 py-4">
                 <BreadcrumbList className="flex items-center">
                   {breadcrumbs.map((crumb, idx) => (
-                    <React.Fragment key={idx}>
+                    <React.Fragment key={crumb.href + idx}>
                       <BreadcrumbItem>
                         {idx === 0 ? (
                           <BreadcrumbLink href={crumb.href} asChild>
@@ -290,30 +295,8 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
           </div>
 
           {/* TOC (desktop only >800px) */}
-          {windowWidth > 996 && sidebar && structuredHeadings.length > 0 && (
-            <div className="w-80 flex-shrink-0">
-              <div className="sticky border-l border-gray-300 dark:border-gray-700 top-36 p-4 toc-container dark-transition">
-                <div
-                  className="absolute transition-all duration-200"
-                  style={{
-                    left: "7px",
-                    top: `${headingLinePosition.top}px`,
-                    height: `${headingLinePosition.height}px`,
-                    width: "2.5px",
-                    background: darkMode ? "#f3f4f6" : "#000",
-                    clipPath:
-                      "polygon(0 4px, 100% 6px, 100% calc(100% - 4px), 0 calc(100% - 2px))",
-                    borderRadius: "3px",
-                    opacity: hoveredHeading || activeHeading ? 1 : 0,
-                    zIndex: 10,
-                  }}
-                />
-                <h3 className="text-base font-semibold mb-6 text-gray-900 dark:text-gray-100 dark-transition">
-                  Table of Contents
-                </h3>
-                {renderHeadings(structuredHeadings)}
-              </div>
-            </div>
+          {windowWidth > 996 && sidebar && headings.length > 0 && (
+            <Toc headings={headings} contentRef={contentRef} />
           )}
         </div>
       </div>
