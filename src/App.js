@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import FacilitiesIndex from './pages/FacilitiesIndex';
@@ -13,8 +13,14 @@ import AdvancedSearchPage from './components/AdvancedSearchPage';
 import PeopleCCC from './pages/People';
 import NotFoundPage from './pages/NotFoundPage';
 import HighlightAndScroll from './components/HighlightAndScroll';
+import ReactGA from 'react-ga4';
 
 function App() {
+  useEffect(() => {
+    ReactGA.initialize('G-JD0HJ6P5MC'); 
+    ReactGA.send({ hitType: 'pageview', page: window.location.pathname + window.location.search });
+  }, []);
+
   return (
     <DarkModeProvider>
       <BrowserRouter>
@@ -27,7 +33,6 @@ function App() {
               <Route path="/" element={<Home />} />
 
               <Route path="/advanced-search" element={<AdvancedSearchPage />} />
-
 
               {/* People */}
               <Route path="/people" element={<PeopleCCC/>} />

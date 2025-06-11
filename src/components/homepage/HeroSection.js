@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import ReactGA from 'react-ga4';
 
 const HeroSection = () => {
   const [activeImage, setActiveImage] = useState(0);
@@ -128,6 +129,7 @@ const HeroSection = () => {
             <Link
               to="/guides"
               className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
+              onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'View Guides' })}
             >
               VIEW GUIDES
             </Link>
@@ -141,6 +143,7 @@ const HeroSection = () => {
             <Link
               to="/facilities"
               className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
+              onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'Facilities' })}
             >
               FACILITIES
             </Link>
@@ -155,6 +158,7 @@ const HeroSection = () => {
           <Link
             to="/guides/problem-reporting"
             className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-800 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
+            onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'Report Problem' })}
           >
             REPORT PROBLEM
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="size-[22px]">

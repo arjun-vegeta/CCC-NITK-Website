@@ -4,6 +4,7 @@ import { IoSearch, IoMoon, IoSunny } from "react-icons/io5";
 import { useDarkMode } from "../utils/DarkModeContext";
 import SearchbarModal from "./SearchBarModal";
 import GoogleTranslate from "./googleTranslate";
+import ReactGA from 'react-ga4';
 
 function Navbar() {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -177,6 +178,7 @@ function Navbar() {
                 ref={el => navItemsRef.current[i] = el}
                 onMouseEnter={() => handleMouseEnter(i)}
                 className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
+                onClick={() => ReactGA.event({ category: 'Navbar', action: 'Click', label })}
               >
                 <span className="inline-block">{label}</span>
               </Link>
@@ -202,7 +204,10 @@ function Navbar() {
             <button 
               aria-label="Search"
               className="p-2 rounded-full hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors"
-              onClick={() => setSearchBar(!showSearchBar)}
+              onClick={() => {
+                setSearchBar(!showSearchBar);
+                ReactGA.event({ category: 'Navbar', action: 'Click', label: 'Search' });
+              }}
             >
               <IoSearch className="text-xl text-gray-100 dark:text-gray-200" />
             </button>
@@ -220,7 +225,10 @@ function Navbar() {
             onMouseLeave={() => setShowThemeTooltip(false)}
           >
             <button 
-              onClick={toggleDarkMode}
+              onClick={() => {
+                toggleDarkMode();
+                ReactGA.event({ category: 'Navbar', action: 'Click', label: 'Theme Toggle' });
+              }}
               aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
               className="p-2 rounded-full hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors"
             >

@@ -2,45 +2,58 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/logo-dark.png" />
+    
+    <!-- Viewport and responsiveness -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="%PUBLIC_URL%/logo-dark.png" />
+
+    <!-- Title and description -->
+    <title>CCC NITK</title>
+    <meta name="description" content="Official website of Central Computer Centre (CCC), NITK Surathkal - The internet backbone of NITK" />
+    <meta name="keywords" content="CCC NITK, CCC, NITK, Central Computer Centre, NITK Surathkal, Data Center, Academic Computing, IT Services NITK" />
+    <meta name="author" content="Central Computer Centre, NITK" />
+
+    <!-- Theme Color -->
     <meta name="theme-color" content="#000000" />
-    <meta name="CCC NITK" content="Central Computer Centre" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!-- Preload images to give them priority -->
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Central Computer Centre | CCC NITK Surathkal" />
+    <meta property="og:description" content="Explore the infrastructure and services provided by the Central Computer Centre at NITK Surathkal." />
+    <meta property="og:image" content="%PUBLIC_URL%/logo-dark.png" />
+    <meta property="og:url" content="https://your-domain.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Central Computer Centre | CCC NITK Surathkal" />
+    <meta name="twitter:description" content="IT and infrastructure services hub at NITK Surathkal – Central Computer Centre." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/logo-dark.png" />
+
+    <!-- Manifest -->
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+
+    <!-- Preloaded images -->
     <link rel="preload" href="%PUBLIC_URL%/hero/ccc.jpg" as="image">
     <link rel="preload" href="%PUBLIC_URL%/hero/dc.jpg" as="image">
     <link rel="preload" href="%PUBLIC_URL%/hero/lab.png" as="image">
-    <!-- <link rel="preload" href="%PUBLIC_URL%/backgrounds/bg-landing-2.png" as="image">
-    <link rel="preload" href="%PUBLIC_URL%/backgrounds/bg-landing-3.png" as="image">
-    <link rel="preload" href="%PUBLIC_URL%/backgrounds/bg-landing-4.png" as="image"> -->
     <link rel="preload" href="%PUBLIC_URL%/logo-dark.png" as="image">
     <link rel="preload" href="%PUBLIC_URL%/logo-white.png" as="image">
-    <!-- Preload Google Fonts -->
+
+    <!-- Google Fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap">
     </noscript>
-    <title>CCC NITK</title>
+
+    <!-- Robots meta tag -->
+    <meta name="robots" content="index, follow" />
   </head>
   <body>
-    <noscript></noscript>
+    <noscript>Your browser does not support JavaScript. Please enable it to view the website properly.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>

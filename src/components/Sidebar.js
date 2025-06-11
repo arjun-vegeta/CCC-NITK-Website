@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import { useDarkMode } from "../utils/DarkModeContext";
 
-const Sidebar = ({ links }) => {
+const Sidebar = ({ links, onItemClick }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
@@ -65,6 +65,7 @@ const Sidebar = ({ links }) => {
                   toggleExpand(item.slug);
                 } else if (item.href) {
                   navigate(item.href);
+                  if (onItemClick) onItemClick();
                   // No need to manually close sidebar here - 
                   // The event listener in FullWidthLayout will handle it
                 }
@@ -103,7 +104,7 @@ const Sidebar = ({ links }) => {
   };
 
   return (
-    <div className="h-full p-6 pr-4 bg-[#f5f5f5] dark:bg-[#0b0c10] relative sidebar-container dark-transition sticky top-[93px]">
+    <div className="h-full pl-5 pt-4 pr-4 bg-[#f5f5f5] dark:bg-[#0b0c10] relative sidebar-container dark-transition sticky top-[93px]">
       {/* Animated indicator */}
       <div
         className="absolute transition-all duration-200"

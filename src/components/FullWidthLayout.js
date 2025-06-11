@@ -191,7 +191,7 @@ const FullWidthLayout = ({ children, sidebar, headings = [] }) => {
             className={`
               ${windowWidth > 800 
                 ? `w-[300px] sticky top-[89px] md:top-[93px] h-[calc(100vh-93px)]` 
-                : `w-4/5 absolute top-14 bottom-0`
+                : `w-4/5 absolute top-[52px] bottom-0`
               }
               bg-[#f5f5f5] dark:bg-[#0b0c10] overflow-y-auto z-20 
               transition-transform duration-300 ease-in-out

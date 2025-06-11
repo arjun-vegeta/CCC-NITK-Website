@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import ReactGA from 'react-ga4';
 
 const GuideSection = () => {
   const infoBoxes = [
@@ -66,7 +67,8 @@ const GuideSection = () => {
       >
         <Link
           to="/guides"
-          className="inline-block mt-3 px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#1a2e60] transition-colors duration-300"
+          className="inline-block mt-3 px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#3857a5] transition-colors duration-300"
+          onClick={() => ReactGA.event({ category: 'Home GuideSection', action: 'Click', label: 'View All Guides' })}
         >
           View All Guides
         </Link>
@@ -100,7 +102,7 @@ const GuideCard = ({ box, index }) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Link to={box.link}>
+      <Link to={box.link} onClick={() => ReactGA.event({ category: 'Home GuideSection', action: 'Click', label: box.heading })}>
         <div
           className="rounded-2xl aspect-square mb-3 p-4 flex flex-col justify-end relative overflow-hidden"
           style={{
