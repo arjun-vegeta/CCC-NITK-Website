@@ -157,7 +157,7 @@ const HeroSection = () => {
         >
           <Link
             to="/guides/problem-reporting"
-            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-800 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
+            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#168a17] text-white dark:bg-blue-800 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
             onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'Report Problem' })}
           >
             REPORT PROBLEM
@@ -215,7 +215,7 @@ const HeroSection = () => {
                       </p>
                       {/* Small square box for collapsed cards */}
                       {!isActive && (
-                        <div className="absolute -z-10 bottom-[0px] left-4 w-14 h-14 bg-[#0A182F] dark:bg-blue-950" />
+                        <div className="absolute -z-10 bottom-[0px] left-4 w-14 h-14 bg-[#168a17] dark:bg-blue-950" />
                       )}
                     </div>
                   )}
@@ -302,7 +302,7 @@ const HeroSection = () => {
 
                     {/* Small square box for collapsed cards */}
                     {!isActive && (
-                      <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#0A182F] dark:bg-blue-950" />
+                      <div className="absolute bottom-[60px] left-0 w-24 h-24 bg-[#168a17] dark:bg-blue-950" />
                     )}
                   </div>
                 </div>
@@ -311,7 +311,7 @@ const HeroSection = () => {
                 {isActive && !isHovered && (
                   <div className="absolute bottom-5 left-5 right-5 h-1.5 z-20 bg-white/30 rounded-full overflow-hidden">
                     <div 
-                      className="h-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
+                      className="h-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-green-700 dark:from-blue-950 to-[#168a17] dark:to-blue-950"
                       style={{ 
                         width: `${progress}%`
                       }}

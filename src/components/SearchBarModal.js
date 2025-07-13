@@ -153,7 +153,7 @@ const SearchbarModal = ({ display, closeSearch }) => {
                 to="/advanced-search"
                 state={{ query }}
                 onClick={handleLinkClick}
-                className="inline-flex ml-4 mb-3 items-center text-base font-medium text-[#0FA444] hover:text-[#0d8c3a] transition-colors"
+                className="inline-flex ml-4 mb-3 items-center text-base font-medium text-[#168a17] hover:text-[#0d8c3a] transition-colors"
               >
                 Advanced Search
               </Link>
@@ -169,8 +169,8 @@ const SearchbarModal = ({ display, closeSearch }) => {
                     onClick={handleLinkClick}
                     className="flex items-center px-6 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
                   >
-                    <span className="w-3 h-3 mr-3 rounded-full bg-[#0D1C44] dark:bg-gray-200 group-hover:bg-[#0FA444] flex-shrink-0"></span>
-                    <span className="text-gray-700 dark:text-gray-200 group-hover:text-[#0FA444] transition-colors">
+                    <span className="w-3 h-3 mr-3 rounded-full bg-[#0D1C44] dark:bg-gray-200 group-hover:bg-[#168a17] flex-shrink-0"></span>
+                    <span className="text-gray-700 dark:text-gray-200 group-hover:text-[#168a17] transition-colors">
                       {item.title}
                     </span>
                   </Link>

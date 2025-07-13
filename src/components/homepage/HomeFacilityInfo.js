@@ -156,7 +156,7 @@ const FacilityInfo = () => {
             hidden: { opacity: 0, y: 20 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
           }}
-          className="text-4xl font-bold text-[#0D1C44] dark:text-white ml-4 md:text-3xl sm:text-2xl"
+          className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#0D1C44] dark:text-white ml-4"
         >
           Some of our Facilities
         </motion.h2>
@@ -170,7 +170,7 @@ const FacilityInfo = () => {
           viewport={{ once: true, amount: 0.9 }}
         >
           <p className="text-lg mt-2 mb-1 text-gray-700 dark:text-blue-300">Learn more about all the facilities provided by ccc</p>
-          <Link to="/facilities" className="text-lg font-semibold hover:font-bold text-[#1a365d] hover:text-[#3857a5] dark:text-blue-100 underline underline-offset-2 flex items-center justify-end" onClick={() => ReactGA.event({ category: 'Home FacilityInfo', action: 'Click', label: 'Facilities Page' })}>
+          <Link to="/facilities" className="text-lg font-semibold hover:font-bold text-[#168a17] hover:text-[#3857a5] dark:text-blue-100 underline underline-offset-2 flex items-center justify-end" onClick={() => ReactGA.event({ category: 'Home FacilityInfo', action: 'Click', label: 'Facilities Page' })}>
             Facilities Page
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -211,7 +211,7 @@ const FacilityInfo = () => {
               >
                 {/* Timeline dot and line */}
                 <div className="relative mr-4">
-                  <div className={`bg-[#0D1C44] rounded-full h-14 w-14 flex items-center justify-center z-10 relative`}>
+                  <div className={`bg-[#168a17] rounded-full h-14 w-14 flex items-center justify-center z-10 relative`}>
                     {/* Active indicator (triangle) */}
                     {isActive && (
                       <div className="absolute w-5 h-5 bg-white rounded-full"></div>

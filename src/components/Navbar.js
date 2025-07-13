@@ -177,7 +177,7 @@ function Navbar() {
                 to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
                 ref={el => navItemsRef.current[i] = el}
                 onMouseEnter={() => handleMouseEnter(i)}
-                className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all dark-transition py-2 px-0"
+                className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#168a17] dark:hover:text-[#168a17] transition-all dark-transition py-2 px-0"
                 onClick={() => ReactGA.event({ category: 'Navbar', action: 'Click', label })}
               >
                 <span className="inline-block">{label}</span>
@@ -185,7 +185,7 @@ function Navbar() {
             ))}
 
             <div 
-              className="absolute bottom-0 bg-[#0FA444] h-0.5 transition-all duration-300 ease-in-out"
+              className="absolute bottom-0 bg-[#168a17] h-0.5 transition-all duration-300 ease-in-out"
               style={{
                 width: `${underlineStyle.width}px`,
                 left: `${underlineStyle.left - 22}px`,
@@ -266,7 +266,7 @@ function Navbar() {
               <Link
                 key={label}
                 to={`/${label.toLowerCase() === "home" ? "" : label.toLowerCase()}`}
-                className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#0FA444] dark:hover:text-[#0FA444] transition-all py-2 px-2"
+                className="font-semibold text-[#ffffff] dark:text-gray-200 hover:text-[#168a17] dark:hover:text-[#168a17] transition-all py-2 px-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 {label}

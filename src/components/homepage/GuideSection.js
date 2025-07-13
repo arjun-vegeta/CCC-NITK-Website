@@ -42,7 +42,7 @@ const GuideSection = () => {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] dark:text-white mb-6">
+        <h2 className="text-3xl md:text-3xl lg:text-4xl font-bold text-[#0D1C44] dark:text-white mb-6">
           Learn More About Guides
         </h2>
         <p className="text-gray-600 dark:text-blue-300">
@@ -67,7 +67,7 @@ const GuideSection = () => {
       >
         <Link
           to="/guides"
-          className="inline-block mt-3 px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#3857a5] transition-colors duration-300"
+          className="inline-block mt-3 px-8 py-3 bg-[#168a17] text-white rounded-full text-md font-semibold hover:bg-[#3857a5] transition-colors duration-300"
           onClick={() => ReactGA.event({ category: 'Home GuideSection', action: 'Click', label: 'View All Guides' })}
         >
           View All Guides

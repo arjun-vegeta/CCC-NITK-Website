@@ -78,7 +78,7 @@ const AdvancedSearchPage = () => {
           placeholder="Start typing to search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full px-12 py-4 rounded-xl border border-gray-300 dark:border-gray-800 focus:outline-none focus:ring-2 focus:ring-[#0FA444] focus:border-transparent dark:bg-gray-900 dark:text-white transition-all duration-200"
+          className="w-full px-12 py-4 rounded-xl border border-gray-300 dark:border-gray-800 focus:outline-none focus:ring-2 focus:ring-[#168a17] focus:border-transparent dark:bg-gray-900 dark:text-white transition-all duration-200"
           autoFocus
         />
         {query && (
@@ -123,7 +123,7 @@ const AdvancedSearchPage = () => {
                   }}
                 />
               )}
-              <div className="mt-3 text-sm text-[#0FA444] font-medium">
+              <div className="mt-3 text-sm text-[#168a17] font-medium">
                 <Link
                   to={{ 
                     pathname: item.path, 
