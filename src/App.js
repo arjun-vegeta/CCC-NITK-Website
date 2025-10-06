@@ -20,6 +20,7 @@ import AdminContentManager from './pages/AdminContentManager';
 import AdminFileEditor from './pages/AdminFileEditor';
 import AdminImageManager from './pages/AdminImageManager';
 import AdminPeopleManager from './pages/AdminPeopleManager';
+import AdminRedirect from './pages/AdminRedirect';
 import ReactGA from 'react-ga4';
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               <Route path="/advanced-search" element={<AdvancedSearchPage />} />
 
               {/* Admin Routes */}
+              <Route path="/admin" element={<AdminRedirect />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/content/:category" element={<AdminContentManager />} />

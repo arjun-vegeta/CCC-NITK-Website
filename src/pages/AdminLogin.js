@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, User } from 'lucide-react';
 
@@ -8,6 +8,14 @@ function AdminLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Check if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,10 +106,6 @@ function AdminLogin() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>Default credentials:</p>
-          <p className="font-mono mt-1">username: admin / password: admin123</p>
-        </div>
       </div>
     </div>
   );
