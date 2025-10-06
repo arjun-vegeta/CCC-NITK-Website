@@ -1,93 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDarkMode } from "../utils/DarkModeContext";
-
-const staff = [
-  {
-    name: "Mohit P. Tahiliani",
-    position: "Professor In-charge",
-    image: "Mohit.jpg",
-  },
-  {
-    name: "P. G. Mohanan",
-    position: "Systems Manager",
-    image: "PGMohanan.jpg",
-  },
-  {
-    name: "Vijay Kumar Ghode",
-    position: "Senior Scientific Officer",
-    image: "Vijaykumar.jpg",
-  },
-  {
-    name: "C. Vairavanathan ",
-    position: "Technical Officer",
-    image: "Vairavanathan.jpg",
-  },
-  {
-    name: "M. N. Shanthakumar",
-    position: "Technical Officer",
-    image: "ShanthaKumar.jpg",
-  },
-  {
-    name: "Suguna Kumar B.",
-    position: "Assistant Engineer (SG II)",
-    image: "Suguna.jpg",
-  },
-  {
-    name: "Rangappa B. Goudar",
-    position: "Assistant Engineer (SG II)",
-    image: "Rangappa.jpg",
-  },
-  {
-    name: "Gurudatha Shenoy",
-    position: "Technical Assistant",
-    image: "Gurudatha.jpg",
-  },
-  {
-    name: "Ashok Kumar Shettigar",
-    position: "Senior Assistant",
-    image: "ashok.jpg",
-  },
-  {
-    name: "Subhas",
-    position: "Technician",
-    image: "Subhas.jpg",
-  },
-  {
-    name: "Rekha S. Devadiga",
-    position: "Junior Assistant",
-    image: "Rekha.jpg",
-  },
-];
-
-const team = [
-  {
-    name: "Arjun R",
-    role: "Designer and Developer",
-    passingYear: "2026",
-    image: "Arjun.jpg",
-  },
-  {
-    name: "Hari Hardhik",
-    role: "Developer",
-    passingYear: "2026",
-    image: "Hardhik.jpg",
-  },
-  {
-    name: "K. Naveen",
-    role: "Developer",
-    passingYear: "2026",
-    image: "Naveen.jpg",
-  },
-  {
-    name: "Mohit P. Tahiliani",
-    role: "Faculty Guide",
-    designation: "Professor In-charge, CCC",
-    image: "Mohit.jpg",
-  },
-];
+import peopleData from "../data/people.json";
 
 const PeopleCCC = () => {
   const { darkMode } = useDarkMode();
+  const [staff, setStaff] = useState(peopleData.staff);
+  const [team, setTeam] = useState(peopleData.team);
+
+  useEffect(() => {
+    // Fetch latest people data from API
+    fetch(`${process.env.REACT_APP_API_URL}/api/people`)
+      .then(res => res.json())
+      .then(data => {
+        setStaff(data.staff);
+        setTeam(data.team);
+      })
+      .catch(err => {
+        console.error('Failed to fetch people data:', err);
+        // Fallback to imported data
+      });
+  }, []);
 
   return (
     <div className={`px-8 md:px-8 lg:px-20 font-Montserrat ${darkMode ? 'text-gray-100' : 'text-[#192F59]'} dark-transition`}>

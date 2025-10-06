@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 import { Link } from 'react-router-dom';
@@ -7,36 +7,43 @@ import { useDarkMode } from '../utils/DarkModeContext';
 
 function NetworkGuidesIndex() {
   const { darkMode } = useDarkMode();
-  const modules = require.context('../content/guides', true, /\.mdx$/);
-  const posts = [];
-  const flatPosts = [];
-  
-  modules.keys().forEach((path) => {
-    const parts = path.replace('./', '').split('/');
-    const slug = parts.pop().replace('.mdx', '');
-    const module = modules(path);
-    const title = module.frontmatter?.title || slug;
-  
-    let currentLevel = posts;
-    let currentPath = "/guides";
-  
-    parts.forEach((part) => {
-      const folderSlug = part.toLowerCase().replace(/\s+/g, '_');
-      currentPath += `/${folderSlug}`;
-  
-      let existing = currentLevel.find((item) => item.slug === folderSlug);
-      if (!existing) {
-        existing = { title: part, slug: folderSlug, children: [] };
-        currentLevel.push(existing);
+  const [posts, setPosts] = useState([]);
+  const [flatPosts, setFlatPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/mdx/public/guides`);
+        const data = await response.json();
+        
+        const fileList = data.files.map(file => ({
+          title: file.title,
+          slug: file.filename.replace('.mdx', ''),
+          href: `/guides/${file.filename.replace('.mdx', '')}`
+        }));
+        
+        setPosts(fileList);
+        setFlatPosts(fileList);
+      } catch (err) {
+        console.error('Error fetching files:', err);
+      } finally {
+        setLoading(false);
       }
-      currentLevel = existing.children;
-    });
-  
-    const href = `${currentPath}/${slug}`;
-    const newPost = { title, slug, href };
-    currentLevel.push(newPost);
-    flatPosts.push(newPost);
-  });
+    };
+    
+    fetchFiles();
+  }, []);
+
+  if (loading) {
+    return (
+      <FullWidthLayout sidebar={<Sidebar links={posts} />}>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </FullWidthLayout>
+    );
+  }
 
   return (
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>

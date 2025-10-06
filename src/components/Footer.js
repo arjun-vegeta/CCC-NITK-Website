@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDarkMode } from "../utils/DarkModeContext";
 
 const Footer = () => {
   const { darkMode } = useDarkMode();
+  const [professorInCharge, setProfessorInCharge] = useState({
+    name: "Dr. Mohit P Tahiliani",
+    position: "Professor In-charge, CCC"
+  });
+
+  useEffect(() => {
+    // Fetch Professor In-charge data
+    fetch(`${process.env.REACT_APP_API_URL}/api/people`)
+      .then(res => res.json())
+      .then(data => {
+        const pic = data.staff.find(person => person.position === 'Professor In-charge');
+        if (pic) {
+          setProfessorInCharge({
+            name: pic.name,
+            position: pic.position + ', CCC'
+          });
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch Professor In-charge data:', err);
+        // Keep default values
+      });
+  }, []);
   
   return (
     <footer className={`${darkMode ? 'bg-black' : 'bg-[#08152a]'} text-white border-t border-gray-300 dark:border-gray-700 py-8 transition-colors duration-200 site-footer`}>
@@ -102,8 +125,8 @@ const Footer = () => {
             </h2>
           </div>
           <div className="h-0.5 w-20 md:w-80 font-Montserrat bg-green-600 my-4 mx-auto md:mx-0"></div>
-          <p>Dr. Mohit P Tahiliani</p>
-          <p>Professor In-charge, CCC</p>
+          <p>{professorInCharge.name}</p>
+          <p>{professorInCharge.position}</p>
           <p className="hidden md:block">
             <br></br>
           </p>

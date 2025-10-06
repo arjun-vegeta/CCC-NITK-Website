@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import FullWidthLayout from '../components/FullWidthLayout';
 import Sidebar from '../components/Sidebar';
 import { Link } from 'react-router-dom';
@@ -7,37 +7,43 @@ import { useDarkMode } from '../utils/DarkModeContext';
 
 function FacilitiesIndex() {
   const { darkMode } = useDarkMode();
-  const modules = require.context('../content/facilities', true, /\.mdx$/);
-  const posts = [];
-  const flatPosts = [];
+  const [posts, setPosts] = useState([]);
+  const [flatPosts, setFlatPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  modules.keys().forEach((path) => {
-    const parts = path.replace('./', '').split('/');
-    const slug = parts.pop().replace('.mdx', '');
-    const module = modules(path);
-    const title = module.frontmatter?.title || slug;
-    const content = module.default?.toString().slice(0, 150) + '...';
-
-    let currentLevel = posts;
-    let currentPath = "/facilities";
-
-    parts.forEach((part) => {
-      const folderSlug = part.toLowerCase().replace(/\s+/g, '_');
-      currentPath += `/${folderSlug}`;
-
-      let existing = currentLevel.find((item) => item.slug === folderSlug);
-      if (!existing) {
-        existing = { title: part, slug: folderSlug, children: [] };
-        currentLevel.push(existing);
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/mdx/public/facilities`);
+        const data = await response.json();
+        
+        const fileList = data.files.map(file => ({
+          title: file.title,
+          slug: file.filename.replace('.mdx', ''),
+          href: `/facilities/${file.filename.replace('.mdx', '')}`
+        }));
+        
+        setPosts(fileList);
+        setFlatPosts(fileList);
+      } catch (err) {
+        console.error('Error fetching files:', err);
+      } finally {
+        setLoading(false);
       }
-      currentLevel = existing.children;
-    });
+    };
+    
+    fetchFiles();
+  }, []);
 
-    const href = `${currentPath}/${slug}`;
-    const newPost = { title, slug, href, content };
-    currentLevel.push(newPost);
-    flatPosts.push(newPost);
-  });
+  if (loading) {
+    return (
+      <FullWidthLayout sidebar={<Sidebar links={posts} />}>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </FullWidthLayout>
+    );
+  }
 
   return (
     <FullWidthLayout sidebar={<Sidebar links={posts} />}>
@@ -48,26 +54,26 @@ function FacilitiesIndex() {
               ? "text-white" 
               : "bg-gradient-to-r from-black to-black text-transparent bg-clip-text"
           }`}>
-            Our Facilities
+            Facilities
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-            Explore our comprehensive range of computing facilities and infrastructure available at NITK.
+            Explore our state-of-the-art computing facilities and infrastructure.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {flatPosts.map((post) => (
-            <Link
+            <Link 
               key={post.slug}
               to={post.href}
-              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-[#f5f5f5] dark:bg-[#0b0c10] hover:shadow-lg dark:hover:shadow-gray-900 no-underline w-full dark-transition"
+              className="group relative overflow-hidden rounded-lg border-2 px-5 hover:border-black dark:hover:border-white transition-colors bg-[#f5f5f5] dark:bg-[#0b0c10] hover:shadow-lg dark:hover:shadow-gray-900 no-underline dark-transition"
             >
               <div className="flex flex-col h-full">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 group-hover:text-black dark:group-hover:text-white transition-colors no-underline">
                   {post.title}
                 </h3>
-                <div className="mt-auto flex items-center justify-between pb-7">
-                  <span className="text-sm text-gray-500 dark:text-gray-400 no-underline">Learn More</span>
+                <div className="mt-auto flex items-center justify-between pb-8">
+                  <span className="text-sm text-gray-500 dark:text-gray-400 no-underline">Learn more</span>
                   <ArrowRight className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-black dark:group-hover:text-white transition-transform group-hover:translate-x-1" />
                 </div>
               </div>

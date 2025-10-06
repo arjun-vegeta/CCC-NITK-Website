@@ -1,0 +1,40 @@
+# Backend specific gitignore
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Database
+database.sqlite
+database.sqlite-journal
+*.db
+*.db-journal
+
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Keep example files
+!.env.example

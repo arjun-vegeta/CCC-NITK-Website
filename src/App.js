@@ -13,6 +13,13 @@ import AdvancedSearchPage from './components/AdvancedSearchPage';
 import PeopleCCC from './pages/People';
 import NotFoundPage from './pages/NotFoundPage';
 import HighlightAndScroll from './components/HighlightAndScroll';
+import AdminMDXEditor from './pages/AdminMDXEditor';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminContentManager from './pages/AdminContentManager';
+import AdminFileEditor from './pages/AdminFileEditor';
+import AdminImageManager from './pages/AdminImageManager';
+import AdminPeopleManager from './pages/AdminPeopleManager';
 import ReactGA from 'react-ga4';
 
 function App() {
@@ -33,6 +40,15 @@ function App() {
               <Route path="/" element={<Home />} />
 
               <Route path="/advanced-search" element={<AdvancedSearchPage />} />
+
+              {/* Admin Routes */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/content/:category" element={<AdminContentManager />} />
+              <Route path="/admin/editor/:category/:filename" element={<AdminFileEditor />} />
+              <Route path="/admin/mdx-editor" element={<AdminMDXEditor />} />
+              <Route path="/admin/images" element={<AdminImageManager />} />
+              <Route path="/admin/people" element={<AdminPeopleManager />} />
 
               {/* People */}
               <Route path="/people" element={<PeopleCCC/>} />
