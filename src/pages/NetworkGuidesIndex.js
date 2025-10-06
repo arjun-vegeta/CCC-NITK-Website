@@ -16,7 +16,6 @@ function NetworkGuidesIndex() {
     const slug = parts.pop().replace('.mdx', '');
     const module = modules(path);
     const title = module.frontmatter?.title || slug;
-    const content = module.default?.toString().slice(0, 150) + '...';
   
     let currentLevel = posts;
     let currentPath = "/guides";
@@ -34,7 +33,7 @@ function NetworkGuidesIndex() {
     });
   
     const href = `${currentPath}/${slug}`;
-    const newPost = { title, slug, href, content };
+    const newPost = { title, slug, href };
     currentLevel.push(newPost);
     flatPosts.push(newPost);
   });

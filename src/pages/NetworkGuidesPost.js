@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import FullWidthLayout from "../components/FullWidthLayout";
 import Sidebar from "../components/Sidebar";
 import { MDXProvider } from "@mdx-js/react";
@@ -7,9 +7,10 @@ import { mdxComponents } from "../mdxComponents";
 import { extractHeadingsFromElement } from "../components/ExtractHeadings";
 
 function NetworkGuidesPost() {
-  const { slug } = useParams();
   const location = useLocation();
   const slugPath = location.pathname.replace(/^\/guides\//, "");
+  const contentRef = useRef(null);
+  const [headings, setHeadings] = useState([]);
 
   const modules = require.context("../content/guides", true, /\.mdx$/);
   const posts = [];
@@ -47,16 +48,12 @@ function NetworkGuidesPost() {
     return parts.join("/");
   };
 
-  const postKey = modules.keys().find((path) => {
-    const normalizedPath = normalizePath(path);
-    return normalizedPath === slugPath;
-  });
-
-  const contentRef = useRef(null);
-  const [headings, setHeadings] = useState([]);
+  const postKey = modules.keys().find((path) => normalizePath(path) === slugPath);
 
   useEffect(() => {
-    setHeadings(extractHeadingsFromElement(contentRef.current));
+    if (contentRef.current) {
+      setHeadings(extractHeadingsFromElement(contentRef.current));
+    }
   }, [postKey]);
 
   if (!postKey) {
