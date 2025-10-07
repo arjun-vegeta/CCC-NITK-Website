@@ -5,10 +5,12 @@ const path = require('path');
 const fs = require('fs').promises;
 const authMiddleware = require('../middleware/auth');
 
+const PUBLIC_DIR = process.env.PUBLIC_DIR || path.join(__dirname, '../../../public');
+
 // Configure multer for image uploads
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '../../../public/images_mdx');
+    const uploadDir = path.join(PUBLIC_DIR, 'images_mdx');
     try {
       await fs.mkdir(uploadDir, { recursive: true });
       cb(null, uploadDir);
@@ -41,7 +43,7 @@ const upload = multer({
 // Get all images
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const imagesDir = path.join(__dirname, '../../../public/images_mdx');
+    const imagesDir = path.join(PUBLIC_DIR, 'images_mdx');
     await fs.mkdir(imagesDir, { recursive: true });
     const files = await fs.readdir(imagesDir);
     
@@ -92,7 +94,7 @@ router.post('/upload', authMiddleware, (req, res) => {
 router.delete('/:filename', authMiddleware, async (req, res) => {
   try {
     const { filename } = req.params;
-    const filePath = path.join(__dirname, '../../../public/images_mdx', filename);
+    const filePath = path.join(PUBLIC_DIR, 'images_mdx', filename);
     await fs.unlink(filePath);
     res.json({ message: 'Image deleted successfully' });
   } catch (error) {

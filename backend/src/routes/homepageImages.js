@@ -7,7 +7,7 @@ const authMiddleware = require('../middleware/auth');
 
 // Define the homepage image folders
 const HOMEPAGE_FOLDERS = ['hero', 'stats', 'facilities', 'guides'];
-const PUBLIC_DIR = path.join(__dirname, '../../../public');
+const PUBLIC_DIR = process.env.PUBLIC_DIR || path.join(__dirname, '../../../public');
 
 
 
@@ -20,7 +20,6 @@ const storage = multer.diskStorage({
     }
     const uploadPath = path.join(PUBLIC_DIR, folder);
     
-    // Ensure directory exists (critical for production)
     try {
       await fs.mkdir(uploadPath, { recursive: true });
       cb(null, uploadPath);
