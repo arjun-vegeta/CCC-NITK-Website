@@ -11,10 +11,10 @@ const SecondHeroSection = () => {
     stats: []
   });
 
-  // Fetch stats data from API with fallback to local JSON
+  // Fetch stats data from API
   useEffect(() => {
-    // Load stats data from JSON file (updated by admin backend)
-    import('../../data/homepage.json')
+    fetch(`${process.env.REACT_APP_API_URL}/api/homepage`)
+      .then(res => res.json())
       .then(data => {
         if (data.statsSection) {
           setStatsData(data.statsSection);
@@ -77,16 +77,16 @@ const SecondHeroSection = () => {
   const getOffset = (originalHeight) => {
     // On small screens, all cards should have the same height (no offset)
     if (windowWidth < 1024) return 0;
-    
+
     // Calculate dynamic height based on screen width
     const currentMaxHeight = windowWidth >= 1280 ? maxCardHeight : (maxCardHeight * windowWidth / 1280);
-    
+
     // Scale the current card's height proportionally
     const currentCardHeight = originalHeight * (currentMaxHeight / maxCardHeight);
-    
+
     // No offset for the tallest card
     if (originalHeight === maxCardHeight) return 0;
-    
+
     // Calculate offset proportionally to the difference between this card and tallest card
     return scrollProgress * (currentMaxHeight - currentCardHeight);
   };
@@ -120,7 +120,7 @@ const SecondHeroSection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-12 relative pb-8">
         {cards.map((card, index) => {
           const yOffset = getOffset(card.imgHeight);
-          
+
           // Calculate aspect ratio based on original desktop dimensions
           // Original width was 276px at 1280px screen
           const aspectRatio = card.imgHeight / 276;
@@ -137,9 +137,9 @@ const SecondHeroSection = () => {
               <motion.div style={{ y: yOffset }}>
                 <div className="relative w-full overflow-hidden">
                   {/* Use different aspect ratios based on screen size */}
-                  <div 
+                  <div
                     className={`w-full relative bg-[#1e2c50] rounded-2xl ${windowWidth < 640 ? 'aspect-square' : ''}`}
-                    style={{ 
+                    style={{
                       // Square aspect for sm-lg screens, original aspect for xs and xl+
                       paddingBottom: useSquareAspect ? '100%' : `${(aspectRatio * 100)}%`,
                       display: 'block',

@@ -13,8 +13,9 @@ const GuideSection = () => {
   });
 
   useEffect(() => {
-    // Load guides data from JSON file (updated by admin backend)
-    import('../../data/homepage.json')
+    // Load guides data from API
+    fetch(`${process.env.REACT_APP_API_URL}/api/homepage`)
+      .then(res => res.json())
       .then(data => {
         if (data.guidesSection) {
           setGuidesData(data.guidesSection);

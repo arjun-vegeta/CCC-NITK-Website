@@ -14,9 +14,10 @@ const HeroSection = () => {
   const [heroData, setHeroData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Load hero data from JSON file
+  // Load hero data from API
   useEffect(() => {
-    import('../../data/homepage.json')
+    fetch(`${process.env.REACT_APP_API_URL}/api/homepage`)
+      .then(res => res.json())
       .then(data => {
         if (data.heroSection) {
           setHeroData(data.heroSection);
@@ -36,7 +37,6 @@ const HeroSection = () => {
         });
       })
       .finally(() => {
-        // --- FIX: Signal that loading is complete ---
         setLoading(false);
       });
   }, []);

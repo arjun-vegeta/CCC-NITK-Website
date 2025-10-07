@@ -54,9 +54,10 @@ const FacilityInfo = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoChanging] = useState(true);
 
-  // Load facilities data from JSON file (updated by admin backend)
+  // Load facilities data from API
   useEffect(() => {
-    import('../../data/homepage.json')
+    fetch(`${process.env.REACT_APP_API_URL}/api/homepage`)
+      .then(res => res.json())
       .then(data => {
         if (data.facilitiesSection) {
           setFacilitiesData(data.facilitiesSection);
