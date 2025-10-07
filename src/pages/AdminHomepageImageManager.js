@@ -41,10 +41,23 @@ const AdminHomepageImageManager = () => {
   const fetchImages = async () => {
     try {
       setLoading(true);
+      console.log('Fetching images from:', `${process.env.REACT_APP_API_URL}/api/homepage-images`);
+      
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/homepage-images`);
+      console.log('Fetch response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched images:', data);
+        console.log('Hero images count:', data.hero?.length || 0);
+        console.log('Stats images count:', data.stats?.length || 0);
+        console.log('Facilities images count:', data.facilities?.length || 0);
+        console.log('Guides images count:', data.guides?.length || 0);
         setImages(data);
+      } else {
+        console.error('Failed to fetch images, status:', response.status);
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Error data:', errorData);
       }
     } catch (error) {
       console.error('Failed to fetch images:', error);
@@ -59,7 +72,24 @@ const AdminHomepageImageManager = () => {
 
   // Handle file upload
   const handleUpload = async () => {
-    if (!uploadFile) return;
+    if (!uploadFile) {
+      alert('Please select a file to upload');
+      return;
+    }
+
+    // Validate file size (10MB limit)
+    const maxSize = 10 * 1024 * 1024;
+    if (uploadFile.size > maxSize) {
+      alert(`Image is too large! Maximum size is 10MB.\nYour image: ${(uploadFile.size / (1024 * 1024)).toFixed(2)}MB`);
+      return;
+    }
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/webp'];
+    if (!allowedTypes.includes(uploadFile.type)) {
+      alert('Invalid file type! Please upload an image file (JPG, PNG, GIF, SVG, or WebP).');
+      return;
+    }
 
     try {
       setUploading(true);
@@ -68,6 +98,9 @@ const AdminHomepageImageManager = () => {
       if (customFileName) {
         formData.append('customName', customFileName);
       }
+
+      console.log('Uploading to:', `${process.env.REACT_APP_API_URL}/api/homepage-images/${selectedFolder}/upload`);
+      console.log('File:', uploadFile.name, 'Size:', uploadFile.size, 'Type:', uploadFile.type);
 
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/homepage-images/${selectedFolder}/upload`,
@@ -80,18 +113,24 @@ const AdminHomepageImageManager = () => {
         }
       );
 
-      if (response.ok) {
-        await fetchImages();
-        setShowUploadModal(false);
-        setUploadFile(null);
-        setCustomFileName('');
-      } else {
-        const error = await response.json();
-        alert(`Upload failed: ${error.error}`);
+      console.log('Upload response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to upload image');
       }
+
+      const data = await response.json();
+      console.log('Upload successful:', data);
+      
+      alert('Image uploaded successfully!');
+      await fetchImages();
+      setShowUploadModal(false);
+      setUploadFile(null);
+      setCustomFileName('');
     } catch (error) {
       console.error('Upload failed:', error);
-      alert('Upload failed');
+      alert('Error uploading image: ' + error.message);
     } finally {
       setUploading(false);
     }
@@ -102,6 +141,8 @@ const AdminHomepageImageManager = () => {
     if (!window.confirm(`Are you sure you want to delete ${imageName}?`)) return;
 
     try {
+      console.log('Deleting image:', imageName, 'from folder:', selectedFolder);
+      
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/homepage-images/${selectedFolder}/${imageName}`,
         {
@@ -112,23 +153,32 @@ const AdminHomepageImageManager = () => {
         }
       );
 
-      if (response.ok) {
-        await fetchImages();
-      } else {
-        const error = await response.json();
-        alert(`Delete failed: ${error.error}`);
+      console.log('Delete response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to delete image');
       }
+
+      console.log('Image deleted successfully');
+      alert('Image deleted successfully!');
+      await fetchImages();
     } catch (error) {
       console.error('Delete failed:', error);
-      alert('Delete failed');
+      alert('Error deleting image: ' + error.message);
     }
   };
 
   // Handle image rename
   const handleRename = async () => {
-    if (!selectedImage || !newImageName) return;
+    if (!selectedImage || !newImageName) {
+      alert('Please enter a new name');
+      return;
+    }
 
     try {
+      console.log('Renaming image:', selectedImage.name, 'to:', newImageName);
+      
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/api/homepage-images/${selectedFolder}/${selectedImage.name}/rename`,
         {
@@ -141,18 +191,24 @@ const AdminHomepageImageManager = () => {
         }
       );
 
-      if (response.ok) {
-        await fetchImages();
-        setShowRenameModal(false);
-        setSelectedImage(null);
-        setNewImageName('');
-      } else {
-        const error = await response.json();
-        alert(`Rename failed: ${error.error}`);
+      console.log('Rename response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to rename image');
       }
+
+      const data = await response.json();
+      console.log('Rename successful:', data);
+      
+      alert('Image renamed successfully!');
+      await fetchImages();
+      setShowRenameModal(false);
+      setSelectedImage(null);
+      setNewImageName('');
     } catch (error) {
       console.error('Rename failed:', error);
-      alert('Rename failed');
+      alert('Error renaming image: ' + error.message);
     }
   };
 
@@ -239,7 +295,12 @@ const AdminHomepageImageManager = () => {
                       alt={image.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        e.target.src = '/images_mdx/placeholder.png';
+                        // Prevent infinite loop by only setting once
+                        if (!e.target.dataset.errorHandled) {
+                          e.target.dataset.errorHandled = 'true';
+                          e.target.style.display = 'none';
+                          e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700"><span class="text-gray-500 dark:text-gray-400">Image not found</span></div>';
+                        }
                       }}
                     />
                     

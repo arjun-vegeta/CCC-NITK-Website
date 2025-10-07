@@ -284,11 +284,15 @@ const FacilityInfo = () => {
                   style={{ transformOrigin: "center" }}
                 >
                   <motion.img
-                    src={selectedFacility.image || "/images_mdx/placeholder.png"}
+                    src={selectedFacility.image}
                     alt={selectedFacility.name || "Facility"}
                     className="w-full h-[450px] object-cover"
                     onError={(e) => {
-                      e.target.src = "/images_mdx/placeholder.png";
+                      // Prevent infinite loop
+                      if (!e.target.dataset.errorHandled) {
+                        e.target.dataset.errorHandled = 'true';
+                        e.target.style.display = 'none';
+                      }
                     }}
                     whileHover={{
                       scale: 1.03,

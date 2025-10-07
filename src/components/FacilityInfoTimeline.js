@@ -40,11 +40,16 @@ export function TimelineDemo({ facilities = [] }) {
         className="rounded-xl overflow-hidden shadow-lg"
       >
         <img
-          src={facility.image || "/images_mdx/placeholder.png"}
+          src={facility.image}
           alt={facility.name}
           className="w-full h-[220px] object-cover"
           onError={(e) => {
-            e.target.src = "/images_mdx/placeholder.png";
+            // Prevent infinite loop
+            if (!e.target.dataset.errorHandled) {
+              e.target.dataset.errorHandled = 'true';
+              e.target.style.backgroundColor = '#e5e7eb';
+              e.target.style.display = 'none';
+            }
           }}
         />
       </motion.div>
