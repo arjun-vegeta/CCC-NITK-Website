@@ -166,6 +166,7 @@ function AdminHomepageManager() {
       });
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched images:', data);
         // Flatten the folder structure into a single array for the picker
         const allImages = [];
         Object.keys(data).forEach(folder => {
@@ -177,7 +178,10 @@ function AdminHomepageManager() {
             });
           });
         });
+        console.log('Available images after flatten:', allImages);
         setAvailableImages(allImages);
+      } else {
+        console.error('Failed to fetch images, status:', response.status);
       }
     } catch (err) {
       console.error('Failed to fetch homepage images:', err);
@@ -226,6 +230,7 @@ function AdminHomepageManager() {
       }
 
       const data = await response.json();
+      console.log('Upload response:', data);
       await fetchAvailableImages();
       selectImage(data.image.url);
     } catch (err) {
@@ -237,7 +242,13 @@ function AdminHomepageManager() {
   };
 
   const selectImage = (imageUrl) => {
-    if (!currentImageField) return;
+    console.log('selectImage called with:', imageUrl);
+    console.log('currentImageField:', currentImageField);
+    
+    if (!currentImageField) {
+      console.error('No currentImageField set!');
+      return;
+    }
 
     const { section, field, index, subField } = currentImageField;
     const newData = { ...homepageData };
@@ -250,6 +261,7 @@ function AdminHomepageManager() {
       newData[section][field] = imageUrl;
     }
 
+    console.log('Updated data:', newData[section][field]);
     setHomepageData(newData);
     setHasChanges(true);
     setShowImagePicker(false);
