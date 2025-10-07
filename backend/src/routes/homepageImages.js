@@ -13,13 +13,20 @@ const PUBLIC_DIR = path.join(__dirname, '../../../public');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: async (req, file, cb) => {
     const folder = req.params.folder;
     if (!HOMEPAGE_FOLDERS.includes(folder)) {
       return cb(new Error('Invalid folder'), null);
     }
     const uploadPath = path.join(PUBLIC_DIR, folder);
-    cb(null, uploadPath);
+    
+    // Ensure directory exists (critical for production)
+    try {
+      await fs.mkdir(uploadPath, { recursive: true });
+      cb(null, uploadPath);
+    } catch (error) {
+      cb(error);
+    }
   },
   filename: (req, file, cb) => {
     // Keep original filename or use custom name if provided
@@ -107,8 +114,15 @@ router.get('/:folder', async (req, res) => {
 });
 
 // Upload image to specific folder
-router.post('/:folder/upload', authMiddleware, upload.single('image'), async (req, res) => {
-  try {
+router.post('/:folder/upload', authMiddleware, (req, res) => {
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: 'File too large. Maximum size is 10MB.' });
+      }
+      return res.status(400).json({ error: err.message || 'Error uploading file' });
+    }
+    
     const { folder } = req.params;
     
     if (!HOMEPAGE_FOLDERS.includes(folder)) {
@@ -128,9 +142,7 @@ router.post('/:folder/upload', authMiddleware, upload.single('image'), async (re
         size: req.file.size
       }
     });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  });
 });
 
 // Delete image from specific folder
