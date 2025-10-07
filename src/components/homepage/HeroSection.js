@@ -10,67 +10,80 @@ const HeroSection = () => {
   const [progress, setProgress] = useState(0);
   const progressInterval = useRef(null);
 
-  // Images data
-  const images = [
-    { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Building" },
-    { src: "/hero/lab.png", alt: "CCC Labs", label: "CCC Labs" },
-    { src: "/hero/dc.jpg", alt: "Data Centre", label: "Data Centre" }
-  ];
+  // --- FIX: Initialize heroData as null and add a loading state ---
+  const [heroData, setHeroData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Load hero data from JSON file
+  useEffect(() => {
+    import('../../data/homepage.json')
+      .then(data => {
+        if (data.heroSection) {
+          setHeroData(data.heroSection);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load homepage data:', err);
+        // Set default data on error to prevent crashing
+        setHeroData({
+          title: "CENTRAL COMPUTER CENTRE",
+          buttons: [],
+          images: [
+            { src: "/hero/ccc.jpg", alt: "CCC Building", label: "CCC Building" },
+            { src: "/hero/lab.png", alt: "CCC Labs", label: "CCC Labs" },
+            { src: "/hero/dc.jpg", alt: "Data Centre", label: "Data Centre" }
+          ]
+        });
+      })
+      .finally(() => {
+        // --- FIX: Signal that loading is complete ---
+        setLoading(false);
+      });
+  }, []);
+  
+  // Use a fallback for images while data is loading
+  const images = heroData ? heroData.images : [];
 
   // Check if screen is mobile
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-
-    // Initial check
     checkIfMobile();
-    
-    // Add event listener
     window.addEventListener("resize", checkIfMobile);
-    
-    // Clean up
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
   // Handle progress bar and image rotation
   useEffect(() => {
-    if (isHovered) {
-      // Clear interval when hovered
+    if (isHovered || images.length === 0) {
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
         progressInterval.current = null;
       }
       return;
     }
-    
-    // Reset progress when starting new interval
+
     setProgress(0);
-    
-    // Clear any existing interval
     if (progressInterval.current) {
       clearInterval(progressInterval.current);
     }
-    
-    // Update progress 60 times per 3 seconds (50ms intervals)
+
     const intervalDuration = 50;
     const totalDuration = 3000;
     const steps = totalDuration / intervalDuration;
-    
+
     progressInterval.current = setInterval(() => {
       setProgress(prev => {
         const newProgress = prev + (100 / steps);
-        
-        // When progress reaches 100%, change the image
         if (newProgress >= 100) {
           setActiveImage((prevIndex) => (prevIndex + 1) % images.length);
-          return 0; // Reset progress
+          return 0;
         }
-        
         return newProgress;
       });
     }, intervalDuration);
-    
+
     return () => {
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
@@ -81,16 +94,22 @@ const HeroSection = () => {
   const handleImageClick = (index) => {
     if (index !== activeImage) {
       setActiveImage(index);
-      setProgress(0); // Reset progress when changing image
+      setProgress(0);
     }
   };
 
   const handleImageHover = (index) => {
     if (index !== activeImage) {
       setActiveImage(index);
-      setProgress(0); // Reset progress when changing image
+      setProgress(0);
     }
   };
+
+  // --- FIX: Render a placeholder or nothing while loading ---
+  if (loading) {
+    // This maintains the space on the page to avoid layout shift
+    return <section className="h-[46rem] max-w-[1280px] mx-auto" />;
+  }
 
   return (
     <section className="flex flex-col md:flex-row items-center justify-center p-4 max-w-[1280px] mx-auto mt-0 md:mt-6 font-Montserrat">
@@ -102,9 +121,12 @@ const HeroSection = () => {
           transition={{ delay: 0.5, duration: 0.7 }}
           className="text-5xl md:text-[62px] font-black leading-snug text-[#0D1C44] dark:text-white"
         >
-          CENTRAL <br />
-          COMPUTER <br />
-          CENTRE
+          {heroData.title.split(' ').map((word, index) => (
+            <React.Fragment key={index}>
+              {word}
+              {index < heroData.title.split(' ').length - 1 && <br />}
+            </React.Fragment>
+          ))}
         </motion.h1>
 
         <motion.div
@@ -115,57 +137,51 @@ const HeroSection = () => {
             visible: {
               transition: {
                 staggerChildren: 0.3,
+                // --- FIX: Using the timing from your old working code ---
                 delayChildren: 0.8,
               }
             }
           }}
         >
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 15 },
-              visible: { opacity: 1, y: 0 }
-            }}
-          >
-            <Link
-              to="/guides"
-              className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
-              onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'View Guides' })}
+          {heroData.buttons.filter(button => button.type === 'outline').map((button, index) => (
+            <motion.div
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 15 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+              }}
             >
-              VIEW GUIDES
-            </Link>
-          </motion.div>
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 15 },
-              visible: { opacity: 1, y: 0 }
-            }}
-          >
-            <Link
-              to="/facilities"
-              className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
-              onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'Facilities' })}
-            >
-              FACILITIES
-            </Link>
-          </motion.div>
+              <Link
+                to={button.link}
+                className="px-5 md:px-9 py-3 md:py-[14px] border-2 border-[#0D1C44] text-[#0D1C44] dark:text-blue-200 dark:border-blue-200 rounded-full text-md font-semibold hover:bg-[#0D1C44] hover:text-white dark:hover:bg-blue-900 dark:hover:text-white transition-colors duration-300"
+                onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: button.text })}
+              >
+                {button.text}
+              </Link>
+            </motion.div>
+          ))}
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.6 }}
-        >
-          <Link
-            to="/guides/problem-reporting"
-            className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-800 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
-            onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: 'Report Problem' })}
+        {heroData.buttons.filter(button => button.type === 'filled').map((button, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            // --- FIX: Using the timing from your old working code ---
+            transition={{ delay: 1.4, duration: 0.6 }}
           >
-            REPORT PROBLEM
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="size-[22px]">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-            </svg>
-          </Link>
-        </motion.div>
+            <Link
+              to={button.link}
+              className="mt-4 inline-flex items-center gap-2 px-6 md:px-9 py-3 md:py-[14px] bg-[#0D1C44] text-white dark:bg-blue-800 dark:text-white text-md md:text-lg font-semibold rounded-full hover:bg-[#1c2e6d] dark:hover:bg-blue-800 transition-colors duration-300"
+              onClick={() => ReactGA.event({ category: 'Home Hero', action: 'Click', label: button.text })}
+            >
+              {button.text}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="size-[22px]">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+            </Link>
+          </motion.div>
+        ))}
       </div>
 
       {/* Mobile: Accordion Images (still using click) */}
@@ -188,9 +204,8 @@ const HeroSection = () => {
             return (
               <motion.div
                 key={index}
-                className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-500 ease-in-out ${
-                  isActive ? "h-64" : "h-16"
-                } w-full`}
+                className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-500 ease-in-out ${isActive ? "h-64" : "h-16"
+                  } w-full`}
                 onClick={() => handleImageClick(index)}
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -220,15 +235,15 @@ const HeroSection = () => {
                     </div>
                   )}
                 </div>
-                
+
                 {/* Mobile Progress Indicator (on right side for active image) */}
                 {isActive && !isHovered && (
                   <div className="absolute right-2 top-4 bottom-4 w-1 z-20 bg-white/20 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="absolute top-0 w-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
-                      style={{ 
+                      style={{
                         height: `${progress}%`
-                      }} 
+                      }}
                     />
                   </div>
                 )}
@@ -260,9 +275,8 @@ const HeroSection = () => {
             return (
               <motion.div
                 key={index}
-                className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-700 ease-in-out ${
-                  isActive ? "w-[60%]" : "w-[15%]"
-                }`}
+                className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-700 ease-in-out ${isActive ? "w-[60%]" : "w-[15%]"
+                  }`}
                 onMouseEnter={() => handleImageHover(index)}
                 variants={{
                   hidden: { opacity: 0, x: -40 },
@@ -278,10 +292,9 @@ const HeroSection = () => {
                 {/* Overlay for all states (add gradient like mobile) */}
                 <div className="absolute z-10 inset-0 bg-gradient-to-t from-black/25 to-transparent flex items-end">
                   {/* Label overlay for active */}
-                  <div 
-                    className={`w-full transition-all duration-700 ease-in-out ${
-                      isActive ? "opacity-100" : "opacity-0"
-                    }`}
+                  <div
+                    className={`w-full transition-all duration-700 ease-in-out ${isActive ? "opacity-100" : "opacity-0"
+                      }`}
                   >
                     <p className="absolute z-10 bottom-20 tracking-wider left-16 text-2xl text-white font-bold transition-all duration-700 ease-in-out dark:text-gray-100">
                       {image.label}
@@ -289,12 +302,11 @@ const HeroSection = () => {
                   </div>
 
                   {/* Vertical text for collapsed */}
-                  <div 
-                    className={`w-full flex items-end justify-center transition-all duration-700 ease-in-out ${
-                      !isActive ? "opacity-100" : "opacity-0"
-                    }`}
+                  <div
+                    className={`w-full flex items-end justify-center transition-all duration-700 ease-in-out ${!isActive ? "opacity-100" : "opacity-0"
+                      }`}
                   >
-                    <p 
+                    <p
                       className="absolute z-10 bottom-[80px] tracking-wider left-16 origin-bottom-left transform -rotate-90 text-2xl text-white font-bold text-nowrap transition-all duration-700 ease-in-out dark:text-gray-100"
                     >
                       {image.label}
@@ -310,9 +322,9 @@ const HeroSection = () => {
                 {/* Desktop Progress Indicator (at bottom for active image) */}
                 {isActive && !isHovered && (
                   <div className="absolute bottom-5 left-5 right-5 h-1.5 z-20 bg-white/30 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full rounded-full transition-all duration-100 ease-linear bg-gradient-to-r from-[#0A182F] dark:from-blue-950 to-blue-950 dark:to-blue-950"
-                      style={{ 
+                      style={{
                         width: `${progress}%`
                       }}
                     />

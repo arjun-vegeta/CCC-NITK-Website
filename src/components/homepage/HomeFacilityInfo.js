@@ -4,32 +4,7 @@ import { Link } from "react-router-dom";
 import { TimelineDemo } from "../FacilityInfoTimeline";
 import ReactGA from 'react-ga4';
 
-const facilities = [
-  {
-    id: 1,
-    name: "Data Centre & Server Infrastructure",
-    image: "/hero/dc.jpg",
-    description: "High-performance servers and secure data storage for all your business needs."
-  },
-  {
-    id: 2,
-    name: "General Purpose Computing & Labs",
-    image: "/images_mdx/Lab.png",
-    description: "Fully equipped labs for software development, research, and innovation."
-  },
-  {
-    id: 3,
-    name: "Website Hosting & Management Service",
-    image: "/hero/dc.png",
-    description: "Reliable hosting services with seamless management and monitoring."
-  },
-  {
-    id: 4,
-    name: "Skill Development Centre",
-    image: "/images_mdx/Lab.png",
-    description: "Enhancing skills through training programs and hands-on learning."
-  },
-];
+// Facilities data will be loaded from API
 
 // Animation variants
 const fadeInUp = {
@@ -67,10 +42,36 @@ const imageVariants = {
 };
 
 const FacilityInfo = () => {
-  const [selectedFacility, setSelectedFacility] = useState(facilities[0]);
+  const [facilitiesData, setFacilitiesData] = useState({
+    title: "Some of our Facilities",
+    subtitle: "Learn more about all the facilities provided by ccc",
+    linkText: "Facilities Page",
+    linkUrl: "/facilities",
+    facilities: []
+  });
+  const [selectedFacility, setSelectedFacility] = useState(null);
   const [hoveredFacility, setHoveredFacility] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoChanging] = useState(true);
+
+  // Load facilities data from JSON file (updated by admin backend)
+  useEffect(() => {
+    import('../../data/homepage.json')
+      .then(data => {
+        if (data.facilitiesSection) {
+          setFacilitiesData(data.facilitiesSection);
+          if (data.facilitiesSection.facilities.length > 0) {
+            setSelectedFacility(data.facilitiesSection.facilities[0]);
+          }
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load homepage data:', err);
+      });
+  }, []);
+
+  // Use facilitiesData.facilities instead of facilities
+  const facilities = facilitiesData.facilities;
 
   // Create refs for intersection observers
   const headingRef = useRef(null);
@@ -89,7 +90,7 @@ const FacilityInfo = () => {
   useEffect(() => {
     let intervalId;
 
-    if (isAutoChanging) {
+    if (isAutoChanging && facilities.length > 0) {
       intervalId = setInterval(() => {
         const nextIndex = (activeIndex + 1) % facilities.length;
         setActiveIndex(nextIndex);
@@ -100,12 +101,13 @@ const FacilityInfo = () => {
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [activeIndex, isAutoChanging]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex, isAutoChanging, facilities]);
 
   // Set up intersection observers for mobile scrolling behavior
   useEffect(() => {
-    // Only run on mobile
-    if (window.innerWidth > 768) return;
+    // Only run on mobile and if facilities exist
+    if (window.innerWidth > 768 || facilities.length === 0) return;
 
     // Create a copy of the current refs to use in cleanup
     const currentRefs = facilityRefs.current;
@@ -114,7 +116,7 @@ const FacilityInfo = () => {
       const observer = new IntersectionObserver(
         (entries) => {
           const [entry] = entries;
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && facilities[index]) {
             setSelectedFacility(facilities[index]);
           }
         },
@@ -136,7 +138,8 @@ const FacilityInfo = () => {
         }
       });
     };
-  }, []);  // Deps array remains empty
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [facilities]);
 
   const handleFacilityClick = (facility, index) => {
     setActiveIndex(index);
@@ -158,7 +161,7 @@ const FacilityInfo = () => {
           }}
           className="text-4xl font-bold text-[#0D1C44] dark:text-white ml-4 md:text-3xl sm:text-2xl"
         >
-          Some of our Facilities
+          {facilitiesData.title}
         </motion.h2>
 
         {/* Learn more link - Hidden on mobile */}
@@ -169,9 +172,9 @@ const FacilityInfo = () => {
           transition={{ delay: 0.4, duration: 0.7 }}
           viewport={{ once: true, amount: 0.9 }}
         >
-          <p className="text-lg mt-2 mb-1 text-gray-700 dark:text-blue-300">Learn more about all the facilities provided by ccc</p>
-          <Link to="/facilities" className="text-lg font-semibold hover:font-bold text-[#1a365d] hover:text-[#3857a5] dark:text-blue-100 underline underline-offset-2 flex items-center justify-end" onClick={() => ReactGA.event({ category: 'Home FacilityInfo', action: 'Click', label: 'Facilities Page' })}>
-            Facilities Page
+          <p className="text-lg mt-2 mb-1 text-gray-700 dark:text-blue-300">{facilitiesData.subtitle}</p>
+          <Link to={facilitiesData.linkUrl} className="text-lg font-semibold hover:font-bold text-[#1a365d] hover:text-[#3857a5] dark:text-blue-100 underline underline-offset-2 flex items-center justify-end" onClick={() => ReactGA.event({ category: 'Home FacilityInfo', action: 'Click', label: facilitiesData.linkText })}>
+            {facilitiesData.linkText}
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -268,37 +271,43 @@ const FacilityInfo = () => {
           animate={isImageInView ? { opacity: 1, transition: { duration: 0.9, delay: 0.5 } } : {}}
         >
           <div className="rounded-xl overflow-hidden shadow-lg">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedFacility.id}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                variants={imageVariants}
-                className="relative"
-                style={{ transformOrigin: "center" }}
-              >
-                <motion.img
-                  src={selectedFacility.image || "/images_mdx/placeholder.png"}
-                  alt={selectedFacility.name}
-                  className="w-full h-[450px] object-cover"
-                  onError={(e) => {
-                    e.target.src = "/images_mdx/placeholder.png";
-                  }}
-                  whileHover={{
-                    scale: 1.03,
-                    transition: { duration: 0.3 }
-                  }}
-                />
-              </motion.div>
-            </AnimatePresence>
+            {selectedFacility ? (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedFacility.id || selectedFacility.name}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  variants={imageVariants}
+                  className="relative"
+                  style={{ transformOrigin: "center" }}
+                >
+                  <motion.img
+                    src={selectedFacility.image || "/images_mdx/placeholder.png"}
+                    alt={selectedFacility.name || "Facility"}
+                    className="w-full h-[450px] object-cover"
+                    onError={(e) => {
+                      e.target.src = "/images_mdx/placeholder.png";
+                    }}
+                    whileHover={{
+                      scale: 1.03,
+                      transition: { duration: 0.3 }
+                    }}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            ) : (
+              <div className="w-full h-[450px] bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <p className="text-gray-500 dark:text-gray-400">Loading facilities...</p>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>
 
       {/* Mobile Layout - Scrollable Timeline */}
       <div className="md:hidden">
-        <TimelineDemo />
+        <TimelineDemo facilities={facilities} />
         {/* View All Facilities button for mobile */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -308,10 +317,10 @@ const FacilityInfo = () => {
           className="mt-8 flex justify-center"
         >
           <Link
-            to="/facilities"
+            to={facilitiesData.linkUrl}
             className="bg-[#0D1C44] text-white py-3 px-8 rounded-full font-semibold shadow-md hover:bg-[#152a5c] transition-colors text-center"
           >
-            View All Facilities
+            {facilitiesData.linkText}
           </Link>
         </motion.div>
       </div>

@@ -5,6 +5,25 @@ const SecondHeroSection = () => {
   const sectionRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1280);
+  const [statsData, setStatsData] = useState({
+    title: "Providing Internet Access to Thousands Across Campus",
+    subtitle: "CCC maintains the campus network backbone connectivity and internet connections on 24x7 basis",
+    stats: []
+  });
+
+  // Fetch stats data from API with fallback to local JSON
+  useEffect(() => {
+    // Load stats data from JSON file (updated by admin backend)
+    import('../../data/homepage.json')
+      .then(data => {
+        if (data.statsSection) {
+          setStatsData(data.statsSection);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load homepage data:', err);
+      });
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,36 +61,14 @@ const SecondHeroSection = () => {
     };
   }, []);
 
-  const cards = [
-    {
-      id: 1,
-      title: "6000+ Students and Staff",
-      description: "",
-      imgHeight: 290,
-      imgSrc: "/stats/user.png"
-    },
-    {
-      id: 2,
-      title: "20+ Hostels",
-      description: "",
-      imgHeight: 340,
-      imgSrc: "/stats/hostel.png"
-    },
-    {
-      id: 3,
-      title: "300+ Staff Quarters",
-      description: "",
-      imgHeight: 400,
-      imgSrc: "/stats/dept.png"
-    },
-    {
-      id: 4,
-      title: "1000+ Access Points",
-      description: "",
-      imgHeight: 320,
-      imgSrc: "/stats/wifi.png"
-    }
-  ];
+  // Map stats data to cards format with default heights
+  const cards = statsData.stats.map((stat, index) => ({
+    id: index + 1,
+    title: stat.title,
+    description: stat.description,
+    imgHeight: [290, 340, 400, 320][index] || 320, // Default heights cycling
+    imgSrc: stat.image
+  }));
 
   // Get the tallest card height dynamically
   const maxCardHeight = Math.max(...cards.map(card => card.imgHeight));
@@ -112,11 +109,10 @@ const SecondHeroSection = () => {
         viewport={{ once: true }}
       >
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#0D1C44] dark:text-white mb-4 md:mb-6">
-          Providing Internet Access to Thousands Across Campus
+          {statsData.title}
         </h2>
         <p className="text-gray-600 dark:text-blue-300 text-sm md:text-base">
-          CCC maintains the campus network backbone connectivity and internet
-          connections on 24x7 basis
+          {statsData.subtitle}
         </p>
       </motion.div>
 

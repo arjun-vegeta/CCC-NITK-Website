@@ -1,0 +1,125 @@
+{
+  "heroSection": {
+    "title": "CENTRAL COMPUTER CENTRE",
+    "buttons": [
+      {
+        "text": "VIEW GUIDES",
+        "link": "/guides",
+        "type": "outline"
+      },
+      {
+        "text": "FACILITIES",
+        "link": "/facilities",
+        "type": "outline"
+      },
+      {
+        "text": "REPORT PROBLEM",
+        "link": "/guides/problem-reporting",
+        "type": "filled"
+      }
+    ],
+    "images": [
+      {
+        "src": "/hero/ccc.jpg",
+        "alt": "CCC Buildingssss",
+        "label": "CCC Building"
+      },
+      {
+        "src": "/hero/lab.png",
+        "alt": "CCC Labs",
+        "label": "CCC Labs"
+      },
+      {
+        "src": "/hero/dc.jpg",
+        "alt": "Data Centre",
+        "label": "Data Centre"
+      }
+    ]
+  },
+  "statsSection": {
+    "title": "Providing Internet Access to Thousands Across Campus",
+    "subtitle": "CCC maintains the campus network backbone connectivity and internet connections on 24x7 basis",
+    "stats": [
+      {
+        "title": "6000+ Students and Staff",
+        "description": "",
+        "image": "/stats/user.png"
+      },
+      {
+        "title": "20+ Hostels",
+        "description": "",
+        "image": "/stats/hostel.png"
+      },
+      {
+        "title": "300+ Staff Quarters",
+        "description": "",
+        "image": "/stats/dept.png"
+      },
+      {
+        "title": "1000+ Access Points",
+        "description": "",
+        "image": "/stats/wifi.png"
+      }
+    ]
+  },
+  "facilitiesSection": {
+    "title": "Some of our Facilities",
+    "subtitle": "Learn more about all the facilities provided by ccc",
+    "linkText": "Facilities Page",
+    "linkUrl": "/facilities",
+    "facilities": [
+      {
+        "name": "Data Centre & Server Infrastructure",
+        "image": "/facilities/dc.jpg",
+        "description": "High-performance servers and secure data storage for all your business needs."
+      },
+      {
+        "name": "General Purpose Computing & Labs",
+        "image": "/facilities/Lab.png",
+        "description": "Fully equipped labs for software development, research, and innovation."
+      },
+      {
+        "name": "Website Hosting & Management Service",
+        "image": "/facilities/dc.png",
+        "description": "Reliable hosting services with seamless management and monitoring."
+      },
+      {
+        "name": "Skill Development Centre",
+        "image": "/facilities/Lab.png",
+        "description": "Enhancing skills through training programs and hands-on learning."
+      }
+    ]
+  },
+  "guidesSection": {
+    "title": "Learn More About Guides",
+    "subtitle": "Discover guides to help you navigate the Central Computer Centre's services, resources and facilities.",
+    "buttonText": "View All Guides",
+    "buttonLink": "/guides",
+    "guides": [
+      {
+        "heading": "Request For Subdomain",
+        "description": "Instructions to request for subdomain (.nitk.ac.in).",
+        "image": "/guides/url.png",
+        "link": "/guides/request-institute-url"
+      },
+      {
+        "heading": "Request For Container",
+        "description": "Steps to request a Container/ Virtual Machine from CCC.",
+        "image": "/guides/server.png",
+        "link": "/guides/request-container"
+      },
+      {
+        "heading": "Guest Captive Portal ID",
+        "description": "How to request a guest login ID for NITK's captive portal.",
+        "image": "/guides/captive.png",
+        "link": "/guides/request-captive-id"
+      },
+      {
+        "heading": "Request For NITK VPN",
+        "description": "Guide to request VPN and connect securely to NITK's network.",
+        "image": "/guides/vpn.png",
+        "link": "/guides/request-vpn-access"
+      }
+    ]
+  }
+}

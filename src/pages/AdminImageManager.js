@@ -120,7 +120,7 @@ function AdminImageManager() {
                 <ArrowLeft className="h-5 w-5 text-gray-600 dark:text-gray-400" />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Image Manager</h1>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">MDX Image Manager</h1>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {images.length} image{images.length !== 1 ? 's' : ''}
                 </p>

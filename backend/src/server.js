@@ -8,6 +8,8 @@ const mdxRoutes = require('./routes/mdx');
 const imagesRoutes = require('./routes/images');
 const peopleRoutes = require('./routes/people');
 const peopleImagesRoutes = require('./routes/peopleImages');
+const homepageRoutes = require('./routes/homepage');
+const homepageImagesRoutes = require('./routes/homepageImages');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -26,6 +28,8 @@ app.use('/api/mdx', mdxRoutes);
 app.use('/api/images', imagesRoutes);
 app.use('/api/people', peopleRoutes);
 app.use('/api/people-images', peopleImagesRoutes);
+app.use('/api/homepage', homepageRoutes);
+app.use('/api/homepage-images', homepageImagesRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

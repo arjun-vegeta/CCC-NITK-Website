@@ -4,33 +4,27 @@ import { Link } from "react-router-dom";
 import ReactGA from 'react-ga4';
 
 const GuideSection = () => {
-  const infoBoxes = [
-    {
-      heading: "Request For Subdomain",
-      description: "Instructions to request for subdomain (.nitk.ac.in).",
-      image: "/guides/url.png",
-      link: "/guides/request-institute-url"
-    },
-    {
-      heading: "Request For Container",
-      description: "Steps to request a Container/ Virtual Machine from CCC.",
-      image: "/guides/server.png",
-      link: "/guides/request-container"
-    },
-    {
-      heading: "Guest Captive Portal ID",
-      description: "How to request a guest login ID for NITK's captive portal.",
-      image: "/guides/captive.png",
-      link: "/guides/request-captive-id"
-    },
-    {
-      heading: "Request For NITK VPN",
-      description: "Guide to request VPN and connect securely to NITK's network.",
-      image: "/guides/vpn.png",
-      link: "/guides/request-vpn-access"
-    }
-  ];
-  
+  const [guidesData, setGuidesData] = useState({
+    title: "Learn More About Guides",
+    subtitle: "Discover guides to help you navigate the Central Computer Centre's services, resources and facilities.",
+    buttonText: "View All Guides",
+    buttonLink: "/guides",
+    guides: []
+  });
+
+  useEffect(() => {
+    // Load guides data from JSON file (updated by admin backend)
+    import('../../data/homepage.json')
+      .then(data => {
+        if (data.guidesSection) {
+          setGuidesData(data.guidesSection);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to load homepage data:', err);
+      });
+  }, []);
+
 
   return (
     <section className="max-w-[1280px] mx-auto py-16 px-4 font-Montserrat">
@@ -43,16 +37,16 @@ const GuideSection = () => {
         viewport={{ once: true }}
       >
         <h2 className="text-3xl md:text-4xl font-bold text-[#0D1C44] dark:text-white mb-6">
-          Learn More About Guides
+          {guidesData.title}
         </h2>
         <p className="text-gray-600 dark:text-blue-300">
-          Discover guides to help you navigate the Central Computer Centre's services, resources and facilities.
+          {guidesData.subtitle}
         </p>
       </motion.div>
 
       {/* Cards Grid - Updated for responsive layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-10">
-        {infoBoxes.map((box, index) => (
+        {guidesData.guides.map((box, index) => (
           <GuideCard key={index} box={box} index={index} />
         ))}
       </div>
@@ -66,11 +60,11 @@ const GuideSection = () => {
         viewport={{ once: true, amount: 0.1 }}
       >
         <Link
-          to="/guides"
+          to={guidesData.buttonLink}
           className="inline-block mt-3 px-8 py-3 bg-[#0D1C44] text-white rounded-full text-md font-semibold hover:bg-[#3857a5] transition-colors duration-300"
-          onClick={() => ReactGA.event({ category: 'Home GuideSection', action: 'Click', label: 'View All Guides' })}
+          onClick={() => ReactGA.event({ category: 'Home GuideSection', action: 'Click', label: guidesData.buttonText })}
         >
-          View All Guides
+          {guidesData.buttonText}
         </Link>
       </motion.div>
     </section>
@@ -80,12 +74,12 @@ const GuideSection = () => {
 const GuideCard = ({ box, index }) => {
   const [hovered, setHovered] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
-  
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);

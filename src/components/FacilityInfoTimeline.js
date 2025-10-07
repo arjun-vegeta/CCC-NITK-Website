@@ -2,8 +2,9 @@ import React from "react";
 import { Timeline } from "../components/ui/timeline";
 import { motion } from "framer-motion";
 
-export function TimelineDemo() {
-  const facilities = [
+export function TimelineDemo({ facilities = [] }) {
+  // Use facilities from props, with fallback to default data if empty
+  const defaultFacilities = [
     {
       id: 1,
       name: "Data Centre & Server Infrastructure",
@@ -26,7 +27,9 @@ export function TimelineDemo() {
     },
   ];
 
-  const data = facilities.map((facility) => ({
+  const facilitiesData = facilities.length > 0 ? facilities : defaultFacilities;
+
+  const data = facilitiesData.map((facility, index) => ({
     title: facility.name,
     content: (
       <motion.div

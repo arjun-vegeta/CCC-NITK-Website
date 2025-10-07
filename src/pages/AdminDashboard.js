@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FileText, BookOpen, LogOut, RefreshCw, Image, Users } from 'lucide-react';
+import { FileText, BookOpen, LogOut, RefreshCw, Image, Users, Home } from 'lucide-react';
 
 function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -150,7 +150,7 @@ function AdminDashboard() {
               </div>
             </div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              Image Manager
+              MDX Image Manager
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Upload and manage images for content
@@ -172,6 +172,42 @@ function AdminDashboard() {
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Manage staff and team members
+            </p>
+          </Link>
+
+          {/* Homepage Manager */}
+          <Link
+            to="/admin/homepage"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-lg">
+                <Home className="h-8 w-8 text-yellow-600 dark:text-yellow-400" />
+              </div>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              Homepage Manager
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Update homepage sections and content
+            </p>
+          </Link>
+
+          {/* Homepage Image Manager */}
+          <Link
+            to="/admin/homepage-images"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-lg">
+                <Image className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+              </div>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              Homepage Images
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Manage images for hero, stats, facilities & guides
             </p>
           </Link>
         </div>

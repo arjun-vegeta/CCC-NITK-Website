@@ -20,6 +20,8 @@ import AdminContentManager from './pages/AdminContentManager';
 import AdminFileEditor from './pages/AdminFileEditor';
 import AdminImageManager from './pages/AdminImageManager';
 import AdminPeopleManager from './pages/AdminPeopleManager';
+import AdminHomepageManager from './pages/AdminHomepageManager';
+import AdminHomepageImageManager from './pages/AdminHomepageImageManager';
 import AdminRedirect from './pages/AdminRedirect';
 import ReactGA from 'react-ga4';
 
@@ -51,6 +53,8 @@ function App() {
               <Route path="/admin/mdx-editor" element={<AdminMDXEditor />} />
               <Route path="/admin/images" element={<AdminImageManager />} />
               <Route path="/admin/people" element={<AdminPeopleManager />} />
+              <Route path="/admin/homepage" element={<AdminHomepageManager />} />
+              <Route path="/admin/homepage-images" element={<AdminHomepageImageManager />} />
 
               {/* People */}
               <Route path="/people" element={<PeopleCCC/>} />
