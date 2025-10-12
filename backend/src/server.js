@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { initDatabase } = require('./utils/database');
+const ipWhitelist = require('./middleware/ipWhitelist');
+const { apiLimiter } = require('./middleware/rateLimiter');
 
 const authRoutes = require('./routes/auth');
 const mdxRoutes = require('./routes/mdx');
@@ -14,6 +16,8 @@ const homepageImagesRoutes = require('./routes/homepageImages');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -22,14 +26,22 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Apply rate limiting to all API routes
+app.use('/api/', apiLimiter);
+
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/mdx', mdxRoutes);
-app.use('/api/images', imagesRoutes);
-app.use('/api/people', peopleRoutes);
-app.use('/api/people-images', peopleImagesRoutes);
+
 app.use('/api/homepage', homepageRoutes);
-app.use('/api/homepage-images', homepageImagesRoutes);
+app.use('/api/people', peopleRoutes);
+app.use('/api/mdx', mdxRoutes); 
+
+// Auth routes - IP restricted (campus only)
+app.use('/api/auth', ipWhitelist, authRoutes);
+
+// Admin-only routes - IP restricted + auth required (campus only)
+app.use('/api/images', ipWhitelist, imagesRoutes);
+app.use('/api/people-images', ipWhitelist, peopleImagesRoutes);
+app.use('/api/homepage-images', ipWhitelist, homepageImagesRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
