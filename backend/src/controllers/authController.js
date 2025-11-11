@@ -55,4 +55,47 @@ const verifyToken = (req, res) => {
   });
 };
 
-module.exports = { login, verifyToken };
+const changePassword = (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.userId;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'Current password and new password are required' });
+  }
+
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'New password must be at least 8 characters long' });
+  }
+
+  db.get('SELECT * FROM users WHERE id = ?', [userId], async (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const isValidPassword = await bcrypt.compare(currentPassword, user.password);
+    
+    if (!isValidPassword) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    db.run(
+      'UPDATE users SET password = ? WHERE id = ?',
+      [hashedPassword, userId],
+      (err) => {
+        if (err) {
+          return res.status(500).json({ error: 'Failed to update password' });
+        }
+
+        res.json({ message: 'Password changed successfully' });
+      }
+    );
+  });
+};
+
+module.exports = { login, verifyToken, changePassword };

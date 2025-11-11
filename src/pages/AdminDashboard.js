@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FileText, BookOpen, LogOut, RefreshCw, Image, Users, Home } from 'lucide-react';
+import { FileText, BookOpen, LogOut, RefreshCw, Image, Users, Home, Lock } from 'lucide-react';
 
 function AdminDashboard() {
   const [user, setUser] = useState(null);
@@ -208,6 +208,24 @@ function AdminDashboard() {
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Manage images for hero, stats, facilities & guides
+            </p>
+          </Link>
+
+          {/* Change Password */}
+          <Link
+            to="/admin/change-password"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-red-100 dark:bg-red-900 rounded-lg">
+                <Lock className="h-8 w-8 text-red-600 dark:text-red-400" />
+              </div>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              Change Password
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Update your admin account password
             </p>
           </Link>
         </div>

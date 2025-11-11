@@ -22,6 +22,7 @@ import AdminImageManager from './pages/AdminImageManager';
 import AdminPeopleManager from './pages/AdminPeopleManager';
 import AdminHomepageManager from './pages/AdminHomepageManager';
 import AdminHomepageImageManager from './pages/AdminHomepageImageManager';
+import AdminChangePassword from './pages/AdminChangePassword';
 import AdminRedirect from './pages/AdminRedirect';
 import ReactGA from 'react-ga4';
 
@@ -55,6 +56,7 @@ function App() {
               <Route path="/admin/people" element={<AdminPeopleManager />} />
               <Route path="/admin/homepage" element={<AdminHomepageManager />} />
               <Route path="/admin/homepage-images" element={<AdminHomepageImageManager />} />
+              <Route path="/admin/change-password" element={<AdminChangePassword />} />
 
               {/* People */}
               <Route path="/people" element={<PeopleCCC/>} />
